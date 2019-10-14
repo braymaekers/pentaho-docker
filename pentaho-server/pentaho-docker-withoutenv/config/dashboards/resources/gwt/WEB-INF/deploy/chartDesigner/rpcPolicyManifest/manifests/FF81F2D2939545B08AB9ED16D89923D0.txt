@@ -1,0 +1,2 @@
+serviceClass: org.pentaho.charteditor.client.ChartingService
+path: 9360235255F39561265191499ECD74F3.gwt.rpc

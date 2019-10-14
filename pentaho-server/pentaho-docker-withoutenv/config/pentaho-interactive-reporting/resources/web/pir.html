@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html xmlns:pho="http://www.hitachivantara.com">
+<!-- /*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2019 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */ -->
+<head>
+<title>Pentaho Interactive Reporting</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+<!-- Placeholder. Locale will be injected in content when gwt module is ready -->
+<meta id="gwtLocale" name="gwt:property" content="locale=default">
+
+<!-- [PIR-816] GWT appends styles to the first stylesheet it finds. This was causing terrible rendering problems in IE.
+     By having this empty stylesheet, the problem is avoided -->
+<link href="../../../api/repos/pentaho-interactive-reporting/resources/web/gwtInject.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" type="text/css"
+    href="../../../api/repos/pentaho-interactive-reporting/resources/web/filterdialog/filterDialog.css"/>
+<link rel="stylesheet" type="text/css"
+    href="../../../api/repos/common-ui/resources/web/dojo/dijit/themes/pentaho/pentaho.css"/>
+<link href="../../../api/repos/common-ui/resources/web/dojo/pentaho/common/RowLimitControl.css" rel="stylesheet"
+      type="text/css"/>
+<link href="../../../api/repos/pentaho-interactive-reporting/resources/web/PIR.css" rel="stylesheet" type="text/css"/>
+
+<!-- Scripts required by Pentaho Prompting -->
+<link rel="stylesheet" href="../../../api/repos/pentaho-cdf/js/lib/jdMenu/jquery.jdMenu.css" type="text/css"/>
+<link rel="stylesheet" href="../../../api/repos/pentaho-cdf/js/lib/jdMenu/jquery.jdMenu.slate.css" type="text/css"/>
+<link rel="stylesheet" href="../../../api/repos/pentaho-cdf/js/lib/impromptu/jquery-impromptu.css" type="text/css"/>
+<link rel="stylesheet" href="../../../api/repos/common-ui/resources/web/prompting/pentaho-prompting.css" type="text/css"/>
+<link rel="stylesheet" type="text/css" media="screen" href="../../../mantle/Widgets.css"/>
+
+<!-- uncomment this to enable the Data Access Wizard in standalone mode -->
+<!-- link rel="stylesheet" href="../../../data-access/resources/gwt/datasourceEditorDialog.css"/ -->
+
+<link rel="stylesheet"
+    href="../../../api/repos/common-ui/resources/web/dojo/pentaho/common/CustomColorPicker/CustomColorPicker.css"/>
+<link rel="stylesheet"
+    href="../../../api/repos/common-ui/resources/web/dojo/pentaho/common/ExpressionTree/ExpressionTree.css"/>
+<link href="../../../api/repos/common-ui/resources/web/dojo/dijit/themes/pentaho/layout/LayoutPanel.css"
+    rel="stylesheet" type="text/css"/>
+<link href="../../../api/repos/common-ui/resources/web/dojo/dijit/themes/pentaho/Dialog.css" rel="stylesheet"
+    type="text/css"/>
+<link href="../../../api/repos/common-ui/resources/web/dojo/pentaho/common/FilterDialog.css" rel="stylesheet"
+    type="text/css"/>
+
+<script type="text/javascript" src="webcontext.js?context=pentaho-interactive-reporting"></script>
+
+<script type="text/javascript">
+
+  document.getElementById('gwtLocale').content = "locale="+SESSION_LOCALE; // PIR-877 - GWT modules need to know the current locale
+  /**
+   * This is called when a gwt module has been loaded. We depend on these so we'll defer loading of functionality until
+   * modules have been loaded.
+   */
+  var formatterDefined = false;
+  var gwtModuleLoaded = function (moduleName) {
+    if(!formatterDefined){
+      require(['local'], function(local) {
+        formatterDefined = true;
+        local.define('formatter');
+      });
+    }
+    if(! controller){
+      setTimeout(function(){gwtModuleLoaded(moduleName);}, 500);
+      return;
+    }
+    require(['dojo/ready'], function (ready) {
+      ready(function(){
+        if (moduleName === 'formatter') {
+          controller.promptFormatterLoaded();
+        } else if (moduleName === 'filterdialog') {
+          controller.filterDialogLoaded();
+        }
+      })
+    });
+  }
+
+  var isRunningIFrameInSameOrigin = null;
+  try {
+    var ignoredCheckCanReachOutToParent = window.top.mantle_initialized;
+    isRunningIFrameInSameOrigin = true;
+  } catch (ignoredSameOriginPolicyViolation) {
+    // IFrame is running embedded in a web page in another domain
+    isRunningIFrameInSameOrigin = false;
+  }
+
+</script>
+
+<script type="text/javascript" src="../../../api/repos/common-ui/resources/web/formatter/formatter.nocache.js"></script>
+<script type="text/javascript"
+    src="../../../api/repos/pentaho-interactive-reporting/resources/web/filterdialog/filterdialog.nocache.js"></script>
+<script type="text/javascript"
+    src="../../../api/repos/pentaho-interactive-reporting/resources/web/schedulingdialogs/schedulingdialogs.nocache.js"></script>
+
+<script type="text/javascript">
+
+  var controller = null;
+  var view = null;
+  var model = null;
+  var localizeTest = false;
+  var supportsReadyFeedback = true;
+
+  function pageLoad() {
+    var normalizedLocale = dojo.i18n.normalizeLocale(SESSION_LOCALE);
+    require(["dojo/dnd/common", "dojo/_base/unload", "dojo/_base/lang", "dojo/dom-style", "dojo/dom-class", "dojo/parser", "dojo/i18n!dojo/cldr/nls/"+normalizedLocale+"/number"], function(dnd, unload, lang, style, domClass, parser){
+
+      // create the main objects
+      controller = new pentaho.pir.controller();
+      window.editContentToggled = function (selected) {
+        if (controller.pentahoUserConsole.toggleEditCallback) {
+          controller.pentahoUserConsole.toggleEditCallback(selected);
+        }
+        if (selected) {
+          controller.pentahoUserConsole.enableEditButton();
+          controller.pentahoUserConsole.lowerEditButton();
+        } else {
+          controller.pentahoUserConsole.enableEditButton();
+          controller.pentahoUserConsole.resetEditButton();
+        }
+      };
+
+      if (!controller.pentahoUserConsole.console_enabled) {
+        domClass.add(document.body, 'pentaho-page-background');
+      }
+      parser.parse();
+
+      model = new pentaho.pir.model();
+      view = new pentaho.pir.view();
+
+
+      // init the view and the controller
+      view.localizeTest = localizeTest;
+      view.init();
+      model.init();
+      // not ideal, but we need to limit resizing while the tab is animating
+      if (controller.pentahoUserConsole.console_enabled) {
+        setTimeout('view.canResize = true', 500);
+      } else {
+        view.canResize = true;
+      }
+      controller.init();
+
+      dnd.autoScroll = function () {
+      };
+
+      unload.addOnUnload(function(){
+        lang.hitch(view, "unload")
+      });
+
+    })
+  }
+
+</script>
+
+<script type="text/javascript">
+  var jsset = 'prod'; // 'uncomp', 'orig', 'prod'
+</script>
+
+<script type="text/javascript">
+  // <![CDATA[
+
+  var isAdminUser = false;
+
+  /* this function is called by the gwt code when initing, if the user has permission */
+  function initDataAccess(hasAccess) {
+    isAdminUser = hasAccess;
+    if (isAdminUser) {
+      // add admin hooks
+      var pMenu;
+      require(['dojo/ready'], function(ready){
+
+        ready(function () {
+          pMenu = new pentaho.common.Menu({
+            targetNodeIds: ["sidepanelheader", "toppanel"]
+          });
+          pMenu.addChild(new pentaho.common.MenuItem({
+            label: "View report model",
+            onClick: function () {
+              controller.prepareReport();
+              alert(dojo.toJson(model.report));
+            }
+          }));
+          pMenu.addChild(new pentaho.common.MenuItem({
+            label: "View query",
+            onClick: function () {
+              controller.prepareReport();
+              alert(model.report.datasourceProperties.query);
+            }
+          }));
+          pMenu.addChild(new pentaho.common.MenuItem({
+            label: "Version Number",
+            onClick: function () {
+              alert(pentaho.pir.version.getBuildTag());
+            }
+          }));
+          pMenu.addChild(new pentaho.common.MenuItem({
+            label: "View SQL statement",
+            onClick: function () {
+              alert(controller.getSqlQuery());
+            }
+          }));
+          pMenu.startup();
+        });
+
+      })
+    }
+  }
+
+  //Updates for BISERVER-8736 This method loads synchronously loads the
+  // array of js scripts in order and calls pageLoad on the last one
+  function injectJsIntoHead(calls, callback){
+
+    if(calls.length > 1){
+      var head = document.getElementsByTagName('head')[0];
+      script = document.createElement('script');
+      script.type="text/javascript";
+      script.src = calls.shift();
+      script.onload = function(){
+        injectJsIntoHead(calls, callback);
+      }
+      script.onreadystatechange = function() {
+
+        if (this.readyState == "complete" || this.readyState == "loaded" ) {
+          this.onreadystatechange = null; // keep it from loading more than once
+          injectJsIntoHead(calls, callback);
+        }
+      }
+      head.appendChild(script);
+    }
+
+    else {
+      var head = document.getElementsByTagName('head')[0];
+      script = document.createElement('script');
+      script.type="text/javascript";
+      script.src = calls[0];
+      script.onload = function(){
+        callback();
+      }
+      script.onreadystatechange = function() {
+
+        if (this.readyState == "complete" || this.readyState == "loaded" ) {
+          this.onreadystatechange = null; // keep it from loading more than once
+          callback();
+        }
+      }
+      head.appendChild(script);
+
+    }
+  }
+
+
+  // parse out our test URL and our Dojo URL from the query string
+  var qstr = window.location.search.substr(1);
+  if (qstr.length) {
+    var qparts = qstr.split("&");
+    for (var x = 0; x < qparts.length; x++) {
+      var tp = qparts[x].split("="), name = tp[0], value = tp[1];
+      switch (name) {
+        case "jsset":
+          jsset = value;
+          break;
+        case "localizeTest":
+          localizeTest = true;
+          break;
+      }
+    }
+  }
+
+
+  // ]]>
+</script>
+
+<script type="text/javascript">
+
+  function initDojo(){
+
+    require(['pir/module'],function(){
+      pageLoad();
+
+    });
+
+  }
+
+
+
+</script>
+
+<script type="text/javascript">
+
+  initDojo();
+
+</script>
+
+<script type="text/javascript">
+  /* this function tries to prevent the browser from undoing the page history if backspace is pressed */
+  function keyCatcher(event) {
+    try {
+      event = event || window.event;
+      var target = event.target || event.srcElement;
+      var targetType = target.nodeName.toLowerCase();
+      if (event.keyCode == 8 && targetType != 'input' && targetType != 'textarea') {
+        return false;
+      }
+    } catch (e) {
+      // fail silently
+    }
+  }
+</script>
+<!-- uncomment this to enable the Data Access Wizard in standalone mode -->
+<!-- script language='javascript' src='../../../data-access/resources/gwt/DatasourceEditor.nocache.js'></script -->
+
+</head>
+
+<body class="tundra body" onresize="if(view) view.resize()" onkeydown="return keyCatcher(event)"
+    onkeypress="return keyCatcher(event)">
+
+<div id="modelSelectDialog" title="my title" dialoghint="my hint"
+    datasourceEditorPath="../../../data-access/resources/gwt/" data-dojo-type="pentaho.common.datasourceselect">
+</div>
+
+<div id="messageBoxDialog" data-dojo-type="pentaho.common.MessageBox" title="" style="width:420px; display:none;">
+</div>
+
+<div id="splashscreen" data-dojo-type="pentaho.common.SplashScreen" title="" style="width:500px; display:none;">
+</div>
+
+<div id="pageSetupDialog" data-dojo-type="pentaho.pir.PageSetupDialog"></div>
+
+<div id="templatePickerDialog" data-dojo-type="pentaho.common.TemplatePicker"></div>
+
+<div id="contentArea" class="pentaho-transparent hidden">
+
+<div id="toppanelouter" class="pentaho-transparent">
+
+  <div id="toppanel" class="pentaho-transparent">
+
+    <div id="toppanelinner">
+
+      <div id="toolbarinner2" data-dojo-type="dijit.Toolbar"
+          style="height: auto;"
+          class="pentaho-rounded-panel2-shadowed pentaho-padding-sm pentaho-shine pentaho-background">
+
+        <div id="toolbar1" data-dojo-type="dijit.Toolbar">
+
+          <div data-dojo-type="dijit.form.Button" id="toolbar1.new" iconClass="pentaho-newbutton-small"
+              showLabel="false">New
+          </div>
+          <div data-dojo-type="dijit.form.Button" id="toolbar1.open" iconClass="pentaho-openbutton-small"
+              showLabel="false">Open
+          </div>
+          <div data-dojo-type="dijit.form.Button" id="toolbar1.save" iconClass="pentaho-savebutton-small"
+              showLabel="false">Save
+          </div>
+          <div data-dojo-type="dijit.form.Button" id="toolbar1.saveAs" iconClass="pentaho-saveasbutton-small"
+              showLabel="false">Save As
+          </div>
+          <span data-dojo-type="dijit.ToolbarSeparator" id="repositorySeparator"></span>
+          
+          <div data-dojo-type="dijit.form.Button" id="toolbar1.edit" iconClass="pentaho-updatebutton"
+              showLabel="false">Edit Content
+          </div>
+          <span data-dojo-type="dijit.ToolbarSeparator" id="editSeparator"></span>
+          
+          <div data-dojo-type="dijit.form.Button" id="toolbar1.spinner" iconClass="dijitEditorIcon dijitEditorIconIndent"
+              showLabel="false">Busy Indicator
+          </div>
+          <span data-dojo-type="dijit.ToolbarSeparator"></span>
+
+          <div data-dojo-type="dijit.form.Button" id="toolbar1.undo" iconClass="dijitEditorIcon dijitEditorIconUndo"
+              showLabel="false">Undo
+          </div>
+          <div data-dojo-type="dijit.form.Button" id="toolbar1.redo" iconClass="dijitEditorIcon dijitEditorIconRedo"
+              showLabel="false">Redo
+          </div>
+          <span data-dojo-type="dijit.ToolbarSeparator"></span>
+
+          <div data-dojo-type="dijit.form.DropDownButton" id="toolbar1.exportReportButton"
+              iconClass="pentaho_dijitEditorIconExport" showLabel="false">
+            <span>Export</span>
+
+            <div data-dojo-type="pentaho.common.Menu" id="toolbar1.exportReportMenu">
+              <div data-dojo-type="pentaho.common.MenuItem" id="toolbar1.exportPDF"
+                  onclick="controller.exportReport('application/pdf')">PDF...
+              </div>
+              <div data-dojo-type="pentaho.common.MenuItem" id="toolbar1.exportHTML"
+                  onclick="controller.exportReport('text/html')">HTML...
+              </div>
+              <div data-dojo-type="pentaho.common.MenuItem" id="toolbar1.exportCSV"
+                  onclick="controller.exportReport('text/csv')">CSV
+              </div>
+              <div data-dojo-type="pentaho.common.MenuItem" id="toolbar1.exportExcel2007"
+                  onclick="controller.exportReport('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')">Excel Workbook
+              </div>
+              <div data-dojo-type="pentaho.common.MenuItem" id="toolbar1.exportExcel"
+                  onclick="controller.exportReport('application/vnd.ms-excel')">Excel 97-2003 Workbook
+              </div>
+            </div>
+          </div>
+          <span id="toolbar1.selectAllSeparator" data-dojo-type="dijit.ToolbarSeparator"></span>
+
+          <div data-dojo-type="dijit.form.Button" id="toolbar1.selectAll" iconClass="dijitEditorIcon dijitEditorIconSelectAll"
+              showLabel="false">Select All
+          </div>
+
+          <span data-dojo-type="dijit.ToolbarSeparator"></span>
+
+          <div data-dojo-type="dijit.form.ToggleButton" id="toolbar1.filterToggle"
+              iconClass="dijitEditorIcon dijitEditorIconFilter" showLabel="false">Filter
+          </div>
+          <div data-dojo-type="dijit.form.ToggleButton" id="toolbar1.layoutToggle"
+              iconClass="dijitEditorIcon dijitEditorIconCut" showLabel="false">Layout
+          </div>
+          <div data-dojo-type="dijit.form.ToggleButton" id="toolbar1.parameterToggle"
+              iconClass="dijitEditorIcon dijitEditorIconParameters" showLabel="false">Prompts
+          </div>
+
+          <span data-dojo-type="dijit.ToolbarSeparator"></span>
+
+          <div id="pageNumberControl" data-dojo-type="pentaho.pir.PageControl" class="dijitInline pirPageControl"></div>
+
+          <span id="toolbar-parameter-separator-row-limit" data-dojo-type="dijit.ToolbarSeparator" class="hidden"></span>
+
+          <div id="rowLimitControl" data-dojo-type="pentaho.common.RowLimitControl" class="dijitInline hidden"></div>
+
+          <span data-dojo-type="dijit.ToolbarSeparator"></span>
+
+          <div data-dojo-type="dijit.form.Button" id="toolbar1.clearCache"
+              iconClass="dijitEditorIcon dijitEditorIconRefresh" showLabel="false">Refresh report data
+          </div>
+
+          <!-- div data-dojo-type="dijit.form.ToggleButton" id="toolbar1.formatButton" iconClass="dijitEditorIcon dijitEditorIconSave" showLabel="false">
+           <span>Formatting</span>
+         </div -->
+        </div>
+      </div>
+
+      <div id="reportControlPanel" class="hidden pentaho-rounded-panel-bottom-lr pentaho-shadow">
+
+        <div id="advancedFilterTextPanel" class="hidden controlPanel container pentaho-rounded-panel-bottom-lr">
+          <table id="advancedFilterTextPanelTable">
+            <tr>
+              <td class="flex top">
+                <div id="advancedFilterWidget" data-dojo-type="pentaho.common.TextAreaInput"></div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div id="filterPanel"
+            class="hidden controlPanel container dojoDndTarget dojoDndHorizontal dojoDndContainer pentaho-rounded-panel-bottom-lr"
+            data-dojo-type="dojo.dnd.Target" accept="group-header,column,group,treenode-leaf-label">
+          <table id="filterPanelTable">
+            <tr>
+              <!--
+               <td class="top">
+               <div id="filterPanelTitle">Filters</div>
+               </td>
+               -->
+              <td class="flex top">
+                <div id="filterPanelHint" class="reportControlSectionHint">To add a new filter, drag a field from
+                  Available Fields to this area. - test
+                </div>
+                <div id="filterList"></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                &nbsp; <!-- prevent table from overflowing to advancedFilterLink -->
+              </td>
+            </tr>
+          </table>
+
+          <button id="applyFilterButton" class="pentaho-button">Apply Filter</button>
+
+          <div id="advancedFilterLink"><strong>{*}</strong>&nbsp;</div>
+          <div id="filterDialog" data-dojo-type="pentaho.common.FilterDialog"></div>
+        </div>
+        <div id="layoutPanel" class="hidden controlPanel pentaho-rounded-panel-bottom-lr">
+          <table id="layoutPanelTable">
+            <tr>
+              <td class="top">
+                <div id="layoutPanelGroupTitle" class="reportControlSectionTitle">!Groups!</div>
+              </td>
+              <td class="flex">
+                <div id="layoutPanelGroupDropArea" class="reportControlSection">
+                  <div id="layoutPanelGroupHint" class="container layoutPanelHint" data-dojo-type="dojo.dnd.Target"
+                      accept="treenode-leaf-label,column">To add a new group, drag a field from Available Fields to
+                    this area.
+                  </div>
+                  <div id="layoutPanelGroupList" class="hidden"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="top">
+                <div id="layoutPanelColumnTitle" class="reportControlSectionTitle">!Groups!</div>
+              </td>
+              <td class="flex">
+                <div id="layoutPanelColumnDropArea" class="reportControlSection">
+                  <div id="layoutPanelColumnHint" class="container layoutPanelHint" data-dojo-type="dojo.dnd.Target"
+                      accept="treenode-leaf-label,group">To add a new column, drag a field from Available Fields to
+                    this area.
+                  </div>
+                  <div id="layoutPanelColumnList" class="hidden"></div>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div id="parameterPanel"
+            class="hidden controlPanel container dojoDndTarget dojoDndHorizontal dojoDndContainer pentaho-rounded-panel-bottom-lr"
+            data-dojo-type="dojo.dnd.Target" accept="group-header,column,group,treenode-leaf-label">
+          <div id="promptPanelContainer"></div>
+          <div id="parameterPanelHint" class="reportControlSectionHint"></div>
+        </div>
+      </div>
+      <div id="rowLimitMessage" data-dojo-type="pentaho.common.RowLimitMessage">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="labelseditboxdiv" style="z-index:15; position:absolute; top: 0px; left: 0px; clip:rect(0,0,0,0)">
+  <div data-dojo-type="dijit.form.DropDownButton" id="labelEditButton">
+    <span></span>
+
+    <div data-dojo-type="dijit.TooltipDialog" id="labelseditdialog" title="" class="pir-tooltip pentaho-shadow-padding">
+      <div id="labelsEditTooltipDialogContent"
+          class="pentaho-rounded-panel pentaho-tooltip-background pentaho-padding-sm pentaho-shadow">
+        <div class="pir-tooltip-title">
+          <div style="float: right; position: relative; top: -2px" data-dojo-type="pentaho.common.SmallImageButton"
+              id="labeleditcloseBtn" baseClass="pentaho-closebutton"
+              onclick="registry.byId('labelEditButton').closeDropDown()">
+          </div>
+        </div>
+        <div class="pentaho-tooltip-contents">
+          <input id="labelseditbox" value="" onkeyup="view.labelEditKeyUp(event)"/>
+
+          <div id="labeloptions" style="padding-top: 5px">
+            <button type="button" id="labeloptionsdate" class="pentaho-button"
+                onclick="var e=document.getElementById('labelseditbox'); e.value += '$(report.date)'; e.focus()">
+              Date
+            </button>
+            <button type="button" id="labeloptionsdatepage" class="pentaho-button"
+                onclick="var e=document.getElementById('labelseditbox'); e.value += '$(PageofPages)'; e.focus()">
+              #/Pages
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="sidepanel" class="pentaho-transparent hidden">
+
+<div id="sidepanelinner" class="pentaho-rounded-panel2 pentaho-padding-sm pentaho-background">
+
+<div id="sidepanelheader" ondblclick="view.toggleSidePanel()">
+  <table width="100%">
+    <tr>
+      <td>
+        <div id="sidepanelcloser" onclick="view.toggleSidePanel()"
+            class="cursorPointer sidePanelIconCommon sidePanelIconClose"></div>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div id="sidepaneltabset" data-dojo-type="pentaho.common.TabSet">
+</div>
+
+<div id="sidepaneltabs" data-dojo-type="dijit.layout.StackContainer" isLayoutContainer="true" tabStrip="true"
+    style="padding: 0px">
+<div id="datatab" data-dojo-type="dijit.layout.ContentPane" title="Data" selected="true" class="panel-content"
+    style="padding: 0px; overflow:hidden; ">
+  <div id="datatabpanel" class="tabpanel" style="height: 100%; overflow:hidden; padding: 0px">
+    <div class="section-header-outer">
+      <div class="section-header-middle">
+        <div class="pentaho-titled-toolbar section-header-inner pentaho-padding-sm" id="fieldListTop">
+          <table id="datatabheader" style="width:100%">
+            <tr>
+              <td>
+                <span id="datasourcelbl" class="label contrast-color">Data Source:</span>
+              </td>
+              <td rowspan="2">
+                <div id="queryOptions" class="imgSpacer pentaho-optionsbutton"
+                    onclick="view.showQuerySetup()" title="Query Settings"></div>
+                <div>
+                  <div id="queryOptionsMenuContainer"
+                      style="background: transparent; position:absolute; z-index: 50; clip:rect(0,0,0,0)">
+                    <div id="queryOptionsMenuButton" data-dojo-type="dijit.form.DropDownButton">
+                      <span>foo</span>
+
+                      <div data-dojo-type="dijit.TooltipDialog" id="queryOptionsDialog">
+                        <div id="queryOptionsDialogContent"
+                            class="pentaho-rounded-panel pentaho-tooltip-background pentaho-shadow">
+                          <div class="pentaho-tooltip-contents">
+                            <div class="section-header-outer">
+                              <div class="section-header-middle">
+                                <div class="pentaho-titled-toolbar section-header-inner pentaho-padding-sm"
+                                    style="height: 20px; ">
+                                  <div>
+                                    <span id="querysetupheader" style="float:left">Query Setup</span>
+
+                                    <div data-dojo-type="pentaho.common.SmallImageButton" id="queryOptionsCloseBtn" title=""
+                                        baseClass="pentaho-closebutton"
+                                        onclick="registry.byId('queryOptionsMenuButton').closeDropDown()"
+                                        style="float: right">
+                                    </div>
+                                  </div>
+                                  <!-- <table cellpadding="0" cellspacing="0">
+                                     <tr>
+                                         <td id="querysetupheader">
+                                             Query Setup
+                                         </td>
+                                         <td style="width:16px; text-align: right">
+                                             <div data-dojo-type="pentaho.common.SmallImageButton" id="queryOptionsCloseBtn" title="" baseClass="pentaho-closebutton" onclick="dijit.byId('queryOptionsMenuButton').closeDropDown()">
+                                             </div>
+                                         <td>
+                                     </tr>
+                                 </table> -->
+                                </div>
+                              </div>
+                            </div>
+                            <table>
+                              <tr>
+                                <td>
+                                  <input type="checkbox" id="disabledistinctcheckbox" checked="false"/>
+                                </td>
+                                <td id="disabledistinctlbl">Select Distinct</td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <input type="checkbox" id="queryTimeoutCheckBox" checked="false"/>
+                                </td>
+                                <td id="queryTimeoutLabel">Query Timeout</td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>
+                                  <input id="queryTimeoutEdit" style="width: 10em" value="" disabled="true"
+                                      onchange="view.changeQueryTimeoutEdit()"/>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <input type="checkbox" id="querylessCheckBox" checked="false" />
+                                </td>
+                                <td id="querylessLabel">Auto-Refresh</td>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td valign="middle" style="vertical-align:middle">
+                <table cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="padding-right:4px">
+                      <div class="imgSpacer pentaho-datasourcebutton"></div>
+                    </td>
+                    <td>
+                      <span id="datasourcespan" class="label"></span>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="fieldlistContainer">
+      <div id="fieldlist" data-dojo-type="pentaho.common.FieldList">ff</div>
+    </div>
+
+    <div class="section-header-outer">
+      <div class="section-header-middle">
+        <div class="pentaho-titled-toolbar section-header-inner pentaho-padding-sm" style="height: 20px; ">
+          <table id="groupsortlbl" style="padding:0px; margin:0px; width:100%;">
+            <tr>
+              <td style="width:100%">
+                <span id="groupsortinglbl" class="plabel">Group Sorting:</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <table cellpadding="0" cellspacing="0" id="groupsorttable">
+      <tbody>
+      </tbody>
+    </table>
+
+    <div class="section-header-outer">
+      <div class="section-header-middle">
+        <div class="pentaho-titled-toolbar section-header-inner pentaho-padding-sm" style="height: 20px; ">
+          <table id="fieldsortlbl" style="padding:0px; margin:0px; width:100%;">
+            <tr>
+              <td style="width:100%">
+                <span id="fieldsortinglbl" class="label">Field Sorting:</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <table cellpadding="0" cellspacing="0" id="fieldsorttable" style="width:100%">
+      <tbody>
+      </tbody>
+    </table>
+
+    <!-- button id="refreshbtn" onclick="controller.refresh()">Refresh</button -->
+
+  </div>
+</div>
+<div id="formattab" data-dojo-type="dijit.layout.ContentPane" title="" selected="true" class="panel-content"
+    style="padding: 0px; overflow:hidden; ">
+  <div id="formattabpanel" class="tabpanel" style="height: 100%; overflow:hidden; padding: 0px">
+    <div id="formattabpanelinner" class="pentaho-padding-lg" style="width:100%">
+      <!-- Chrome 29 can't handle whitespace between element tags of anything translated into a SELECT -->
+      <select id="fontlist1" data-dojo-type="dijit.form.Select" onchange="view.fontChanged(false, 1)"style="width:200px; font-size:1em"></select>
+      <br/>
+      <br/>
+      <!-- Chrome 29 can't handle whitespace between element tags of anything translated into a SELECT -->
+      <select id="fontsize1" data-dojo-type="dijit.form.Select" onchange="view.fontSizeChanged(false, 1)"style="width:60px; font-size:1em"></select>
+      <div id="toolbar2a" data-dojo-type="dijit.Toolbar" style="display:inline-block">
+        <div data-dojo-type="dijit.form.ToggleButton" id="toolbar1.bold" iconClass="dijitEditorIcon dijitEditorIconBold"
+            showLabel="false">Bold
+        </div>
+        <div data-dojo-type="dijit.form.ToggleButton" id="toolbar1.italic"
+            iconClass="dijitEditorIcon dijitEditorIconItalic" showLabel="false">Italic
+        </div>
+        <div data-dojo-type="dijit.form.ToggleButton" id="toolbar1.alignLeft"
+            iconClass="dijitEditorIcon dijitEditorIconJustifyLeft" showLabel="false">Left
+        </div>
+        <div data-dojo-type="dijit.form.ToggleButton" id="toolbar1.alignCenter"
+            iconClass="dijitEditorIcon dijitEditorIconJustifyCenter" showLabel="false">Center
+        </div>
+        <div data-dojo-type="dijit.form.ToggleButton" id="toolbar1.alignRight"
+            iconClass="dijitEditorIcon dijitEditorIconJustifyRight" showLabel="false">Right
+        </div>
+      </div>
+      <br/>
+      <br/>
+
+      <div data-dojo-type="dijit.form.ComboButton" id="toolbar1.foreColorBtn"
+          iconClass="dijitEditorIcon dijitEditorIconForeColor" showLabel="false">
+        <span>Text Color</span>
+
+        <div data-dojo-type="dijit.TooltipDialog" class="pir-tooltip pentaho-shadow-padding">
+          <div id="foreColorPicker" data-dojo-type="pentaho.common.ComboColorPicker">
+          </div>
+        </div>
+      </div>
+      <div data-dojo-type="dijit.form.ComboButton" id="toolbar1.backColorBtn"
+          iconClass="dijitEditorIcon dijitEditorIconBackColor" showLabel="false">
+        <span>Background Color</span>
+
+        <div data-dojo-type="dijit.TooltipDialog" class="pir-tooltip pentaho-shadow-padding">
+          <div id="backColorPicker" data-dojo-type="pentaho.common.ComboColorPicker">
+          </div>
+        </div>
+      </div>
+      <div data-dojo-type="dijit.form.Button" id="toolbar1.copy" iconClass="dijitEditorIcon dijitEditorIconCopy"
+          showLabel="false">Copy Formatting
+      </div>
+      <div data-dojo-type="dijit.form.Button" id="toolbar1.paste" iconClass="dijitEditorIcon dijitEditorIconPaste"
+          showLabel="false">Paste Formatting
+      </div>
+      <div data-dojo-type="dijit.form.Button" id="toolbar1.delete" iconClass="dijitEditorIcon dijitEditorIconDelete"
+          showLabel="false">Remove All Formatting
+      </div>
+      <p/>
+
+      <div id="widthctrls" class="hidden">
+        <span id="widthlbl" class="label">Width (%):</span>
+        <br/>
+        <input id="widthedit" value="" size="1" onchange="view.changeWidthEdit()" style="width: 100px"/>
+      </div>
+
+      <div id="numericformatctrls" class="hidden">
+        <span id="numericformatlbl" class="label">Numeric Format:</span>
+        <br/>
+        <!-- Chrome 29 can't handle whitespace between element tags of anything translated into a SELECT -->
+        <select id="numericformats" data-dojo-type="dijit.form.Select" onchange="view.changeNumericFormat()" style="width: 200px"></select>
+      </div>
+
+      <div id="dateformatctrls" class="hidden">
+        <span id="dateformatlbl" class="label">Date Format:</span>
+        <br/>
+        <!-- Chrome 29 can't handle whitespace between element tags of anything translated into a SELECT -->
+        <select id="dateformats" data-dojo-type="dijit.form.Select" onchange="view.changeDateFormat()" style="width: 200px"></select>
+      </div>
+      <div id="foreColorSample" class="hidden cursorPointer"
+          style="border:1px solid #444444; position: absolute; top: 0px; left: 0px; width:18px; height:3px; background-color: #ffffff; z-index: 1200"
+          onclick="view.toolbar1ForeColorBtnClick()">&nbsp;</div>
+      <div id="backColorSample" class="hidden cursorPointer"
+          style="border:1px solid #444444; position: absolute; top: 0px; left: 0px; width:18px; height:3px; background-color: #ffffff; z-index: 1200"
+          onclick="view.toolbar1BackColorBtnClick()">&nbsp;</div>
+    </div>
+  </div>
+</div>
+<div id="generaltab" data-dojo-type="dijit.layout.ContentPane" title="General" class="panel-content"
+    style="padding: 0px; overflow:hidden; ">
+  <div id="generaltabpanel" class="tabpanel" style="height: 100%; overflow:hidden; padding: 0px">
+    <div class="section-header-outer">
+      <div class="section-header-middle">
+        <div class="pentaho-titled-toolbar section-header-inner pentaho-padding-sm" style="height: 20px; ">
+          <span id="themelbl" class="label">Template:</span>
+        </div>
+      </div>
+    </div>
+    <div class="pentaho-padding-sm" style="width:100%;text-align:center">
+      <table style="height:220px">
+        <tr>
+          <td>
+            <div id="prevTemplateIcon" onclick="view.prevTemplateClick()"
+                class="cursorPointer prevTemplateIconCommon prevTemplateIconOn"></div>
+          </td>
+          <td>
+            <img id="currentTemplateIcon" class="templatePickerImg"/>
+          </td>
+          <td>
+            <div id="nextTemplateIcon" onclick="view.nextTemplateClick()"
+                class="cursorPointer nextTemplateIconCommon nextTemplateIconOn"></div>
+          </td>
+        </tr>
+        <tr>
+          <td id="currentTemplateName" class="label" colspan="3">
+          </td>
+        </tr>
+      </table>
+      <p/>
+      <button type="button" id="templatePicker" class="pentaho-button" onclick="view.showTemplatePicker()">Select...
+      </button>
+      <button type="button" id="pageSetupButton" class="pentaho-button" onclick="view.showPageSetup()">Page Setup...
+      </button>
+    </div>
+    <div class="section-header-outer">
+      <div class="section-header-middle">
+        <div class="pentaho-titled-toolbar section-header-inner pentaho-padding-sm" style="height: 20px; ">
+          <span id="preferenceslbl" class="label">Tips</span>
+        </div>
+      </div>
+    </div>
+    <div class="pentaho-padding-sm" style="width:100%;">
+      <table>
+        <tr>
+          <td>
+            <input type="checkbox" id="menuButtonCheckBox" checked="true"/>
+          </td>
+          <td id="menubuttonlbl">Enable menu buttons</td>
+        </tr>
+        <tr>
+          <td>
+            <input type="checkbox" id="hintsCheckBox" checked="true">
+          </td>
+          <td id="hintslbl">Show Hints</td>
+        </tr>
+        <tr>
+          <td>
+            <input type="checkbox" id="startupHintsCheckBox" checked="true"/>
+          </td>
+          <td id="startupHintslbl">Show hints on startup</td>
+        </tr>
+      </table>
+    </div>
+    <div class="pentaho-padding-sm" style="width:100%;">
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="reportArea" class="pentaho-transparent" scrollexception="true">
+  <div id="notification-screen" class="hidden pentaho-notification">
+    <table>
+      <tr>
+        <td id="notification-indicator"></td>
+        <td id="notification-message"></td>
+      </tr>
+    </table>
+    <div id="notification-close" class="pentaho-closebutton pentaho-imagebutton-active"></div>
+  </div>
+  <div id="reportPageOutline" class="pentaho-rounded-panel2-shadowed pentaho-padding-lg pentaho-background">
+    <form id="hiddenReportContentForm" method="post" target="reportContentIframe">
+      <input type="hidden" type="submit" value="Submit" />
+    </form>
+    <div id="reportContent" data-dojo-type="dojo/dnd/Source"></div> <!-- accept="treenode-leaf-label" -->
+  </div>
+</div>
+
+<div id="rpt-menu-image-button" class="menuimagebutton hidden" onmouseover="view.menuButtonMouseOver(event)"
+    onmouseout="view.menuButtonMouseOut(event)">
+
+  <div id="menu-container" class="hidden" onmouseover="view.menuMouseOver()" onmouseout="view.menuMouseOut()">
+
+    <div id="rpt-menu-button" data-dojo-type="dijit.form.DropDownButton">
+      <span>&nbsp;</span>
+
+      <div data-dojo-type="pentaho.common.Menu" id="rpt-menu">
+        <div data-dojo-type="pentaho.common.MenuItem" id="filtersubmenu" onclick="view.optionSelect('filter')">
+          <span id="filterContextMenu">Filter</span>
+        </div>
+        <div data-dojo-type="pentaho.common.MenuItem" id="parametersubmenu" onclick="view.optionSelect('parameter')">
+          <span id="parameterContextMenu">Prompt</span>
+        </div>
+        <div data-dojo-type="pentaho.common.PopupMenuItem" id="sortsubmenu">
+          <span>Sort</span>
+
+          <div data-dojo-type="pentaho.common.Menu">
+            <div data-dojo-type="pentaho.common.CheckedMenuItem" id="rpt-menu-sort-asc"
+                onClick="view.optionSelect('sortasc')">Ascending
+            </div>
+            <div data-dojo-type="pentaho.common.CheckedMenuItem" id="rpt-menu-sort-desc"
+                onClick="view.optionSelect('sortdesc')">Descending
+            </div>
+            <div data-dojo-type="pentaho.common.MenuItem" id="rpt-menu-sort-none" onClick="view.optionSelect('sortremove')">
+              None
+            </div>
+          </div>
+        </div>
+        <div data-dojo-type="pentaho.common.PopupMenuItem" id="movesubmenu">
+          <span>Move</span>
+
+          <div data-dojo-type="pentaho.common.Menu">
+            <div data-dojo-type="pentaho.common.MenuItem" id="rpt-menu-move-left" onClick="view.optionSelect('moveleft')">
+              Left
+            </div>
+            <div data-dojo-type="pentaho.common.MenuItem" id="rpt-menu-move-right" onClick="view.optionSelect('moveright')">
+              Right
+            </div>
+          </div>
+        </div>
+        <div data-dojo-type="pentaho.common.PopupMenuItem" id="aggsubmenuopt">
+          <span>Aggregation</span>
+
+          <div data-dojo-type="pentaho.common.Menu" id="aggsubmenu">
+          </div>
+        </div>
+        <div data-dojo-type="pentaho.common.PopupMenuItem" id="summarysubmenu">
+          <span>Summary</span>
+
+          <div data-dojo-type="pentaho.common.Menu">
+            <div data-dojo-type="pentaho.common.MenuItem" id="rpt-menu-summary-none"
+                onClick="view.optionSelect('summary-remove')">None
+            </div>
+            <div data-dojo-type="pentaho.common.CheckedMenuItem" id="rpt-menu-summary-avg"
+                onClick="view.optionSelect('summary-avg')">Average
+            </div>
+            <div data-dojo-type="pentaho.common.CheckedMenuItem" id="rpt-menu-summary-count"
+                onClick="view.optionSelect('summary-count')">Count
+            </div>
+            <div data-dojo-type="pentaho.common.CheckedMenuItem" id="rpt-menu-summary-count-distinct"
+                onClick="view.optionSelect('summary-count-distinct')">Count Distinct
+            </div>
+            <div data-dojo-type="pentaho.common.CheckedMenuItem" id="rpt-menu-summary-max"
+                onClick="view.optionSelect('summary-max')">Max
+            </div>
+            <div data-dojo-type="pentaho.common.CheckedMenuItem" id="rpt-menu-summary-min"
+                onClick="view.optionSelect('summary-min')">Min
+            </div>
+            <div data-dojo-type="pentaho.common.CheckedMenuItem" id="rpt-menu-summary-sum"
+                onClick="view.optionSelect('summary-sum')">Sum
+            </div>
+          </div>
+        </div>
+        <div data-dojo-type="pentaho.common.MenuSeparator"></div>
+        <div data-dojo-type="pentaho.common.MenuItem" id="removesubmenu" label="Remove"
+            onclick="view.optionSelect('remove')"></div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div id="formatOptsDiv" style="z-index:15; position:absolute; top: 0px; left: 0px; display: none;">
+  <div data-dojo-type="dijit.form.DropDownButton" id="formatOptsButton">
+    <span></span>
+
+    <div data-dojo-type="dijit.TooltipDialog" id="formatOptsDialog" title="" class="pir-tooltip">
+      <div data-dojo-type="dijit.TooltipDialog">
+        <div class="pentaho-rounded-panel2 pentaho-tooltip-background pentaho-padding-sm pentaho-shadow">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="bottompanel" class="hidden button-panel contrast-background pentaho-bottom-bar contrast-color">
+  <div id="hintspanel" class="hidden">
+    <table style="width:100%;">
+      <tr>
+        <td style="width:100%">&nbsp;</td>
+        <td>
+          <input type="checkbox" id="startupHintsCheckBox2" checked="false"
+              onclick="dojo.byId('startupHintsCheckBox').checked = this.checked; view.changeStartupHintsCheckBox()"/>
+        </td>
+        <td id="startupHintslbl2" nowrap="true" class="label">Show tips on startup</td>
+        <td nowrap="true" id="hidehintsbtn-cell">
+          <button type="button" id="hidehintsbtn" class="pentaho-button"
+              onclick="dojo.byId('hintsCheckBox').checked = false; view.changeHintsCheckBox(); dojo.addClass('bottompanel', 'hidden')">
+            Hide Tips
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div data-dojo-type="pentaho.common.Menu" id="fieldContextMenu" style="display:none">
+  <div data-dojo-type="pentaho.common.MenuItem" id="fieldAddColumn" label="Add to Columns"
+      onclick="view.addFieldToColumnsFromContextMenu()"></div>
+  <div data-dojo-type="pentaho.common.MenuItem" id="fieldAddGroup" label="Add to Groups"
+      onclick="view.addFieldToGroupFromContextMenu()"></div>
+  <div data-dojo-type="pentaho.common.MenuItem" id="fieldFilter" label="Filter.."
+      onclick="view.addFilterFromContextMenu()"></div>
+  <div data-dojo-type="pentaho.common.MenuItem" id="fieldParameter" label="Prompt.."
+      onclick="view.addParameterFromContextMenu()"></div>
+</div>
+
+<div data-dojo-type="pentaho.common.Menu" id="adminContextMenu" style="display:none">
+  <div data-dojo-type="pentaho.common.MenuItem" id="adminReportModel" label="View report model"
+      onclick="view.adminShowModel();"></div>
+  <div data-dojo-type="pentaho.common.MenuItem" id="adminQuery" label="View query" onclick="view.adminShowQuery();"></div>
+  <div data-dojo-type="pentaho.common.MenuItem" id="adminSQL" label="View SQL" onclick="view.adminShowSql();"></div>
+  <div data-dojo-type="pentaho.common.MenuItem" id="adminVersion" label="Version Number"
+      onclick="alert(pentaho.pir.version.getBuildTag())"></div>
+</div>
+
+<div data-dojo-type="pentaho.common.Menu" id="filterActionContextMenu" leftClicktoOpen="true" style="display:none">
+  <div data-dojo-type="pentaho.common.MenuItem" id="filterEditMenu" label="Edit" onclick="view.editFilter();"></div>
+  <div data-dojo-type="pentaho.common.MenuItem" id="filterDeleteMenu" label="Delete"
+      onclick="view.handleRemoveFilter()"></div>
+  <div data-dojo-type="pentaho.common.MenuItem" id="filterMoveUpMenu" label="Move Up" onclick="view.moveUpFilter();"></div>
+  <div data-dojo-type="pentaho.common.MenuItem" id="filterMoveDownMenu" label="Move Down"
+      onclick="view.moveDownFilter();"></div>
+  <div data-dojo-type="pentaho.common.MenuItem" id="filterIndentMenu" label="Indent" onclick="view.indentFilter();"></div>
+</div>
+
+<span id="dragspan" class="dojoDndItem"
+    style="border: 1px solid blue; padding: 4px; background-color: #CCCCFF;display:none; z-index:0">.</span>
+
+</div>
+
+<div id="filterToolbarIndicator" data-dojo-type="pentaho.common.FilterIndicator"></div>
+
+<div id="trash-dnd-target" data-dojo-type="dojo.dnd.Target" class="container trashcan hidden"
+    accept="column,group-header,group">
+</div>
+
+<form id="exportform" method="POST" action="iadhoc" target="_blank" class="hidden">
+</form>
+
+<textarea id="decodeHelper" style="display: none;"></textarea>
+
+<div id="feedbackScreen" data-dojo-type="pentaho.reportviewer.FeedbackScreen" title="" style="width:400px; display:none;">
+</div>
+<div id="reportGlassPane" data-dojo-type="pentaho.reportviewer.GlassPane" title="" style="width:400px; display:none;">
+</div>
+<div id="rowLimitExceededDialog" data-dojo-type="pentaho.common.RowLimitExceededDialog" style="display: none">
+</div>
+
+</body>
+
+</html>

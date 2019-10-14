@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<window id="Dashboard"
+	xmlns:pho="http://www.pentaho.com"
+	xmlns="http://www.pentaho.org/there.is.only.xul">
+
+	<box id="titlebar" pho:type="pagetitle" height="23" hidden="false">
+	</box>
+	
+	<vbox id="widget-area" pho:type="scrollarea" flex="1"> 
+
+		<box id="FilterPanel" pho:type="povpanel" height="100" hidden="true">
+		</box>
+
+		<hbox id="hbox1" pho:type="layout" flex="1">
+
+			<box id="Panel_1" pho:type="titled-panel" pho:title="${widget1}" flex="1">
+			</box>
+
+			<box id="Panel_2" pho:type="titled-panel" pho:title="${widget2}" flex="1">
+			</box>
+
+			<box id="Panel_3" pho:type="titled-panel" pho:title="${widget3}" flex="1" >
+			</box>
+
+		</hbox>
+	
+		<hbox id="hbox2" pho:type="layout" flex="1">
+			
+			<box id="Panel_4" pho:type="titled-panel" pho:title="${widget3}" flex="1" >
+			</box>
+
+			<box id="Panel_5" pho:type="titled-panel" pho:title="${widget4}" flex="1" >
+			</box>
+		</hbox>
+
+	</vbox>
+
+</window>

@@ -1,0 +1,5 @@
+# Module chartDesigner
+# RPC service class, partial path of RPC policy file
+org.pentaho.commons.metadata.mqleditor.editor.gwt.util.MQLEditorGwtService, F81766943817B6A1ECE5A9FD46CCDE22.gwt.rpc
+org.pentaho.ui.xul.gwt.service.XulLoaderService, AFF04AEFA5F92F58CB62583803C9F49F.gwt.rpc
+org.pentaho.charteditor.client.ChartingService, 9360235255F39561265191499ECD74F3.gwt.rpc

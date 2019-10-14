@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--===========================================================================
+HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+
+Copyright 2002 - 2017 Hitachi Vantara. All rights reserved.
+
+NOTICE: All information including source code contained herein is, and
+remains the sole property of Hitachi Vantara and its licensors. The intellectual
+and technical concepts contained herein are proprietary and confidential
+to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+patents, or patents in process, and are protected by trade secret and
+copyright laws. The receipt or possession of this source code and/or related
+information does not convey or imply any rights to reproduce, disclose or
+distribute its contents, or to manufacture, use, or sell anything that it
+may describe, in whole or in part. Any reproduction, modification, distribution,
+or public display of this information without the express written authorization
+from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+international treaties. Access to the source code contained herein is strictly
+prohibited to anyone except those individuals and entities who have executed
+confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+explicitly covering such access.
+============================================================================-->
+<settings>
+  <!-- set this to true for production, and false for development/localization -->
+  <cache-messages>true</cache-messages>
+  <!-- how far ahead to set the browser's cache -->
+  <max-age>2628001</max-age>
+  <cache>true</cache>
+
+  <!--
+     To use the current Visualization API, set the value of this property to `3.0`;
+     to enable the legacy Visualization API, set the value to `2.0`.
+
+     Note: Reports saved containing Visualization API 3.0 Stock visualizations will not render if
+           Visualization API 2.0 is selected, and will fallback to displaying the Pivot Table.
+   -->
+  <viz-api-version>3.0</viz-api-version>
+
+  <!-- Settings for the PUC "new" toolbar dropdown: priority, label, tabName, action-url -->
+  <new-toolbar-button>1,newAnalyzer,analyzer,api/repos/xanalyzer/service/selectSchema</new-toolbar-button>
+
+  <json-chart-content-generators>
+    <!-- uncomment the following to enable printing of Geo Maps -->
+    <!--  <open_layers>geomapexport</open_layers> -->
+    <ccc_heatgrid>xanalyzer</ccc_heatgrid>
+    <ccc_bar>xanalyzer</ccc_bar>
+    <ccc_barstacked>xanalyzer</ccc_barstacked>
+    <ccc_barnormalized>xanalyzer</ccc_barnormalized>
+    <ccc_horzbar>xanalyzer</ccc_horzbar>
+    <ccc_horzbarstacked>xanalyzer</ccc_horzbarstacked>
+    <ccc_horzbarnormalized>xanalyzer</ccc_horzbarnormalized>
+    <ccc_line>xanalyzer</ccc_line>
+    <ccc_area>xanalyzer</ccc_area>
+    <ccc_scatter>xanalyzer</ccc_scatter>
+    <ccc_pie>xanalyzer</ccc_pie>
+    <ccc_waterfall>xanalyzer</ccc_waterfall>
+    <ccc_boxplot>xanalyzer</ccc_boxplot>
+    <ccc_bulletchart>xanalyzer</ccc_bulletchart>
+    <ccc_line_hover>xanalyzer</ccc_line_hover>
+    <ccc_area_hover>xanalyzer</ccc_area_hover>
+    <ccc_barline>xanalyzer</ccc_barline>
+    <ccc_treemap>xanalyzer</ccc_treemap>
+    <ccc_sunburst>xanalyzer</ccc_sunburst>
+  </json-chart-content-generators>
+
+  <!-- Comment to use latest ccc version when printing via CGG
+  <cgg-print-ccc-version>2.0-15.05.07-dev</cgg-print-ccc-version>
+  -->
+
+  <ccc_sunburst-content-generator-path>cggPrint</ccc_sunburst-content-generator-path>
+  <ccc_treemap-content-generator-path>cggPrint</ccc_treemap-content-generator-path>
+  <ccc_barline-content-generator-path>cggPrint</ccc_barline-content-generator-path>
+  <ccc_heatgrid-content-generator-path>cggPrint</ccc_heatgrid-content-generator-path>
+  <ccc_bar-content-generator-path>cggPrint</ccc_bar-content-generator-path>
+  <ccc_barstacked-content-generator-path>cggPrint</ccc_barstacked-content-generator-path>
+  <ccc_barnormalized-content-generator-path>cggPrint</ccc_barnormalized-content-generator-path>
+  <ccc_horzbar-content-generator-path>cggPrint</ccc_horzbar-content-generator-path>
+  <ccc_horzbarstacked-content-generator-path>cggPrint</ccc_horzbarstacked-content-generator-path>
+  <ccc_horzbarnormalized-content-generator-path>cggPrint</ccc_horzbarnormalized-content-generator-path>
+  <ccc_line-content-generator-path>cggPrint</ccc_line-content-generator-path>
+  <ccc_area-content-generator-path>cggPrint</ccc_area-content-generator-path>
+  <ccc_scatter-content-generator-path>cggPrint</ccc_scatter-content-generator-path>
+  <ccc_pie-content-generator-path>cggPrint</ccc_pie-content-generator-path>
+  <ccc_waterfall-content-generator-path>cggPrint</ccc_waterfall-content-generator-path>
+  <ccc_boxplot-content-generator-path>cggPrint</ccc_boxplot-content-generator-path>
+  <ccc_bulletchart-content-generator-path>cggPrint</ccc_bulletchart-content-generator-path>
+  <ccc_line_hover-content-generator-path>cggPrint</ccc_line_hover-content-generator-path>
+  <ccc_area_hover-content-generator-path>cggPrint</ccc_area_hover-content-generator-path>
+
+  <amd-root-path>content/analyzer/scripts</amd-root-path>
+  <amd-root-namespace>analyzer</amd-root-namespace>
+
+  <dashboard-widgets>
+    <xanalyzer>scripts/widget/AnalyzerDashboardWidget.js</xanalyzer>
+  </dashboard-widgets>
+</settings>

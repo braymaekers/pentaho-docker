@@ -1,0 +1,107 @@
+<!-- /*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2017 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */ -->
+
+<div id="edit-panel" class="edit-panel" style="display:none;" >
+
+  <div id="objectTree" class="objectTree">
+    <h2 id="objects_lbl" class="pentaho-gradient">Objects</h2>
+    <div id="treeContainer" class="treeContainer">
+      <div id="treebox" class="treebox">
+      </div>
+    </div>
+  </div>
+  <div id="editWrapper" class="editWrapper">
+    <div id="editContainer" class="editContainer">
+      <div  id="props-deck-0" class="deck"  style="display:none;">
+        <div id="tabbox-dashboard" class="pentaho-tabBar">
+          <div id="tab-layout" class="pentaho-tabWidget" onclick="pentahoTabClick('tab-layout','tabbox-dashboard')" title="Templates"  xclass="on"><span id="span-tab-layout" xclass="on" class="pentaho-tabWidgetLabel">Templates</span></div>
+          <div id="tab-theme" class="pentaho-tabWidget" onclick="pentahoTabClick('tab-theme','tabbox-dashboard')" title="Themes"><span id="span-tab-theme" class="pentaho-tabWidgetLabel">Themes</span></div>
+          <div id="tab-dashboard-settings" class="pentaho-tabWidget" onclick="pentahoTabClick('tab-dashboard-settings','tabbox-dashboard')" title="Properties"><span id="span-tab-dashboard-settings" class="pentaho-tabWidgetLabel">Properties</span></div>
+        </div>
+        <div id="tab-layout-panel" class="pentaho-tabPanel" style="display:none">
+          <div class="panelContent">
+            <table id="templates-table" >
+            </table>
+          </div>
+        </div>
+        <div id="tab-theme-panel" class="pentaho-tabPanel" style="display:none">
+          <div class="panelContent">
+            <table id="themes-table">
+            </table>
+          </div>
+        </div>
+        <div id="tab-dashboard-settings-panel" class="pentaho-tabPanel" style="display:none">
+          <div class="panelContent">
+            <table width="100%" border="0" cellspacing="2" cellpadding="2" height="100%">
+              <tr>
+                <td align="left">
+                  <span id="page_title_lbl" class="label">Page Title:</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="text" name="textfield" id="dashboard-title-edit" class="textfield" onBlur="pentahoDashboardEditApply(this)" />
+                </td>
+              </tr>
+              <tr>
+                <td align="left">
+                  <span id="refresh_interval_lbl" class="label">Refresh Interval (sec):</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="text" name="textfield" id="dashboard-refresh-edit" class="textfield" onBlur="pentahoDashboardRefreshEditApply(this)" onkeypress="return isNumericKeyPress(event);" />
+                </td>
+              </tr>
+              <tr>
+                <td align="left">
+                  <input type="checkbox" id="dashboard-showwidgetprint-edit" class="textfield" onclick="pentahoDashboardWidgetPrintingEditApply(this)" />
+                  <span class="label" id="dashboard-showwidgetprint-label">Allow Dashboard Panel Printing</span>
+                </td>
+              </tr>
+              <tr>
+                <td width="100%"></td>
+                <td colspan="2" valign="bottom">
+                  <button id="resize_panels_lbl" class="pentaho-button" onclick="pentahoDashboardEditor.enterResizeMode(true)">Resize Panels</button>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div><!-- props-deck-0 -->
+
+      <div id="props-deck-1" class="deck" style="display:none; ">
+      <!-- PropertiesPanel GWT hooks into this div via RootPanel.get("props-deck-1").add(panel); do not alter  -->
+      </div><!-- props-deck-1 -->
+
+      <div style="display: none;" class="deck" id="props-deck-2">
+        <div class="deckPanel" id="tab-povpanel-settings-panel">
+          <div class="panelContent" id="povpanel-controls-div" style="height:198px">
+            <!-- template.png is place holder for the time -->
+          </div>
+        </div>
+      </div><!-- props-deck-2 -->
+
+    </div><!-- editContainer -->
+  </div><!-- editWrapper -->
+
+</div>

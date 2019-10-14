@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- /*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2019 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */ -->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+  <title>Pentaho Analyzer</title>
+  <meta name="helpTopic" content="CV/Business_User/about_reports.html">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="initial-scale=1.0, minimum-scale = 1, maximum-scale = 1, user-scalable=no"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+  <link rel="stylesheet" type="text/css" media="only screen and (max-device-width: 1024px)" href="styles/ipad.css" />
+
+  <link rel="stylesheet" type="text/css" media="all"   href="styles/common.css" />
+  <link rel="stylesheet" type="text/css" href="../common-ui/resources/web/dojo/dijit/themes/pentaho/pentaho.css"/>
+  <link rel="stylesheet" type="text/css" media="all"   href="styles/content.css" />
+  <link rel="stylesheet" type="text/css" media="all"   href="styles/dialog.css" />
+  <link rel="stylesheet" type="text/css" media="all"   href="styles/report.css" />
+  <link rel="stylesheet" type="text/css" href="styles/dojoThemeOverrides.css"/>
+
+  <!-- VizAPI 2.0 compatibility -->
+  <link rel="stylesheet" type="text/css" href="styles/tipsy.css"/>
+
+    <script type="text/javascript">
+
+      // Collect an array of Visualization plugin AMD modules to load, plugins add to this array through webcontext.js
+      var analyzerVizPlugins = [];
+
+      var debug = false;
+
+      var cv = {};
+      var cvCatalog = @{viewerBean.JSONResources};
+      cv.analyzerProperties = @{viewerBean.analyzerProperties};
+      cv.vizApiVersion = @{viewerBean.vizApiVersion};
+
+      var isRunningIFrameInSameOrigin;
+      try {
+        var ignoredCheckCanReachOutToParent = window.parent.mantle_initialized;
+        isRunningIFrameInSameOrigin = true;
+      } catch(e) {  // Ignore "Same-origin policy" violation in embedded IFrame
+        isRunningIFrameInSameOrigin = false;
+      }
+
+      var console_enabled = false;
+      if(isRunningIFrameInSameOrigin) {
+        // check to see if this page is running inside the user console
+        console_enabled = window.parent.mantle_initialized == true;
+      }
+
+      // Load web context with the desired application id.
+      (function() {
+        var apiSpec = {
+          applicationId: "pentaho/analyzer"
+        };
+
+        if(isRunningIFrameInSameOrigin) {
+          if(window.parent.beforeAnalyzerLoad) {
+            window.parent.beforeAnalyzerLoad(apiSpec, window.frameElement.id);
+          }
+        }
+
+        var src = "webcontext.js?context=analyzer&application=" + encodeURIComponent(apiSpec.applicationId);
+        document.write("<script language='javascript' type='text/javascript' src='" + src + "'></scr"+"ipt>");
+      })();
+    </script>
+
+  <script type="text/javascript">
+    // Needs to be on a separate script tag, so that the previous document.write has taken effect.
+    require(["pentaho/analyzer/analyzer-viewer"]);
+  </script>
+
+</head>
+
+<body class="viewer tundra">
+
+<iframe id="downloadIframe" width="0" height="0" style="position:absolute; left:-999; display:none; height:0px; width: 0px;"></iframe>
+
+<div class="hidden">
+  <input type="hidden" id="REPORT_catalog" value="@{viewerBean.catalog}"/>
+  <input type="hidden" id="REPORT_cube" value="@{viewerBean.analysisArea}"/>
+  <input type="hidden" id="fieldHelpXML" value="@{viewerBean.fieldHelpXML}"/>
+  <input type="hidden" id="reportXML" value="@{viewerBean.reportXML}" />
+</div>
+
+<!-- start of ReportContent -->
+<div id="reportContent" class="" data-dojo-type="dijit.layout.BorderContainer" style="width: 100%; height: 100%" data-dojo-props="gutters:false">
+  <!-- The report container -->
+  <div class="reportContainer" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region: 'center'"></div>
+</div> <!-- end of ReportContent -->
+
+<div parseWidgets="true"> <!-- Start of Dojo Widgets -->
+
+  <div dojoType="clearview.widget.CVTooltipRefresh" id="refreshTooltip" connectId="" toggle="fade" toggleDuration="200" style="position: absolute">
+    <div id="refreshHeader"><div class="progressPaneHeaderLabel"></div></div>
+    <div id="refreshAction"></div>
+    <div id="refreshFooter"></div>
+  </div>
+
+  <div dojoType="dijit.Dialog" id="theDialog" class="pentaho-dialog" bgColor="black" bgOpacity="0.65" toggle="fade" toggleDuration="200" executeScripts="true" style="display:none">
+  </div>
+
+  <div dojoType="dijit.Menu" id="attributePopMenu" targetNodeIds="" class="pentaho-menu-outer pentaho-menu" style="display: none">
+    <div dojoType="dijit.PopupMenuItem" id="PM:addHier">
+      <span>@{popupMenuAttributeAlsoShow}</span>
+      <div dojoType="dijit.Menu" id="hierarchyPopMenu" class="pentaho-menu-outer pentaho-menu">
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" class="pentaho-menuitem" id="PM:dummy" caption=""></div>
+      </div>
+    </div>
+    <div dojoType="dijit.PopupMenuItem" id="PM:addProp">
+      <span>@{popupMenuAttributeShowProps}</span>
+      <div dojoType="dijit.Menu" id="propertiesPopMenu" class="pentaho-menu-outer pentaho-menu">
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" class="pentaho-menuitem" id="PM:dummy2" caption=""></div>
+      </div>
+    </div>
+
+
+    <div dojoType="dijit.MenuSeparator"></div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:attrSortAZ">@{popupMenuAttributeSort} A&#8594;Z</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:attrSortZA">@{popupMenuAttributeSort} Z&#8594;A</div>
+    <div dojoType="dijit.MenuSeparator"></div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:attrShowSub">@{popupMenuAttributeShowSubtotals}</div>
+    <div dojoType="dijit.MenuSeparator" id="PM:sprBeforeRemove"></div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:removeAttr">@{popupMenuRemoveFromReport}</div>
+  </div>
+
+  <div dojoType="dijit.Menu" id="propPopMenu" targetNodeIds="" class="pentaho-menu-outer pentaho-menu"style="display: none">
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:removeProp">@{popupMenuRemoveFromReport}</div>
+  </div>
+
+  <div dojoType="dijit.Menu" id="memberPopMenu" targetNodeIds="" class="pentaho-menu-outer pentaho-menu" style="display: none">
+  </div>
+
+  <div dojoType="dijit.Menu" id="cellPopMenu" targetNodeIds="" class="pentaho-menu-outer pentaho-menu" style="display: none">
+  </div>
+
+  <div dojoType="dijit.Menu" id="measurePopMenu" class="pentaho-menu-outer pentaho-menu" targetNodeIds="" style="display: none">
+    <div dojoType="dijit.PopupMenuItem">
+      <span>@{popupMenuNumberCondFormat}</span>
+      <div dojoType="dijit.Menu" id="condFormatMenu" class="pentaho-menu-outer pentaho-menu" targetNodeIds="">
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:condFormat_COLOR_SCALE_G_Y_R">@{popupMenuCondFormatColorScaleGYR}</div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:condFormat_COLOR_SCALE_R_Y_G">@{popupMenuCondFormatColorScaleRYG}</div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:condFormat_COLOR_SCALE_B_Y_R">@{popupMenuCondFormatColorScaleBYR}</div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:condFormat_COLOR_SCALE_R_Y_B">@{popupMenuCondFormatColorScaleRYB}</div>
+        <div dojoType="dijit.MenuSeparator"></div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:condFormat_DATA_BAR_RED">@{popupMenuCondFormatDataBarRed}</div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:condFormat_DATA_BAR_GREEN">@{popupMenuCondFormatDataBarGreen}</div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:condFormat_DATA_BAR_BLUE">@{popupMenuCondFormatDataBarBlue}</div>
+        <div dojoType="dijit.MenuSeparator"></div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:condFormat_TREND_ARROW_GR">@{popupMenuCondFormatDataTrendArrowGR}</div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:condFormat_TREND_ARROW_RG">@{popupMenuCondFormatDataTrendArrowRG}</div>
+      </div>
+    </div>
+    <div dojoType="dijit.MenuSeparator"></div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:measSortLowHi">@{popupMenuNumberSortLowHigh}</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:measSortHiLow">@{popupMenuNumberSortHighLow}</div>
+    <div dojoType="dijit.MenuSeparator"></div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:inChartHideMetric">@{popupMenuNumberHideFromChart}</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:removeMetric">@{popupMenuRemoveFromReport}</div>
+  </div>
+
+  <div dojoType="dijit.Menu" id="filterPopMenu" class="pentaho-menu-outer pentaho-menu" targetNodeIds="" style="display: none">
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:removeFilter">@{popupMenuRemoveFromReport}</div>
+  </div>
+
+  <div dojoType="dijit.Menu" id="grandTotalPopMenu" class="pentaho-menu-outer pentaho-menu" targetNodeIds="" style="display: none">
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:totalHide">@{popupMenuTotalsHide}</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:totalNonVisual">@{popupMenuTotalsNonVisual}</div>
+  </div>
+
+  <div dojoType="dijit.Menu" id="actionsMenu" class="pentaho-menu-outer pentaho-menu" targetNodeIds="" style="display: none">
+    <div dojoType="dijit.PopupMenuItem" class="pentaho-menuitem">
+      <span>@{popupMenuViewerShowReport}</span>
+      <div dojoType="dijit.Menu" id="reportFormatMenu" class="pentaho-menu-outer pentaho-menu" targetNodeIds="">
+      </div>
+    </div>
+    <div dojoType="dijit.MenuSeparator"></div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="cmdGrandTotalRow">@{popupMenuViewerShowRowGrand}</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="cmdGrandTotalCol">@{popupMenuViewerShowColGrand}</div>
+    <div dojoType="dijit.MenuSeparator"></div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="cmdPDF">@{dlgPageSetupPDFTitle}</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="cmdExcel">@{dlgPageSetupExcelTitle}</div>
+  </div>
+
+</div> <!-- End of Dojo Widgets -->
+
+
+<form id="drillForm" method="post" >
+  <input type="hidden" name="reportXML" id="drillForm_reportXML" />
+  <input type="hidden" name="colIndex" id="drillForm_colIndex" />
+  <input type="hidden" name="rowIndex" id="drillForm_rowIndex" />
+</form>
+
+
+</body>
+</html>

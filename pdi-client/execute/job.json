@@ -1,0 +1,24 @@
+{
+    "jobName": "testMe",
+    "jobQueue": "pdi-batch-job-queue",
+    "jobDefinition": "arn:aws:batch:us-west-2:544324728049:job-definition/pdi-aws-batch-test:3",
+    "containerOverrides": {
+        "environment": [
+            {
+                "name": "PROJECT_S3_LOCATION",
+                "value": "s3://emea.eag/container/s3Load3.zip"
+            },
+            {
+                "name": "PROJECT_STARTUP_JOB",
+                "value": "start.kjb"
+            },
+            {
+                "name": "LOG_LEVEL",
+                "value": "Detailed"
+            }
+        ]
+    },
+    "retryStrategy": {
+        "attempts": 1
+    }
+}

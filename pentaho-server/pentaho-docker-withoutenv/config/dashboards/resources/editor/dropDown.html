@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- /*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2017 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */ -->
+<html>
+  <head>
+    <link rel="stylesheet" href="dropDown.css" type="text/css" />
+  </head>
+  <body class="dashboards-dropdown-widget-types">
+    <table cellpadding="2" cellspacing="0" border="0" id="dropdown" width="100">
+      <tr>
+        <td colspan="2"><div style="height: 1px; padding: 0px; margin: 0px; border-top: 1px solid #666; font-size: 1px;"></div></td>
+      </tr>
+      <tr onclick="createFile()" class="content-menu-link pentaho-listitem" onmouseover="addOverStyle(event)" onmouseout="removeOverStyle(event)">
+        <td valign="middle"><div class="fileIcon"></div></td>
+        <td id="file_component_lbl" valign="middle">File</td>
+      </tr>
+    </table>
+    <script type="text/javascript">
+      var menuItemClassName = "content-menu-link pentaho-listitem";
+      var menuItemIdPrefix = "dropdown-menu-item-";
+
+      function getDropDown() {
+        return document.getElementById("dropdown");
+      }
+
+      function createFile(){
+        try {
+          window.parent.pentahoDashboardEditor.createFile();
+        } catch (ignored) { } // Ignore "Same-origin policy" violation in embedded IFrame
+      }
+
+      function getTarget(e) {
+          if (!e) e = window.event;
+          return e.target || e.srcElement;
+      }
+
+      function findMenuItemRow(tr) {
+        while(tr && tr.tagName !== "TR") tr = tr.parentNode;
+        return tr;
+      }
+
+      function addOverStyle(e){
+        if (tr = findMenuItemRow(getTarget(e))) {
+          tr.className = menuItemClassName + " pentaho-listitem-hover";
+        }
+      }
+
+      function removeOverStyle(e){
+        if (tr = findMenuItemRow(getTarget(e))) {
+          tr.className = menuItemClassName;
+        }
+      }
+
+      function menuItemClicked(e){
+        if (tr = findMenuItemRow(getTarget(e))) {
+          try{
+            window.parent.pentahoDashboardEditor.createWidget(tr.id.substr(menuItemIdPrefix.length))
+          } catch (ignored) {} // Ignore "Same-origin policy" violation in embedded IFrame
+        }
+      }
+
+      function initMenu(menuItems, pho_messages) {
+        try {
+          var dropdown = getDropDown(),
+              i, n = menuItems.length, item, row, cell,
+              type, id, imgSrc
+          ;
+          for (i = 0; i < n; i++) {
+             item = menuItems[i];
+             type = item.type;
+             id = menuItemIdPrefix + type;
+             if (document.getElementById(id)) continue;
+
+             row = dropdown.insertRow(i);
+             row.id = id;
+             row.className = menuItemClassName;
+             row.onclick = menuItemClicked;
+             row.onmouseover = addOverStyle;
+             row.onmouseout = removeOverStyle;
+
+             cell = row.insertCell(0);
+             cell.valign = "middle";
+             cell.innerHTML = "<div class='" + item.iconClass + "'></div>";
+
+             cell = row.insertCell(1);
+             cell.valign = "middle";
+             cell.innerHTML = pho_messages.getMessage(item.localizedName, item.defaultLabel);
+          }
+          document.getElementById('file_component_lbl').innerHTML = pho_messages.getMessage("file_component_lbl", "File");
+        } catch(e) {
+          alert("dropDown.html: initMenu(): " + e);
+        }
+      }
+
+      function notifyDashboardOfSize(){
+        var dropdown = getDropDown(),
+            width = dropdown.clientWidth,
+            height = dropdown.clientHeight,
+            win = window.parent
+        ;
+        win.require(["dashboards/dashboard-module"], function(){
+          win.pentahoDashboardController.setInsertContentSize(width, height);
+        });
+      }
+      document.body.onload = notifyDashboardOfSize;
+    </script>
+    <script type="text/javascript" src="webcontext.js?context=dashboards&cssOnly=true"></script>
+  </body>
+</html>

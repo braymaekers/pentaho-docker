@@ -1,0 +1,405 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- /*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2019 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */ -->
+
+<html>
+<title>Create New Report - Select Data Source</title>
+
+<head>
+    <meta name="helpTopic" content="CV/Business_User/creating_a_new_report.html#choosing_an_analysis_area"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" media="all" href="../styles/common.css"/>
+    <link rel="stylesheet" type="text/css" media="all" href="../styles/content.css"/>
+    <link rel="stylesheet" type="text/css" media="all" href="../styles/report/selectArea.css"/>
+    <link rel="stylesheet" href="../scripts/filechooser/Widgets.css">
+    <link rel="stylesheet" type="text/css" media="only screen and (max-device-width: 1024px)" href="../styles/ipad.css" />
+
+    <script type="text/javascript">
+
+        // Collect an array of Visualization plugin AMD modules to load, plugins add to this array through webcontext.js
+        var analyzerVizPlugins = [];
+
+        // djConfig["baseUrl"] = "scripts/dojo/dojo/";
+        var debug = false;
+
+        var cv = {};
+
+    </script>
+
+    <script language="javascript" type="text/javascript" src="webcontext.js?context=analyzer"></script>
+</head>
+
+<body>
+
+<script type="text/javascript">
+  var isRunningIFrameInSameOrigin;
+  try {
+    var ignoredCheckCanReachOutToParent = window.parent.mantle_initialized;
+    isRunningIFrameInSameOrigin = true;
+  } catch (e) {  // Ignore "Same-origin policy" violation in embedded IFrame
+    isRunningIFrameInSameOrigin = false;
+  }
+
+  var console_enabled = false;
+  if(isRunningIFrameInSameOrigin) {
+    console_enabled = window.parent && window.parent.mantle_initialized;
+  }
+
+  if(!console_enabled){
+      document.getElementsByTagName("body")[0].className += " pentaho-page-background";
+  }
+</script>
+
+<div style="height:75px; clear:both"></div>
+
+<div class="selectAreaWizard pentaho-dialog" style="position: relative;">
+    <div style="cursor:default;" class="Caption">@{selectSchemaTitle}</div>
+    <div class="dialog-content" style="padding-bottom: 8px">
+        <div class="analysisArea clearfix">
+            @{selectSchemaDesc}
+            <img id="helpArea" class="helpIcon" title="@{selectSchemaTooltip}" src="../../analyzer/images/spacer.gif"
+                 onclick="cv.util.getHelp('CV/Business_User/creating_a_new_report.html#choosing_an_analysis_area')">
+        </div>
+        <div id="description" class="analysisArea clearfix">
+            <table>
+                <tr>
+                    <td width="100%">@{selectSchemaDataSource}:</td>
+                    <td><img id="editDS" src="../../analyzer/images/spacer.gif"
+                             class="pentaho-editbutton pentaho-imagebutton-disabled" title="@{selectSchemaEditDS}"></td>
+                    <td style="padding-right:2px"><img id="addDS"
+                                                       src="../../analyzer/images/spacer.gif"
+                                                       class="pentaho-addbutton pentaho-imagebutton-disabled"
+                                                       title="@{selectSchemaNewDS}"></td>
+                    <td><img id="deleteDS" src="../../analyzer/images/spacer.gif"
+                             class="pentaho-deletebutton pentaho-imagebutton-disabled" title="@{selectSchemaDeleteDS}"></td>
+                </tr>
+            </table>
+            <table style="padding-bottom: 5px;" width="100%">
+                <tr>
+                    <td><select id="datasources" name="datasource" size="8" style="width:100%"></select></td>
+                </tr>
+            </table>
+        </div>
+        <input id="inputAutoRefresh" type="checkbox" @{selectSchemaBean.autoRefresh}
+        style="vertical-align: middle;margin-left: 21px; margin-right: 5px;"><label for="inputAutoRefresh">@{selectSchemaAutoRefresh}</label>
+    </div>
+
+    <div class="controls clearfix">
+        <div class="buttons">
+            <button id="btnNext" class="pentaho-button">@{btnLabelOK}</button>
+            <button id="btnCancel" class="pentaho-button hidden">@{btnLabelCancel}</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+var catalogs = @{selectSchemaBean.catalogs};
+var datasourceSelect = document.getElementById("datasources");
+var datasources = [];
+
+require([
+  "dojo/ready",
+  "dojo/on",
+  "dojo/dom-class",
+  "dojo/dom",
+  "dojo/request",
+  "common-ui/util/URLEncoder",
+  "pentaho/analyzer/analyzer-selectSchema"
+], function(ready, on, domClass, dom, request, Encoder) {
+
+    cv.contextPath = "../";
+
+    function sortDatasources(a, b) {
+        var aLabel = a.catalog.toUpperCase() + ": " + a.cube.toUpperCase();
+        var bLabel = b.catalog.toUpperCase() + ": " + b.cube.toUpperCase();
+        if (aLabel < bLabel)
+            return -1;
+        if (aLabel > bLabel)
+            return 1;
+        return 0;
+    }
+
+    ready(function() {
+
+        // Flatten catalogs and cubes into an array of datasources
+        for (var i = 0; i < catalogs.length; i++) {
+            var cubes = catalogs[i].schema.cubes;
+            for (var j = 0; j < cubes.length; j++) {
+                var id = cubes[j].name;
+                if (typeof cubes[j].id != "undefined") {
+                    id = cubes[j].id;
+                }
+                datasources.push({"catalog":catalogs[i].name, "cube":cubes[j].name, "cube_id":id});
+            }
+        }
+
+        // Sort datasources
+        datasources.sort(sortDatasources);
+        buildList();
+        // Show the cancel button in PUC which on click will close the current tab
+        if (console_enabled && window.parent.closeTab) {
+            domClass.remove(dom.byId('btnCancel'), "hidden");
+            on(dom.byId("btnCancel"), "click", function() {
+                window.parent.closeTab();
+            });
+        }
+        //Show the cancel button in Mobile which on click will close the current tab
+        if (isRunningIFrameInSameOrigin && window.parent && window.parent.PentahoMobile) {
+            domClass.remove(dom.byId('btnCancel'), "hidden");
+            on(dom.byId("btnCancel"), "click", function() {
+                window.parent.PentahoMobile.OpenPanel.closeActive();
+            });
+        }
+        if (!window.parent.closed) {
+            domClass.remove(dom.byId('btnCancel'), "hidden");
+            on(dom.byId("btnCancel"), "click", function() {
+                window.history.go(-1);
+            });
+        }
+    });
+
+    /*
+     * window.location.href with relative URLs is problematic when called from scripts operating in
+     * different window scopes (GWT iframes). The proper window is worked on but the url is crafted
+     * with the location of the inner scope.
+     */
+    function openLocation(loc) {
+        if(console_enabled){
+            window.parent.executeCommand("CollapseBrowserCommand")
+        }
+        window.location.href = loc;
+    }
+    ;
+    function initDataAccess(hasDataAccess) {
+        if (hasDataAccess) {
+            domClass.remove(dom.byId("addDS"), "pentaho-imagebutton-disabled");
+            on(dom.byId("addDS"), "click", onAddDS);
+        }
+    }
+
+// This is the callback function that PUC will call when creating a new datasource.
+    var base = window.CONTEXT_PATH + "api/repos/xanalyzer/";
+    function openDatasourceEditorCallback(bool, transport) {
+        var params = {
+          showFieldList: true,
+          showFieldLayout: true,
+          catalog: (transport.schemaName ? transport.schemaName : transport.categoryId),
+          cube: (transport.schemaName ? transport.schemaName : transport.categoryId)
+        }
+        var url = Encoder.encode(base + "editor", null, params);
+        openLocation(url);
+    }
+
+    function onAddDS() {
+        var funct = (console_enabled && window.parent.pho && window.parent.pho.openDatasourceEditor) ? window.parent.pho.openDatasourceEditor : pho.openDatasourceEditor;
+
+        funct(new function() {
+            this.onError = function(err) {
+                alert(err);
+            }
+            this.onCancel = function() {
+            }
+            this.onReady = function() {
+            }
+            this.onFinish = function(bool, transport) {
+                document.location.reload();
+            }
+        }, false);
+    }
+
+    function buildList() {
+
+        var datasourceOptions = datasourceSelect.options;
+        while (datasourceOptions.length > 0) {
+            datasourceOptions[datasourceOptions.length - 1] = null;
+        }
+        var listIdx = 0;
+        for (var i = 0; i < datasources.length; i++,listIdx++) {
+            var opt = new Option(datasources[i].catalog + ': ' + datasources[i].cube, i);
+            opt.title = datasources[i].cube;
+            datasourceOptions[listIdx] = opt;
+        }
+        datasourceSelect.selectedIndex = 0;
+        on(dom.byId("datasources"), "click", cubeSelected);
+        on(dom.byId("datasources"), "dblclick", createReport);
+        on(dom.byId("btnNext"), "click", createReport);
+        cubeSelected();
+    }
+
+    function createReport() {
+        var catalog = datasources[datasourceSelect.value].catalog;
+        var cube = datasources[datasourceSelect.value].cube_id;
+        var input = dom.byId("inputAutoRefresh");
+        var showRepoButtons = /showRepositoryButtons=true/.test(window.location.href);
+        var params = {
+            showFieldList: true,
+            showFieldLayout: true,
+            catalog: catalog,
+            cube: cube,
+            autoRefresh: input.checked,
+            showRepositoryButtons: showRepoButtons ? "true" : ""
+        }
+        var openLocationUrl = Encoder.encode(base + "editor", null, params);
+        openLocation(openLocationUrl);
+    }
+
+    function cubeSelected() {
+
+        domClass.add(dom.byId("editDS"), "pentaho-imagebutton-disabled");
+        if(window.editHandle)
+            editHandle.remove();
+
+        domClass.add(dom.byId("deleteDS"), "pentaho-imagebutton-disabled");
+        if(window.deleteHandle)
+            deleteHandle.remove();
+
+        ajaxLoad("service/ajax/lookupXmiId", {catalog:datasources[datasourceSelect.value].catalog,cube:datasources[datasourceSelect.value].cube}, false, function(data) {
+            if (data) {
+                window.catalogId = data;
+
+                domClass.remove(dom.byId("editDS"), "pentaho-imagebutton-disabled");
+                editHandle = on(dom.byId("editDS"), "click", onEditDs);
+
+                domClass.remove(dom.byId("deleteDS"), "pentaho-imagebutton-disabled");
+                deleteHandle = on(dom.byId("deleteDS"), "click", onDeleteDs);
+
+            }
+        });
+
+
+    }
+    function ajaxLoad(cmd, param, sync, /*optional*/callback) {
+        var _data = null;
+        param.stok = cv.securityToken;
+        request(cv.contextPath + cmd,{
+            method: "POST",
+            mimetype: "text/plain",
+            sync: sync, // blocking UI or not
+            headers: {"Content-Encoding": "utf8"},
+            data: param
+        }).then(function(data){
+            if (sync) {
+                _data = data;
+            } else {
+                callback(data);
+            }
+        }, function(err){
+            // handle an error condition
+        }, function(evt){
+            // handle a progress event
+        });
+
+        if (sync)
+            return _data;
+    }
+
+    function onEditDs() {
+        var openFunct = console_enabled && window.parent.pho && window.parent.pho.openEditDatasourceEditor
+                ? window.parent.pho.openEditDatasourceEditor
+                : window.pho.openEditDatasourceEditor;
+
+        var callback = new function() {
+            this.onOk = function(json, mqlStr) {
+                alert(json + "\n\n\n" + mqlStr);
+            }
+            this.onError = function(err) {
+                alert(err);
+            }
+            this.onCancel = function() {
+            }
+            this.onReady = function() {
+            }
+            this.onFinish = function(status) {
+
+            }
+            this.onFinish = function(status, transport) {
+
+            }
+        };
+
+        try {
+            openFunct(catalogId, "", callback, "ANALYSIS");
+        } catch (err) {
+            // backward compatibility safety net
+            openFunct(catalogId, "", callback);
+        }
+    }
+
+    function onDeleteDs() {
+        var funct = console_enabled && window.parent.pho && window.parent.pho.deleteModel
+                ? window.parent.pho.deleteModel
+                : window.pho.deleteModel;
+
+        var callback = new function() {
+            this.onOk = function(json, mqlStr) {
+                alert(json + "\n\n\n" + mqlStr);
+            }
+            this.onError = function(err) {
+                alert(err);
+            }
+            this.onCancel = function() {
+                alert("Canceled");
+            }
+            this.onReady = function() {
+            }
+            this.onFinish = function(status) {
+                document.location.reload();
+            }
+            this.onFinish = function(status, transport) {
+                document.location.reload();
+            }
+        };
+
+        var gwtCallback = new function() {
+            this.onOk = function(value) {
+                funct(catalogId, catalogId, callback);
+            }
+            this.onCancel = function() {
+                //nothing
+            }
+        };
+
+        var message = "@{selectSchemaDeleteDSMessage}";
+        message = message.replace(/\{(\w+)\}/g, catalogId.slice(0, -4));
+
+        if (console_enabled) {
+            window.parent.mantle_showConfirmDlg("@{selectSchemaDeleteDS}", message, "@{btnLabelYes}", "@{btnLabelNo}", gwtCallback);
+        }
+    }
+
+    if (console_enabled && window.parent.dataAccessAvailable) {
+        domClass.remove(dom.byId("addDS"), "pentaho-imagebutton-disabled");
+        on(dom.byId("addDS"), "click", onAddDS);
+    } else {
+        // Disable datasource integration in standalone mode
+        domClass.add(dom.byId("addDS"), "hidden");
+        domClass.add(dom.byId("editDS"), "hidden");
+        domClass.add(dom.byId("deleteDS"), "hidden");
+    }
+});
+
+
+</script>
+
+</body>
+</html>

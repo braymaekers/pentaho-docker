@@ -1,0 +1,377 @@
+/*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2017 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */
+@font-face {
+  font-family: 'OpenSansRegular';
+  src: url('/content/common-ui/resources/themes/crystal/opensans-regular.eot');
+  src: url('/content/common-ui/resources/themes/crystal/opensans-regular.eot') format('embedded-opentype'),
+  url('/content/common-ui/resources/themes/crystal/opensans-regular.woff') format('woff'),
+  url('/content/common-ui/resources/themes/crystal/opensans-regular.ttf') format('truetype'),
+  url('/content/common-ui/resources/themes/crystal/opensans-regular.svg#OpenSansRegular') format('svg');
+}
+
+@font-face {
+  font-family: 'OpenSansLight';
+  src: url('/content/common-ui/resources/themes/crystal/opensans-light.eot');
+  src: url('/content/common-ui/resources/themes/crystal/opensans-light.eot') format('embedded-opentype'),
+  url('/content/common-ui/resources/themes/crystal/opensans-light.woff') format('woff'),
+  url('/content/common-ui/resources/themes/crystal/opensans-light.ttf') format('truetype'),
+  url('/content/common-ui/resources/themes/crystal/opensans-light.svg#OpenSansLight')
+  format('svg');
+}
+
+@font-face {
+  font-family: 'OpenSansItalic';
+  src: url('/content/common-ui/resources/themes/crystal/opensans-italic.eot');
+  src: url('/content/common-ui/resources/themes/crystal/opensans-italic.eot') format('embedded-opentype'),
+  url('/content/common-ui/resources/themes/crystal/opensans-italic.woff') format('woff'),
+  url('/content/common-ui/resources/themes/crystal/opensans-italic.ttf') format('truetype'),
+  url('/content/common-ui/resources/themes/crystal/opensans-italic.svg#OpenSansItalic') format('svg');
+}
+
+@font-face {
+  font-family: 'OpenSansSemiBold';
+  src: url('/content/common-ui/resources/themes/crystal/opensans-semibold.eot');
+  src: url('/content/common-ui/resources/themes/crystal/opensans-semibold.eot') format('embedded-opentype'),
+  url('/content/common-ui/resources/themes/crystal/opensans-semibold.woff') format('woff'),
+  url('/content/common-ui/resources/themes/crystal/opensans-semibold.ttf') format('truetype'),
+  url('opensans-semibold.svg#OpenSansSemibold') format('svg');
+}
+
+@font-face {
+  font-family: 'OpenSansBold';
+  src: url('/content/common-ui/resources/themes/crystal/opensans-bold.eot');
+  src: url('/content/common-ui/resources/themes/crystal/opensans-bold.eot') format('embedded-opentype'),
+  url('/content/common-ui/resources/themes/crystal/opensans-bold.woff') format('woff'),
+  url('/content/common-ui/resources/themes/crystal/opensans-bold.ttf') format('truetype'),
+  url('/content/common-ui/resources/themes/crystal/opensans-bold.svg#OpenSansBold') format('svg');
+}
+
+table.ZONE_columnAttributes td, .pivotTableRowLabelSection .rowHeaders td{
+ font-family: "OpenSansRegular", sans-serif;
+ font-size:12px;
+ line-height: 17px;
+ color: #212121;
+ font-weight: 400;
+ background: #fafafa;
+ height: 25px;
+ border-left: 1px solid #e0e0e0;
+}
+
+table.ZONE_columnAttributes td {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+table.ZONE_columnAttributes tr:nth-last-child(2) td {
+  border-bottom: 0px none;
+}
+
+table.ZONE_columnAttributes td.last {
+  border-right: 1px solid #e0e0e0;
+}
+
+table.ZONE_columnAttributes td.last[type=measure] {
+  border-right: 0;
+}
+
+.pivotTableRowLabelSection .rowHeaders td {
+  border-bottom: 1px solid #e0e0e0;
+  border-left: 1px solid #e0e0e0;
+  padding: 0px 4px;
+}
+
+table.ZONE_columnAttributes td[type=attribute], table.ZONE_rowAttributes td[type=attribute] {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 17px;
+  font-family: "OpenSansSemibold", "OpenSansRegular", sans-serif;
+  color: #212121;
+  background-color: #99bedb;
+  border: 1px solid #669eca;
+}
+
+table.ZONE_rowAttributes td[type=attribute] {
+  border-right: 0 none;
+}
+
+table.ZONE_columnAttributes td[type=attribute] {
+  border-top: 0 none;
+}
+
+table.ZONE_columnAttributes tr:first-child td[type=attribute]:first-child {
+  border-top: 1px solid #669eca;
+}
+
+table.ZONE_columnAttributes td[type=measure] {
+  border-left: 1px solid #99bedb;
+  border-bottom: 1px solid #99bedb;
+  border-top: 1px solid #99bedb;
+  background-color: #ccdfed;
+  white-space: nowrap;
+}
+
+table.ZONE_columnAttributes td[type=measure].last > div{
+  border-right: 1px solid #99bedb;
+}
+
+table.ZONE_columnAttributes td[type=measure]:first-child {
+  border-left: 1px solid #669eca;
+}
+
+.reportArea  > .pivotTable {
+  cursor: inherit;
+}
+
+.pivotTable .sortActiveAsc {
+  background-image: url('images/sort_up.svg');
+  background-repeat: no-repeat;
+  background-position: right 8px top 6px;
+  background-size: 8px 14px;
+}
+
+.pivotTable .sortActiveDesc {
+  background-image: url('images/sort_down.svg');
+  background-repeat: no-repeat;
+  background-position: right 8px top 6px;
+  background-size: 8px 14px;
+}
+
+.pivotTable .sortInactive .resize .sort:hover {
+  background-image: url('images/sort_none.svg');
+  background-repeat: no-repeat;
+  background-position: right 6px top 6px;
+  background-size: 8px 14px;
+}
+
+.pivotTable .rowLabelHeaders .resize .sort,
+.pivotTable .columnHeaders .resize .sort,
+.pivotTable .columnHeaders .columnheading .resize {
+  padding: 4px 8px;
+}
+
+.pivotTable .sortActiveAsc > .resize > .sort,
+.pivotTable .sortActiveDesc > .resize > .sort,
+.pivotTable .sortInactive > .resize > .sort:hover {
+  padding-right: 18px;
+}
+
+.pivotTable .columnHeaders div,
+.pivotTable .rowLabelHeaders td div {
+  margin: 0;
+}
+
+.pivotTable .rowLabelHeaders .resize,
+.pivotTable .columnHeaders .resize {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.pivotTable .rowLabelHeaders .resize:hover,
+.pivotTable .columnHeaders .resize:hover {
+  padding-right: 2px;
+}
+
+
+table.ZONE_columnAttributes td div {
+  text-align:left;
+}
+
+.pivotTableDataContainer td div {
+  font-family: "OpenSansRegular", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  font-style: normal;
+  color: #212121;
+  line-height: 17px;
+  text-align: right;
+  font-feature-settings: "kern";
+  font-kerning: normal;
+  padding: 4px 8px;
+}
+
+.pivotTableDataContainer td {
+  border-left: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.pivotTableDataContainer > table, .pivotTableDataContainer > table td:last-child > div{
+  border-right: 1px solid #e0e0e0;
+}
+
+.pivotTable .cells div{
+  margin: 0px;
+}
+
+#help-footer {
+  display: none;
+}
+
+.titleLink.reportName {
+  display: none;
+}
+
+/*
+ * Borders where not showing when 3 attributes were in Rows and there
+ * was a rowspan >1. Changing border-collapse from collapse to separate
+ * sovles this issue for older versions of webkit;
+ */
+.pivotTable .pivotTableContent table {
+  border-collapse: separate;
+}
+
+.glasspane {
+  position: absolute;
+  background-color: #000;
+  /* IE8 css hack for opacity */
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=60)";
+  filter: alpha(opacity = 60);
+  opacity: 0.6;
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  z-index: 300;
+  margin: 0px;
+  padding: 0px;
+  display: none;
+}
+
+#standardDialog {
+  padding: 30px;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.4);
+  border: 1px solid #f2f2f2;
+  background-color: #fff;
+}
+
+#standardDialogHeader {
+  font-family: "OpenSansLight", "OpenSansRegular", sans-serif;
+  font-size: 24px;
+}
+
+#dialogTitleBar td {
+  text-align: center;
+}
+
+#standardDialog .dialog-content {
+  padding: 30px 0;
+  font-family: "OpenSansRegular", sans-serif;
+  font-size: 14px;
+}
+
+#standardDialog .dialog-content .alertMsgText {
+  width: 100%;
+  padding: 0;
+}
+
+#standardDialog .button-panel .pentaho-button {
+  line-height: 0px;
+  height: 36px;
+  padding: 0 20px;
+  background-color: #005da6;
+  border-radius: 3px;
+  border: 1px solid #005da6;
+  color: #fff;
+  outline: none;
+}
+
+#standardDialog .button-panel .pentaho-button:hover {
+  background-color: #0f2b5b;
+  border-color: #0f2b5b;
+  cursor: pointer;
+}
+
+.reportArea .reportEmpty {
+  display: none;
+}
+
+.reportArea .noData {
+  position: absolute;
+  max-height: 285px;
+  max-width: 350px;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  padding-top: 0;
+  color: #333;
+}
+
+.reportArea .noDataHeader {
+  font-family: "OpenSansLight", "OpenSansRegular", sans-serif;
+  font-size: 24px;
+  line-height: 30px;
+}
+
+.reportArea .noDataHint {
+  font-family: "OpenSansRegular", sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.transTruncate {
+  position: absolute;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-family: "OpenSansRegular", sans-serif;
+  font-size: 13px;
+  height: 50px;
+  color: #333333;
+  background: rgba(252,248,228, 0.9);
+  box-shadow: 0px 0px 5px rgba(0,0,0,0.25);
+}
+
+.transTruncate .info-icon {
+  background: url('images/icon_warning.svg') no-repeat;
+  vertical-align: middle;
+  height: 16px;
+  width: 16px;
+  padding-right: 10px;
+}
+
+#closeTransTruncate {
+  background: url('images/close_notif.svg') no-repeat;
+  border: 0 none;
+  position: relative;
+  right: 10px;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  height: 12px;
+  width: 12px;
+}
+
+/*
+  On the initial render of the pivot table Dojo tries to calculate the bounding
+  box and it determines that a style of top: 5px and left: 5px needs to be
+  applied. This is assumed to be from the det overlay (splash screen) taking
+  over the entire screen and the pivot table living off the viewable area (NOT
+  display:none ).
+ */
+#reportContainerWrapper {
+  top: 0 !important;
+  left: 0 !important;
+}

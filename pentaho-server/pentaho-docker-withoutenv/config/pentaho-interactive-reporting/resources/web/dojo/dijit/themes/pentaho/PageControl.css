@@ -1,0 +1,75 @@
+/*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2017 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */
+
+.pc_pageControlContainer {
+  padding: 0px 1px 0px 1px;
+  height: 16px;
+  vertical-align: middle;
+}
+
+.pc_pagePrev {
+	float: left;
+  background: transparent url(../../../../images/page_back.png) no-repeat;
+  height: 18px;
+  width: 18px;
+  white-space: nowrap;
+  padding: 0px 2px 0px 1px;
+  cursor: pointer;   
+}
+
+.pc_pagePrevDisabled {
+  background: transparent url(../../../../images/page_back_disabled.png) no-repeat !important;
+  cursor: default !important;
+}
+
+.pc_pagePrev:hover {
+  background: transparent url(../../../../images/page_back_over.png) no-repeat;
+}
+
+.pc_pageNext {
+	float: left;
+  background: transparent url(../../../../images/page_forward.png) no-repeat;
+  height: 18px;
+	width: 18px;
+	white-space: nowrap;
+	padding: 0px 1px 0px 2px;
+	cursor: pointer;
+}
+
+.pc_pageNextDisabled {
+  background: transparent url(../../../../images/page_forward_disabled.png) no-repeat !important;
+  cursor: default !important;
+}
+
+.pc_pageNext:hover {
+  background: transparent url(../../../../images/page_forward_over.png) no-repeat;
+}
+
+.pc_pageNumberInput {
+	float: left;
+  width: 2em;
+}
+
+.pc_pageTotal {
+	float: left;
+	padding: 1px 0px 0px 2px;
+}

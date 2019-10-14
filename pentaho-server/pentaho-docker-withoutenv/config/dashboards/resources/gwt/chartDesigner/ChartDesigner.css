@@ -1,0 +1,388 @@
+/*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2017 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */
+
+legend {
+  margin-left: 8px;	
+}
+
+.fieldset-padding-div{
+}
+
+h2 {
+  font-weight: normal;
+}
+
+.chart-type-column-left div{
+	margin: 10px 10px 0px 0px; 
+}
+
+.chart-type-column-right div{
+  margin: 10px 0px 0px 10px; 
+}
+
+.display-table{
+  width: 100%;
+}
+
+.greenDialRange {
+  background-color: green;
+}
+
+.yellowDialRange {
+  background-color: orange;
+}
+
+.redDialRange {
+  background-color: red;
+}
+
+.gwt-BorderedPanel {
+}
+
+.list-box-enabled{
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.list-box-disabled{
+  color: #b7b3a5;
+  background-color: #efebde;
+}
+
+.text-box-enabled{
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.text-box-disabled{
+	color: #b7b3a5;
+	background-color: #efebde;
+}
+
+.chart-display-panel {
+  border:1px solid #aaa;
+  background: #ffffff;
+  text-align: center;
+}
+
+.gwt-Canvas {
+}
+
+.gwt-CheckBox {
+}
+
+.gwt-FileUpload {
+}
+
+.gwt-Frame {
+}
+
+.gwt-HTML {
+}
+
+.gwt-Hyperlink {
+}
+
+.gwt-Image {
+}
+
+.gwt-Label {
+}
+
+.gwt-ListBox {
+}
+.gwt-PasswordTextBox {
+}
+
+.gwt-RadioButton {
+}
+
+.gwt-TextArea {
+}
+
+.gwt-TextBox {
+}
+
+.gwt-TextBox-readonly {
+  color: #888;
+}
+
+.gwt-StackPanel {
+}
+
+.gwt-StackPanel .gwt-StackPanelItem {
+  background-color: #C3D9FF;
+  cursor: pointer;
+  cursor: hand;
+}
+
+.gwt-StackPanel .gwt-StackPanelItem-selected {
+}
+
+.gwt-PushButton-up {
+  background-color: #C3D9FF;
+  padding: 2px;
+  border: 2px solid transparent;
+  border-color: #E8F1FF rgb(157, 174, 205) rgb(157, 174, 205) rgb(232, 241, 255);
+  cursor: pointer;
+  cursor: hand;
+}
+
+.gwt-PushButton-up-hovering {
+  background-color: #C3D9FF;
+  padding: 2px;
+  border: 2px solid transparent;
+  border-color: #E8F1FF rgb(157, 174, 205) rgb(157, 174, 205) rgb(232, 241, 255);
+  cursor: pointer;
+  cursor: hand;
+}
+
+.gwt-PushButton-down {
+  background-color: #C3D9FF;
+  padding: 2px;
+  border: 2px solid transparent;
+  border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255) rgb(157, 174, 205);
+  cursor: pointer;
+  cursor: hand;
+}
+
+.gwt-PushButton-down-hovering {
+  background-color: #C3D9FF;
+  padding: 2px;
+  border: 2px solid transparent;
+  border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255) rgb(157, 174, 205);
+  cursor: pointer;
+  cursor: hand;
+}
+
+.gwt-Charting-ToggleButton-up {
+  border: 0px none;;
+}
+
+.gwt-Charting-ToggleButton-up-hovering {
+  border: 0px none;;
+}
+
+.gwt-Charting-ToggleButton-down {
+  border: 0px none;
+}
+
+.gwt-Charting-ToggleButton-down-hovering {
+  border: 0px none;
+}
+
+
+.gwt-ToggleButton-up {
+  border: 2px solid;
+  border-color: #D3D3D3;
+}
+
+.gwt-ToggleButton-up-hovering {
+  border: 2px solid;
+  border-color: #D3D3D3;
+}
+
+.gwt-ToggleButton-down {
+  border: 2px solid;
+  border-color: #191970;
+}
+
+.gwt-ToggleButton-down-hovering {
+  border: 2px solid;
+  border-color: #191970;
+}
+
+.gwt-RichTextArea {
+  border: 1px solid black;
+  background-color: white;
+}
+
+.gwt-RichTextToolbar {
+  background-color: #C3D9FF;
+  padding: 2px;
+}
+
+.gwt-RichTextToolbar .gwt-PushButton-up {
+  margin-right: 2px;
+  border: 1px solid #C3D9FF;
+}
+
+.gwt-RichTextToolbar .gwt-PushButton-up-hovering {
+  margin-right: 2px;
+  border: 1px solid #C3D9FF;
+  border-color: #E8F1FF rgb(157, 174, 205) rgb(157, 174, 205) rgb(232, 241, 255);
+}
+
+.gwt-RichTextToolbar .gwt-PushButton-down {
+  margin-right: 2px;
+  border: 1px solid #C3D9FF;
+  border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255) rgb(157, 174, 205);
+}
+
+.gwt-RichTextToolbar .gwt-PushButton-down-hovering {
+  margin-right: 2px;
+  border: 1px solid #C3D9FF;
+  border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255) rgb(157, 174, 205);
+}
+
+.gwt-RichTextToolbar .gwt-ToggleButton-up {
+  margin-right: 2px;
+  border: 1px solid #C3D9FF;
+}
+
+.gwt-RichTextToolbar .gwt-ToggleButton-up-hovering {
+  margin-right: 2px;
+  border: 1px solid #C3D9FF;
+  border-color: #E8F1FF rgb(157, 174, 205) rgb(157, 174, 205) rgb(232, 241, 255);
+}
+
+.gwt-RichTextToolbar .gwt-ToggleButton-down {
+  margin-right: 2px;
+  background-color: #E8F1FF;
+  border: 1px solid #C3D9FF;
+  border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255) rgb(157, 174, 205);
+}
+
+.gwt-RichTextToolbar .gwt-ToggleButton-down-hovering {
+  margin-right: 2px;
+  background-color: #E8F1FF;
+  border: 1px solid #C3D9FF;
+  border-color: #9DAECD rgb(232, 241, 255) rgb(232, 241, 255) rgb(157, 174, 205);
+}
+
+.gwt-SuggestBoxPopup {
+  border: 2px solid #C3D9FF;
+}
+
+.gwt-SuggestBoxPopup .item {
+  padding: 2px;
+}
+
+.gwt-SuggestBoxPopup .item-selected {
+  background-color: #C3D9FF;
+  padding: 2px;
+}
+
+/* -------------------------------------------------------------------------- */
+
+/* begin styles for group box */
+.groupBox{
+}
+
+.homeGroupBox{
+  clear:both;
+  width:100%;
+  height:100%;
+  margin-right: 8px;
+  margin-left: 2px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.groupBoxHeader{
+  color:#FFFFFF;
+  font-size:14px;
+  font-weight:normal;
+  padding: 4px 4px 0px 10px;  
+}
+
+.groupbox-nw-grey {
+  background: url(style/images/dialog_nw_grey.png) repeat-x;
+  height: 28px;
+  width: 10px;
+}
+
+.groupbox-n-grey {
+  background: url(style/images/dialog_n_grey.png) repeat-x;
+}
+
+.groupbox-ne-grey {
+  background: url(style/images/dialog_ne_grey.png) repeat-x;
+  height: 28px;
+  width: 10px;
+}
+
+.groupbox-nw {
+  background: url(style/images/dialog_nw.png) repeat-x;
+  height: 28px;
+  width: 10px;
+}
+
+.groupbox-n {
+  background: url(style/images/dialog_n.png) repeat-x;
+}
+
+.groupbox-ne {
+  background: url(style/images/dialog_ne.png) repeat-x;
+  height: 28px;
+  width: 10px;
+}
+
+.groupbox-w {
+  background: url(style/images/dialog_w.png) repeat-y;
+}
+
+.groupbox-e {
+  background: url(style/images/dialog_e.png) repeat-y;
+}
+
+.groupbox-sw {
+  background: url(style/images/dialog_sw.png) repeat-x;
+  height: 11px;
+  width: 10px;
+}
+
+.groupbox-s {
+  background: url(style/images/dialog_s.png) repeat-x;
+}
+
+.groupbox-se {
+  background: url(style/images/dialog_se.png) repeat-x;
+  height: 11px;
+  width: 10px;
+}
+
+.groupbox-c {
+  background-color: #ffffff;
+  text-align:center;
+}
+/* end styles for group box */
+
+.draggableItemListBox {
+  border: 1px solid gray;
+  background-color: white;
+}
+
+.dragdrop-movable-panel{
+	z-index:1050
+}
+
+.valid-drop-zone{
+  background-color: #BEE6FF;
+  border-color: #0095FC;
+}
+
+/* used by 'enable content linking' */
+.smallText {
+  font-size: 75%;
+}
+

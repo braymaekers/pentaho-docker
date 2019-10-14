@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dashboard> 
+  <title>New Dashboard</title>
+  <documentation> 
+    <author></author>  
+    <description></description>  
+    <icon></icon> 
+  </documentation>
+
+	<template-ref></template-ref>
+	<theme-ref></theme-ref>
+
+	<widgets>
+	</widgets>
+
+</dashboard>

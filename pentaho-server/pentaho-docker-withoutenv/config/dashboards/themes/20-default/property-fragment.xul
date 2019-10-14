@@ -1,0 +1,18 @@
+<window pho:type="blank" xmlns:pho="http:/www.pentaho.com">
+
+<treerow pho:type="table">
+	<treecell width="100">
+		<label id="xaction-param-label-{id}" value="{name}"/>
+	</treecell>
+	<treecell width="100">
+		<menulist id="xaction-param-type-{id}" pho:type="select" command="">
+		</menulist>
+	</treecell>
+	<treecell width="400">
+		<menulist id="xaction-param-source-{id}" pho:type="select" command="">
+		</menulist>
+		<textbox id="xaction-param-value-{id}" value="{value}" width="150"/>
+	</treecell>
+</treerow>
+  
+</window>

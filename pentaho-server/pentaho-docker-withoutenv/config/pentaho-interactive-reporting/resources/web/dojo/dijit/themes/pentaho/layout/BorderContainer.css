@@ -1,0 +1,91 @@
+/*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2017 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */
+
+/* BorderContainer */
+
+.tundra .dijitBorderContainer {
+	background-color: #fcfcfc;
+	padding: 5px;
+}
+
+.tundra .dijitSplitContainer-child,
+.tundra .dijitBorderContainer-child {
+	/* By default put borders on all children of BorderContainer,
+	 *  to give illusion of borders on the splitters themselves.
+	 */
+	border: 1px #ccc solid;
+}
+
+.tundra .dijitBorderContainer-dijitTabContainerTop,
+.tundra .dijitBorderContainer-dijitTabContainerBottom,
+.tundra .dijitBorderContainer-dijitTabContainerLeft,
+.tundra .dijitBorderContainer-dijitTabContainerRight {
+	/* except that TabContainer defines borders on it's sub-nodes (tablist and dijitTabPaneWrapper),
+	 * so override rule setting border on domNode
+	 */
+	 border: none;
+}
+
+.tundra .dijitBorderContainer-dijitBorderContainer {
+	/* also, make nested BorderContainers look like a single big widget with lots of splitters */
+	border: none;
+	padding: 0;
+}
+
+.tundra .dijitSplitterH,
+.tundra .dijitGutterH {
+	background:#fcfcfc;
+	border:0;
+	height:5px;
+}
+
+.tundra .dijitSplitterH .dijitSplitterThumb {
+	background:#B0B0B0 none;
+	height:1px;
+	top:2px;
+	width:19px;
+}
+
+.tundra .dijitSplitterV,
+.tundra .dijitGutterV {
+	background:#fcfcfc;
+	border:0;
+	width:5px;
+}
+
+.tundra .dijitSplitterV .dijitSplitterThumb {
+	background:#B0B0B0 none;
+	height:19px;
+	left:2px;
+	width:1px;
+}
+
+/* active splitter */
+.tundra .dijitSplitterActive {
+	font-size: 1px;
+	background-image: none;
+	background-color: #aaa;
+	-moz-opacity: 0.6;
+	opacity: 0.6;
+	filter: Alpha(Opacity=60);
+	margin: 0;
+}

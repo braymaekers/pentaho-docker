@@ -1,0 +1,74 @@
+<!-- /*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2017 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */ -->
+<div id="standardDialog" style="width:500px;">
+	<div id="standardDialogHeader" class="Caption">
+		<div id="dialogTitleBar">
+		<table width=100%>
+		<tr>
+			<td width="*">@{dlgAboutFieldTitle}</td>
+			<td width="19"><div id="dlgHelp" class="titleBarButton helpIcon"></div></td>
+
+		</tr>
+		</table>
+		</div>
+	</div>
+
+	<div id="FH_fieldHelp" class="dialog-content">
+		<div class="boldLabel pull-left" style="width:100px;">@{dlgSharedName}:</div>
+		<div class="pull-left" style="width:370px;">
+			<div id="FH_displayLabel">%{1}</div>
+			<div id="FH_customLabel" class="hidden">@{dlgAboutFieldRenamed}</div>
+			<div id="FH_name" class="hidden">NOTE: the original name was "%{2}". An Administrator renamed this field.</div>
+		</div>
+		<div class="linebreak">&nbsp;</div>
+
+		<div class="boldLabel pull-left" style="width:100px;">@{dlgAboutFieldType}:</div>
+		<div class="pull-left" style="width:370px;" id="FH_type"></div>
+		<div class="linebreak">&nbsp;</div>
+
+		<div class="boldLabel pull-left" style="width:100px;">@{dlgAboutFieldDescription}:</div>
+		<div class="pull-left" style="width:370px;" id="FH_displayDescription">&nbsp;</div>
+		<div class="linebreak">&nbsp;</div>
+
+		<div class="boldLabel pull-left" style="width:100px;">@{dlgAboutFieldMDX}:</div>
+		<div class="pull-left" style="width:370px;" id="FH_formula"></div>
+
+
+		<div id="FH_memberProperties" class="hidden">
+			<div class="linebreak">&nbsp;</div>
+      <div class="boldLabel pull-left" style="width:100px;">@{dlgAboutFieldMemberProps}:</div>
+      <div class="pull-left" style="width:370px;" id="FH_memberPropertiesDescription">&nbsp;</div>
+    </div>
+		<div class="linebreak">&nbsp;</div>
+	</div>
+
+	<div>
+	<table width=100% class="button-panel">
+	<tr>
+		<td width="100%" class="standardDialogFooter">&nbsp;</td>
+		<td>
+      <button class="pentaho-button" id="dlgBtnCancel">@{btnLabelOK}</button>
+		</td>
+	</tr>
+	</table>
+	</div>
+</div>

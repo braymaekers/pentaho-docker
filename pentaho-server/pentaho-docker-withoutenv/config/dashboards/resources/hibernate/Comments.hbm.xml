@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--===========================================================================
+HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+
+Copyright 2002 - 2019 Hitachi Vantara. All rights reserved.
+
+NOTICE: All information including source code contained herein is, and
+remains the sole property of Hitachi Vantara and its licensors. The intellectual
+and technical concepts contained herein are proprietary and confidential
+to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+patents, or patents in process, and are protected by trade secret and
+copyright laws. The receipt or possession of this source code and/or related
+information does not convey or imply any rights to reproduce, disclose or
+distribute its contents, or to manufacture, use, or sell anything that it
+may describe, in whole or in part. Any reproduction, modification, distribution,
+or public display of this information without the express written authorization
+from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+international treaties. Access to the source code contained herein is strictly
+prohibited to anyone except those individuals and entities who have executed
+confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+explicitly covering such access.
+============================================================================-->
+<hibernate-mapping>
+    <class name="org.pentaho.cdf.comments.CommentEntry" table="cdf_comments">
+        <cache usage="read-write" />
+    
+    <!-- Important note: Hibernate SchemaUpdate doesn't create 
+    the index on page automatically per 
+    http://opensource.atlassian.com/projects/hibernate/browse/HHH-1012
+
+    If the table becomes larger the create index needs to be made manually
+    -->
+
+    <!--
+    private int commentId;
+    private String page;
+    private String user;
+    private String comment;
+    private boolean deleted;
+    private boolean archived;
+    private Date createdDate;
+    -->
+    
+        <id column="commentid" name="commentId" type="int"
+			unsaved-value="null" length="100">
+            <generator class="native" />
+        </id>
+        <property name="page" type="string" not-null="true" index="commentspage_idx">
+            <column name="page" length="254" not-null="true" />
+        </property>
+        <property name="user" type="string" not-null="false">
+            <column name="pentahouser" length="255" not-null="false" />
+        </property>
+        <property name="comment" type="string" not-null="false">
+            <column name="pentahocomment" length="1024" not-null="false" />
+        </property>
+        <property name="deleted" type="boolean" not-null="false">
+            <column name="deleted" not-null="false" />
+        </property>
+        <property name="archived" type="boolean" not-null="false">
+            <column name="archived" not-null="false" />
+        </property>
+        <property name="createdDate" type="timestamp" not-null="true">
+            <column name="CREATED" not-null="true" />
+        </property>
+        <query name="getCommentsByPage"><![CDATA[
+    from CommentEntry where page=:page and deleted=false and archived=false order by commentId desc
+]]>
+        </query>
+        <query name="getCommentByid"><![CDATA[
+    from CommentEntry where commentId=:commentId
+]]>
+        </query>
+    </class>
+</hibernate-mapping>
+

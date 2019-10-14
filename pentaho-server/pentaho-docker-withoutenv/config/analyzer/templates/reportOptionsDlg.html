@@ -1,0 +1,81 @@
+<!-- /*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2017 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */ -->
+<div id="standardDialog" style="width:500px;">
+	<div id="standardDialogHeader" class="Caption">
+		<div id="dialogTitleBar">
+		<table width=100%>
+		<tr>
+			<td width="*">@{dlgReportOptionsTitle}</td>
+			<td width="19"></td>
+
+		</tr>
+		</table>
+		</div>
+	</div>
+
+	<div id="dialogMessageBar" class="hidden dialogMessageBar"></div>
+
+	<div class="dialog-content">
+			<table><tbody>
+				<tr><td class="label">@{dlgReportOptionsEmptyCells}</td></tr>
+				<tr><td class="tabbedLabel"><div>@{dlgReportOptionsEmptyCellsValue} <input type="text" id="RO_emptyCellDisplay" value="-" class="inputTxt" style="width:40px;" /></div></td></tr>
+				<tr><td class="tabbedLabel select-padding-top" style="padding-top: 3px;">@{dlgReportOptionsEmptyCellsOption}
+					<select id="RO_showEmptyEnum" name="RO_showEmptyEnum">
+						<option value="SHOW_MEASURE">@{dlgReportOptionsShowMeasuresLabel}</option>
+						<option value="SHOW_CALCULATED_MEASURE">@{dlgReportOptionsShowMeasuresAndCalcMeasuresLabel}</option>
+						<option value="SHOW_EMPTY">@{dlgReportOptionsShowBlankMeasuresLabel}</option>
+					</select>
+				</td></tr>
+			</tbody></table>
+			<table id="RO_drillLinkTable"><tbody>
+				<tr><td class="label label-padding-top">@{dlgReportOptionsDrillThrough}</td></tr>
+				<tr><td class="tabbedLabel checkbox-control"><input type="checkbox" id="RO_showDrillLinks" class="inputChk">&nbsp;&nbsp;@{dlgReportOptionsDrillThroughDesc}</input> <a id="RO_DrillThroughLink" href="javascript:cv.getActiveReport().rptDlg.save(true);cv.getActiveReport().drillDlg.show();">@{dlgReportOptionsDrillThroughColumns}</a></td></tr>
+			</tbody></table>
+			<table id="RO_totalsWrapper"><tbody>
+				<tr><td class="label label-padding-top">@{dlgReportOptionsTotals}</td></tr>
+				<tr><td class="tabbedLabel input-padding-bottom checkbox-control"><input type="checkbox" id="RO_showRowGrandTotal" checked="true" class="inputChk">&nbsp;&nbsp;@{popupMenuViewerShowRowGrand}</input></td></tr>
+				<tr><td class="tabbedLabel input-padding-bottom checkbox-control"><input type="checkbox" id="RO_showColumnGrandTotal" checked="true" class="inputChk">&nbsp;&nbsp;@{popupMenuViewerShowColGrand}</input></td></tr>
+				<tr><td class="tabbedLabel checkbox-control"><input type="checkbox" id="RO_useNonVisualTotals" checked="false" class="inputChk">&nbsp;&nbsp;@{dlgReportOptionsNonVisual}</input> <span id="RO_helpNonVisualTotal" class="titleBarButton helpIcon"></span></td></tr>
+			</tbody></table>
+			<table style="padding-bottom: 10px;" id="RO_freezePanesWrapper"><tbody>
+				<tr><td class="label label-padding-top">@{dlgReportOptionsFreezePanes}</td></tr>
+				<tr><td class="tabbedLabel checkbox-control input-padding-bottom"><input type="checkbox" id="RO_freezeColumns" class="inputChk">&nbsp;&nbsp;@{dlgReportOptionsFreezeColumns}</input></td></tr>
+				<tr><td class="tabbedLabel checkbox-control"><input type="checkbox" id="RO_freezeRows" class="inputChk">&nbsp;&nbsp;@{dlgReportOptionsFreezeRows}</input></td></tr>
+			</tbody></table>
+	</div>
+
+	<div>
+	<table width=100% class="button-panel">
+	<tr>
+		<td width="100%" class="standardDialogFooter">
+			<div id="dlgHelp" class="titleBarButton helpIcon"> Help</div>
+		</td>
+		<td>
+      <button class="pentaho-button" id="dlgBtnSave">@{btnLabelOK}</button>		</td>
+		<td>
+      <button class="pentaho-button" id="dlgBtnCancel">@{btnLabelCancel}</button>
+    </td>
+	</tr>
+	</table>
+	</div>
+
+</div>

@@ -1,0 +1,411 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- /*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2019 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */ -->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+  <title>Pentaho Analyzer</title>
+  <meta name="helpTopic" content="CV/Business_User/about_reports.html">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="initial-scale=1, minimum-scale = 1, maximum-scale = 1, user-scalable=no"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+  <link rel="stylesheet" type="text/css" media="all"   href="../analyzer/styles/common.css" />
+  <link rel="stylesheet" type="text/css" href="../common-ui/resources/web/dojo/dijit/themes/pentaho/pentaho.css"/>
+  <link rel="stylesheet" type="text/css" media="all"   href="../analyzer/styles/content.css" />
+  <link rel="stylesheet" type="text/css" media="all"   href="../analyzer/styles/dialog.css" />
+  <link rel="stylesheet" type="text/css" media="all"   href="../analyzer/styles/report.css" />
+  <link rel="stylesheet" type="text/css" media="all"   href="../analyzer/styles/angular-notification.css" />
+  <link rel="stylesheet" type="text/css" href="styles/dojoThemeOverrides.css"/>
+
+  <!-- VizAPI 2.0 compatibility -->
+  <link rel="stylesheet" type="text/css" href="styles/tipsy.css"/>
+
+  <link rel="stylesheet" type="text/css" href="scripts/filechooser/Widgets.css"/>
+  <link rel='stylesheet' href='../common-ui/resources/themes/css/angular-animations.css'/>
+  <link rel="apple-touch-icon" href="../analyzer/images/analyzer_ipad.png" />
+  <style type="text/css" media="all">
+    body {
+      -webkit-user-select:none;
+      -webkit-box-sizing: border-box;
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+    }
+  </style>
+  <link rel="stylesheet" type="text/css" media="only screen and (max-device-width: 1024px)" href="styles/ipad.css" />
+
+  <script type="text/javascript">
+
+    // Collect an array of Visualization plugin AMD modules to load, plugins add to this array through webcontext.js
+    var analyzerVizPlugins = [];
+
+    // djConfig["baseUrl"] = "scripts/dojo/dojo/";
+    var debug = false;
+
+    var cv = {};
+    var cvCatalog = @{editorBean.JSONResources};
+    cv.analyzerProperties = @{editorBean.analyzerProperties};
+    cv.vizApiVersion = @{editorBean.vizApiVersion};
+
+    var isRunningIFrameInSameOrigin;
+    try {
+      var ignoredCheckCanReachOutToParent = window.parent.mantle_initialized;
+      isRunningIFrameInSameOrigin = true;
+    } catch(e) {  // Ignore "Same-origin policy" violation in embedded IFrame
+      isRunningIFrameInSameOrigin = false;
+    }
+
+    var console_enabled = false;
+    if(isRunningIFrameInSameOrigin) {
+      // check to see if this page is running inside the user console
+      console_enabled = window.parent.mantle_initialized == true;
+    }
+
+    // Load web context with the desired application id.
+    (function() {
+      var apiSpec = {
+        applicationId: "pentaho/analyzer"
+      };
+
+      if(isRunningIFrameInSameOrigin) {
+        if(window.parent.beforeAnalyzerLoad) {
+          window.parent.beforeAnalyzerLoad(apiSpec, window.frameElement.id);
+        }
+      }
+
+      var src = "webcontext.js?context=analyzer&application=" + encodeURIComponent(apiSpec.applicationId);
+      document.write("<script language='javascript' type='text/javascript' src='" + src + "'></scr"+"ipt>");
+    })();
+  </script>
+
+  <script type="text/javascript">
+    // Needs to be on a separate script tag, so that the previous document.write has taken effect.
+    require(["pentaho/analyzer/analyzer-editor"]);
+  </script>
+
+  <script type="text/javascript" src="scripts/filechooser/filechooser.nocache.js"></script>
+</head>
+
+<body class="editor tundra">
+<script type="text/javascript">
+  // Check to see if we're running in PUC, if not add the standard background.
+  if(!console_enabled){
+    document.getElementsByTagName("body")[0].className += " pentaho-page-background";
+  }
+</script>
+<iframe id="downloadIframe" width="0" height="0" style="position:absolute; left:-999; display:none; height:0px; width: 0px;"></iframe>
+<div class="hidden">
+  <input type="hidden" id="REPORT_catalog" value="@{editorBean.catalog}"/>
+  <input type="hidden" id="REPORT_cube" value="@{editorBean.analysisArea}"/>
+  <input type="hidden" id="isAdministrator" value="true"/>
+  <input type="hidden" id="fieldHelpXML" value="@{editorBean.fieldHelpXML}"/>
+  <input type="hidden" id="reportXML" value="@{editorBean.reportXML}" />
+  <input type="hidden" id="applyReportContextInFilterDialog" value="@{editorBean.applyReportContextInFilterDialog}" />
+  <input type="hidden" id="disableDrillLinks" value="@{editorBean.disableDrillLinks}" />
+</div>
+
+<!-- page loading indicator -->
+<div id="pageLoading" class="pentaho-page-background">
+  <div id="pageLoadingSpinner" class="page-loading-icon"></div>
+  <div id="pageLoadingMessage">@{loadingReportEditor}</div>
+</div>
+
+<!-- notification window -->
+<div ng-view ng-show="viewContainer" class="ng-app-view ng-app-element ng-hide"></div>
+
+<div data-dojo-type="dijit.layout.BorderContainer" id="borderContainer" style="width: 100%; height: 100%; display: none" data-dojo-props="gutters:true, liveSplitters:false">
+
+  <div data-dojo-type="dijit.layout.BorderContainer" style="width: 225px; height: 100%" id="fieldListWrapper" class="fieldListWrapper" data-dojo-props="region: 'left', layoutPriority:1, gutters:true, liveSplitters:false, splitter:'true'">
+
+    <div id="fieldListWrapperContentPane" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'center'" class="pentaho-rounded-panel2-shadowed pentaho-padding-lg pentaho-background">
+      <div id="fieldList" class="fieldList" data-dojo-type="dijit.layout.BorderContainer" data-dojo-props="gutters:false">
+        <div data-dojo-type="dijit.layout.ContentPane" id="fieldListTop" class="fieldListTop" data-dojo-props="region:'top', gutters:false">
+          <div id="fieldListHeading" class="fieldListHeading pentaho-titled-toolbar clearfix">
+            <div id="availableFields">@{fieldListAvailableField} (<span id="fieldCount"></span>) @{fieldListAvailableFieldFor}:</div>
+            <div style="clear:left;float:left;width:90%;overflow:hidden"><span title="@{editorBean.analysisAreaDescription}" id="analysisArea">@{editorBean.analysisAreaDisplay}</span></div>
+          </div>
+          <div class="fieldListOptions" data-dojo-type="dijit.layout.BorderContainer" data-dojo-props="gutters:false">
+            <div data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'left'" class="searchFieldLabel">@{fieldListFind}:&nbsp;</div>
+            <div id="searchBox" class="searchBox" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'center'">
+              <input type=text id="searchField" class="searchField"><div id="clearSearchField" title="@{ttClearSearch}" class="hidden clearSearchField"></div>
+            </div>
+            <div id="viewFieldOptions" class="viewFieldOptions" title="@{ttViewOptions}" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'right'">
+              @{fieldListView}&nbsp;<div class="arrow-menu-icon"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="fieldListTree" class="fieldListTree" data-dojo-type="dijit.layout.ContentPane"   data-dojo-props="region:'center', minSize: 160" preventAutoScroll="true">
+          <div id="fieldListTrashcan" class="trashcan hidden"></div>
+          <div id="fieldListTreeContent" class="fieldListTreeContent" autoSync="true"></div>
+        </div>
+
+      </div>
+    </div>
+  </div> <!-- end of "fieldList" DIV -->
+
+  <div data-dojo-type="dijit.layout.ContentPane" id="layoutPanelWrapper" style="width: 209px; height: 100%" data-dojo-props="region:'left', layoutPriority:2, splitter:'true'" class="pentaho-rounded-panel2-shadowed pentaho-padding-lg pentaho-background">
+    <div data-dojo-type="pentaho.common.propertiesPanel.Panel" id="layoutPanel"></div>
+  </div>
+
+
+  <div id="reportContainerWrapper" data-dojo-type="dijit.layout.BorderContainer" data-dojo-props="splitter:false, region:'center', gutters:true">
+    <div id="reportBtns" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'top'"  class="dijit dijitToolbar pentaho-rounded-panel2-shadowed pentaho-padding-sm pentaho-shine pentaho-background" >
+
+      <div class="main" id="main_toolbar" style="float: left;">
+        <div class="reportBtn hidden" id="cmdBack"><div class="back-icon" title="@{toolbarBack}" onclick="javascript:window.history.back()"></div></div>
+        <div class="separator hidden" id="cmdBackSeparator"></div>
+        <div id="repositoryButtonsPanel" style="float: left;">
+          <div class="reportBtn" id="cmdNew"><div class="pentaho-newbutton-small" title="@{toolbarNew}"></div></div>
+          <div class="reportBtn" id="cmdOpen"><div class="pentaho-openbutton-small" title="@{toolbarOpen}"></div></div>
+          <div class="reportBtn" id="cmdSave"><div class="pentaho-savebutton-small" title="@{toolbarSave}"></div></div>
+          <div class="reportBtn" id="cmdSaveAs"><div class="pentaho-saveasbutton-small" title="@{toolbarSaveAs}"></div></div>
+          <div class="separator" id="cmdRepositorySeparator"></div>
+        </div>
+        <div id="historyButtonsPanel" style="float: left;">
+          <div class="reportBtn" id="cmdUndoPanel"><div id="cmdUndo" title="@{ttUndo}" class="pentaho-undobutton"></div></div>
+          <div class="reportBtn" id="cmdRedoPanel"><div id="cmdRedo" title="@{ttRedo}" class="pentaho-redobutton"></div></div>
+          <div class="separator"></div>
+        </div>
+        <div id="layoutButtonsPanel" style="float: left;">
+          <div class="reportBtn" id="cmdFields"><div class="field-panel-icon"></div></div>
+          <div class="reportBtn" id="cmdLayout"><div class="field-layout-icon"></div></div>
+          <div class="reportBtn" id="cmdFilters"><div class="pentaho-filterbutton"></div></div>
+          <div class="separator"></div>
+        </div>
+        <div class="reportBtn" id="cmdToggleRefresh"><div class="auto-refresh-icon"></div></div>
+        <div class="reportBtn" id="cmdMoreActions"><div class="more-menu-icon" title="@{ttMoreAction}"></div></div>
+        <div class="reportBtn" id="analyzer-custom-btn"></div>
+
+        <div id="chartBtnWrapper">
+	        <div id='cmdSelectChartType' class='reportDisplayFormat pentaho-downbutton' title='@{ttChartType}'></div>
+	        <div id='cmdShowChart' class='reportDisplayFormat show-chart-icon' valign='middle' title='@{ttSwitchToChart}'></div>
+	        <div id='cmdShowPivot' class='reportDisplayFormat show-pivot-icon' valign='middle' title='@{ttSwitchToTable}'></div>
+	        <div class="reportViewAs">@{reportViewAs}</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="reportContainer" data-dojo-type="dijit.layout.ContentPane" class="pentaho-rounded-panel2-shadowed pentaho-background pentaho-padding-lg"  data-dojo-props="region:'center', gutters:false"></div>
+  </div>
+</div>
+<!-- end of ReportContent -->
+
+<div dojoType="clearview.widget.CVTooltipRefresh" id="refreshTooltip" connectId="" toggle="fade" toggleDuration="200" style="position: absolute">
+  <div id="refreshHeader"><div class="progressPaneHeaderLabel"></div></div>
+  <div id="refreshAction"></div>
+  <div id="refreshFooter"></div>
+</div>
+
+<div id="reportActions2" class="hidden">
+  <a id="cmdReportXml" href="#" onclick="return false;">@{reportAdminActionXML}</a>
+  <span class="behaviorBarSeparator">|</span>
+  <a href="service/admin/log" target="_blank">@{reportAdminActionLog}</a>
+  <span class="behaviorBarSeparator">|</span>
+  <a href="service/admin/mdx?catalog=@{editorBean.catalog}&cube=@{editorBean.analysisArea}" target="_blank">MDX</a>
+  <span class="behaviorBarSeparator">|</span>
+  <a id="cmdClearCache" href="#" onclick="return false;">@{reportAdminActionClearCache}</a>
+</div>
+
+<div parseWidgets="false"> <!-- Start of Dojo Widgets -->
+  <!-- TODO: fix tooltips -->
+
+  <span dojoType="clearview.widget.CVTooltip" id="theTooltip" connectId="" caption="Tooltip is here" toggle="fade" toggleDuration="200" style="position:absolute;display:none" class="pentaho-tooltip-contents"></span>
+
+  <div dojoType="dijit.Dialog" id="theDialog" class="pentaho-dialog" bgColor="black" bgOpacity="0.65" toggle="fade" toggleDuration="100" executeScripts="true" style="display:none;">
+  </div>
+  <div dojoType="dijit.Dialog" id="theDialog2" class="pentaho-dialog" bgColor="black" bgOpacity="0.65" toggle="fade" toggleDuration="100" executeScripts="true" style="display:none;">
+  </div>
+  <div dojoType="dijit.Menu" id="fieldListMenu" class="pentaho-menu-outer pentaho-menu" targetNodeIds="" style="display: none">
+    <!-- Temporarily commenting out options until they are being implemented
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="cmdFieldEdit">@{popupMenuEditField}</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="cmdRemoveMeasure">@{popupMenuRemoveMeasure}</div>
+    -->
+    <div data-dojo-type="dijit.MenuItem" class="pentaho-menuitem" id="cmdCreateCalculatedMeasure" data-dojo-props="appliesTo: ['measure', 'calculated measure']">@{popupMenuCreateCalculatedMeasure}</div>
+    <div data-dojo-type="dijit.MenuItem" class="pentaho-menuitem" id="cmdFieldAdd" data-dojo-props="appliesTo: ['all']">@{popupMenuAddToReport}</div>
+    <div data-dojo-type="dijit.MenuItem" class="pentaho-menuitem" id="cmdFieldFilter" data-dojo-props="appliesTo: ['all']">@{popupMenuFilter}</div>
+    <div data-dojo-type="dijit.MenuSeparator" id="fieldListMenuSeparator" data-dojo-props="appliesTo: ['all']"></div>
+    <div data-dojo-type="dijit.MenuItem" class="pentaho-menuitem" id="cmdHideField" data-dojo-props="appliesTo: ['all']">@{popupMenuHideField}</div>
+    <div data-dojo-type="dijit.MenuSeparator" id="fieldListMenuSeparator2" data-dojo-props="appliesTo: ['all']"></div>
+    <div data-dojo-type="dijit.MenuItem" class="pentaho-menuitem" id="cmdAttributeProperties" data-dojo-props="appliesTo: ['level']">@{popupMenuProperties}</div>
+    <div data-dojo-type="dijit.MenuItem" class="pentaho-menuitem" id="cmdMeasureProperties" data-dojo-props="appliesTo: ['measure']">@{popupMenuProperties}</div>
+    <div data-dojo-type="dijit.MenuItem" class="pentaho-menuitem" id="cmdCalculatedMeasureProperties" data-dojo-props="appliesTo: ['calculated measure']">@{popupMenuProperties}</div>
+  </div>
+
+  <div dojoType="dijit.Menu" id="fieldViewMenu" class="pentaho-menu-outer pentaho-menu" targetNodeIds="" style="display: none">
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="CMDVIEWCATEGORY" caption="@{popupMenuByCategory}">@{popupMenuByCategory}</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="CMDVIEWTYPE" caption="@{popupMenuByNumberTextTime}">@{popupMenuByNumberTextTime}</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="CMDVIEWNAME" caption="A&#8594;Z">A&#8594;Z</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="CMDVIEWSCHEMA" caption="@{popupMenuBySchema}">@{popupMenuBySchema}</div>
+    <div dojoType="dijit.MenuSeparator" id="showHideSeparator"></div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="CMDSHOWHIDEFIELDS" caption="@{popupMenuShowHideFields}">@{popupMenuShowHideFields}</div>
+  </div>
+
+  <div dojoType="dijit.Menu" id="moreActionsMenu" class="pentaho-menu-outer pentaho-menu" targetNodeIds="" style="display: none">
+    <div dojoType="dijit.PopupMenuItem" id="exportMenuItem" caption="@{popupMenuActionExport}">
+      <span>@{popupMenuActionExport}</span>
+      <div dojoType="dijit.Menu" id="exportMenu" class="pentaho-menu-outer pentaho-menu" targetNodeIds="">
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="cmdPDF" caption="@{popupMenuExportPDF}">@{popupMenuExportPDF}</div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="cmdCSV" caption="@{popupMenuExportCSV}">@{popupMenuExportCSV}</div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="cmdExcel" caption="@{popupMenuExportXLSX}">@{popupMenuExportXLSX}</div>
+      </div>
+    </div>
+    <div dojoType="dijit.MenuSeparator"></div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="cmdProps" caption="@{popupMenuActionAbout}">@{popupMenuActionAbout}</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="cmdOptions" caption="@{popupMenuActionOptions}">@{popupMenuActionOptions}</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="cmdChartProps" caption="@{popupMenuActionChartProps}">@{popupMenuActionChartProps}</div>
+    <div dojoType="dijit.MenuSeparator"></div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="cmdResetReport" caption="@{btnLabelReset}">@{btnLabelReset}</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="cmdResetColumnSize" caption="@{popupMenuActionResetColSize}">@{popupMenuActionResetColSize}</div>
+  </div>
+
+  <div dojoType="dijit.Menu" id="adminMenu" class="pentaho-menu-outer pentaho-menu" targetNodeIds="" style="display: none">
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="cmdReportXml" caption="@{reportAdminActionXML}">@{reportAdminActionXML}</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="cmdAdminLog" caption="@{reportAdminActionLog}">@{reportAdminActionLog}</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="cmdAdminMDX" caption="MDX">MDX</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="cmdClearCache" caption="@{reportAdminActionClearCache}">@{reportAdminActionClearCache}</div>
+  </div>
+
+  <div dojoType="dijit.Menu" id="attributePopMenu" targetNodeIds="" class="pentaho-menu-outer pentaho-menu" style="display: none">
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:attrEdit" caption="@{popupMenuAttributeEdit}">@{popupMenuAttributeEdit}</div>
+    <div dojoType="dijit.MenuSeparator"></div>
+    <div dojoType="dijit.PopupMenuItem" id="PM:addHier" caption="@{popupMenuAttributeAlsoShow}">
+      <span>@{popupMenuAttributeAlsoShow}</span>
+      <div dojoType="dijit.Menu" id="hierarchyPopMenu" class="pentaho-menu-outer pentaho-menu">
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:dummy" caption=""></div>
+      </div>
+    </div>
+    <div dojoType="dijit.PopupMenuItem" id="PM:addProp" caption="@{popupMenuAttributeShowProps}" popup="">
+      <span>@{popupMenuAttributeShowProps}</span>
+      <div dojoType="dijit.Menu" id="propertiesPopMenu" class="pentaho-menu-outer pentaho-menu">
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:dummy2" caption=""></div>
+      </div>
+    </div>
+
+
+    <div dojoType="dijit.MenuSeparator"></div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:hyperlink" caption="@{popupMenuHyperlink}">@{popupMenuHyperlink}</div>
+    <div dojoType="dijit.MenuSeparator"></div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:attrFilter" caption="@{popupMenuFilter}">@{popupMenuFilter}</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:attrFilterRank" caption="@{popupMenuAttributeTop10}">@{popupMenuAttributeTop10}</div>
+    <div dojoType="dijit.MenuSeparator"></div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:attrSortAZ" caption="@{popupMenuAttributeSort} A&#8594;Z">@{popupMenuAttributeSort} A&#8594;Z</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:attrSortZA" caption="@{popupMenuAttributeSort} Z&#8594;A">@{popupMenuAttributeSort} Z&#8594;A</div>
+    <div dojoType="dijit.MenuSeparator"></div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:attrShowSub" caption="@{popupMenuAttributeShowSubtotals}">@{popupMenuAttributeShowSubtotals}</div>
+    <div dojoType="dijit.MenuSeparator"></div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:helpAttr" caption="@{popupMenuTellMeAbout}">@{popupMenuTellMeAbout}</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:removeAttr" caption="@{popupMenuRemoveFromReport}">@{popupMenuRemoveFromReport}</div>
+  </div>
+
+  <div dojoType="dijit.Menu" id="propPopMenu" targetNodeIds="" class="pentaho-menu-outer pentaho-menu" style="display: none">
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:helpProp" caption="@{popupMenuTellMeAbout}">@{popupMenuTellMeAbout}</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:removeProp" caption="@{popupMenuRemoveFromReport}">@{popupMenuRemoveFromReport}</div>
+  </div>
+
+  <div dojoType="dijit.Menu" id="memberPopMenu" targetNodeIds="" class="pentaho-menu-outer pentaho-menu" style="display: none">
+  </div>
+
+  <div dojoType="dijit.Menu" id="cellPopMenu" targetNodeIds="" class="pentaho-menu-outer pentaho-menu" style="display: none">
+  </div>
+
+  <div dojoType="dijit.Menu" id="measurePopMenu" class="pentaho-menu-outer pentaho-menu" targetNodeIds="" style="display: none">
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:measEdit" caption="@{popupMenuNumberColNameFormat}">@{popupMenuNumberColNameFormat}</div>
+    <div dojoType="dijit.PopupMenuItem" caption="@{popupMenuNumberCondFormat}">
+      <span>@{popupMenuNumberCondFormat}</span>
+
+      <div dojoType="dijit.Menu" id="condFormatMenu" class="pentaho-menu-outer pentaho-menu" targetNodeIds="">
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:condFormat_COLOR_SCALE_G_Y_R" caption="@{popupMenuCondFormatColorScaleGYR}">@{popupMenuCondFormatColorScaleGYR}</div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:condFormat_COLOR_SCALE_R_Y_G" caption="@{popupMenuCondFormatColorScaleRYG}">@{popupMenuCondFormatColorScaleRYG}</div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:condFormat_COLOR_SCALE_B_Y_R" caption="@{popupMenuCondFormatColorScaleBYR}">@{popupMenuCondFormatColorScaleBYR}</div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:condFormat_COLOR_SCALE_R_Y_B" caption="@{popupMenuCondFormatColorScaleRYB}">@{popupMenuCondFormatColorScaleRYB}</div>
+        <div dojoType="dijit.MenuSeparator"></div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:condFormat_DATA_BAR_RED" caption="@{popupMenuCondFormatDataBarRed}">@{popupMenuCondFormatDataBarRed}</div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:condFormat_DATA_BAR_GREEN" caption="@{popupMenuCondFormatDataBarGreen}">@{popupMenuCondFormatDataBarGreen}</div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:condFormat_DATA_BAR_BLUE" caption="@{popupMenuCondFormatDataBarBlue}">@{popupMenuCondFormatDataBarBlue}</div>
+        <div dojoType="dijit.MenuSeparator"></div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:condFormat_TREND_ARROW_GR" caption="@{popupMenuCondFormatDataTrendArrowGR}">@{popupMenuCondFormatDataTrendArrowGR}</div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:condFormat_TREND_ARROW_RG" caption="@{popupMenuCondFormatDataTrendArrowRG}">@{popupMenuCondFormatDataTrendArrowRG}</div>
+      </div>
+
+    </div>
+    <div dojoType="dijit.MenuSeparator"></div>
+    <div dojoType="dijit.PopupMenuItem" caption="@{popupMenuNumberUserDefNumber}">
+      <span>@{popupMenuNumberUserDefNumber}</span>
+      <div dojoType="dijit.Menu" id="newNumberMenu" class="pentaho-menu-outer pentaho-menu" targetNodeIds="">
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:editMeasureSummary" caption="@{popupMenuNumberEdit} @{popupMenuNumberSummary}">@{popupMenuNumberEdit} @{popupMenuNumberSummary}</div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:editMeasureArith" caption="@{popupMenuCalculatedMeasureProperties}">@{popupMenuCalculatedMeasureProperties}</div>
+        <!-- <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:publishMeasureArith" caption="Publish Calculated Measure">Publish Calculated Measure</div> -->
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:editMeasureTrend" caption="@{popupMenuNumberEdit} @{popupMenuNumberTrend}">@{popupMenuNumberEdit} @{popupMenuNumberTrend}</div>
+        <div dojoType="dijit.MenuSeparator" id="menuSeparator"></div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:summaryMetrics" caption=" @{popupMenuNumberSummary}">@{popupMenuNumberSummary}</div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:arithNumber" caption="@{popupMenuCreateCalculatedMeasure}">@{popupMenuCreateCalculatedMeasure}</div>
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:trendNumber" caption="@{popupMenuNumberTrend}">@{popupMenuNumberTrend}</div>
+      </div>
+    </div>
+    <div dojoType="dijit.MenuSeparator"></div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:measFilterCond" caption="@{popupMenuNumberGreaterThan}">@{popupMenuNumberGreaterThan}</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:measFilterRank" caption="@{popupMenuAttributeTop10}">@{popupMenuAttributeTop10}</div>
+    <div dojoType="dijit.MenuSeparator"></div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:measSortLowHi" caption="@{popupMenuNumberSortLowHigh}">@{popupMenuNumberSortLowHigh}</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:measSortHiLow" caption="@{popupMenuNumberSortHighLow}">@{popupMenuNumberSortHighLow}</div>
+    <div dojoType="dijit.MenuSeparator"></div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:measSubtotals" caption="@{popupMenuNumberSubtotals}">@{popupMenuNumberSubtotals}</div>
+    <div dojoType="dijit.MenuSeparator"></div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:helpMetric" caption="@{popupMenuTellMeAbout}">@{popupMenuTellMeAbout}</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:inChartHideMetric" caption="@{popupMenuNumberHideFromChart}">@{popupMenuNumberHideFromChart}</div>
+    <div dojoType="dijit.PopupMenuItem" id="PM:swapMeasure" caption="@{popupMenuNumberSwapMeasure}" popup="">
+      <span>@{popupMenuNumberSwapMeasure}</span>
+      <div dojoType="dijit.Menu" id="swapMeasurePopMenu" class="pentaho-menu-outer pentaho-menu">
+        <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:dummy3" caption=""></div>
+      </div>
+    </div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:removeMetric" caption="@{popupMenuRemoveFromReport}">@{popupMenuRemoveFromReport}</div>
+    <div dojoType="dijit.MenuSeparator" id="PM:addCalcMeasureToDataSourceSeparator"></div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:addCalcMeasureToDataSource" caption="@{popupMenuAddToDataSource}">@{popupMenuAddToDataSource}</div>
+  </div>
+
+  <div dojoType="dijit.Menu" id="filterPopMenu" class="pentaho-menu-outer pentaho-menu" targetNodeIds="" style="display: none">
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:editFilter" caption="@{popupMenuAttributeEdit}">@{popupMenuAttributeEdit}</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:removeFilter" caption="@{popupMenuRemoveFromReport}">@{popupMenuRemoveFromReport}</div>
+    <div dojoType="dijit.MenuSeparator"></div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:addFilter" caption="@{popupMenuFilterAdd}">@{popupMenuFilterAdd}</div>
+  </div>
+
+  <div dojoType="dijit.Menu" id="grandTotalPopMenu" class="pentaho-menu-outer pentaho-menu" targetNodeIds="" style="display: none">
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:totalHide" caption="@{popupMenuTotalsHide}">@{popupMenuTotalsHide}</div>
+    <div dojoType="dijit.MenuItem" class="pentaho-menuitem" id="PM:totalNonVisual" caption="@{popupMenuTotalsNonVisual}">@{popupMenuTotalsNonVisual}</div>
+  </div>
+
+  <div dojoType="dijit.Menu" id="chartTypeMenu" class="pentaho-menu-outer pentaho-menu" targetNodeIds="" style="display: none">
+  </div>
+
+</div> <!-- End of Dojo Widgets -->
+
+<form id="drillForm" method="post" >
+  <input type="hidden" name="reportXML" id="drillForm_reportXML" />
+  <input type="hidden" name="colIndex" id="drillForm_colIndex" />
+  <input type="hidden" name="rowIndex" id="drillForm_rowIndex" />
+</form>
+
+</body>
+</html>

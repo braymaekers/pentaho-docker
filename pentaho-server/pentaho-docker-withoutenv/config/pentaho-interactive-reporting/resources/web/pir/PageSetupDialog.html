@@ -1,0 +1,73 @@
+<div data-dojo-attach-point="dialogContainer" class="dialog-content" data-dojo-attach-point="containerNode" style="width:500px">
+        <div style="height:230px">
+		<table>
+			<tr>
+				<td>
+					<fieldset id="pageFormatFieldSet">
+						<legend>Page Format</legend>
+						<table>
+							<tr>
+								<td>
+									<select id="pageFormatOptions" size="5" style="width: 303px">
+									</select>
+								</td>
+							</tr>
+						</table>
+					</fieldset>
+				</td>
+		
+				<td>
+					<fieldset id="pageOrientationFieldSet">
+						<legend>Orientation</legend>
+						<table>
+							<tr>
+								<td align="center">
+									<div data-dojo-attach-point="portraitContainer" class="pageSetupDialogPortrait"
+	                    dojoAttachEvent="onclick:_orientationClicked">
+                      <span id="portraitLabel" class="pageSetupDialogOrientationLabel">Portrait</span>
+									</div>
+									<div data-dojo-attach-point="landscapeContainer" class="pageSetupDialogLandscape"
+									    dojoAttachEvent="onclick:_orientationClicked">
+  										<span id="landscapeLabel" class="pageSetupDialogOrientationLabel">Landscape</span>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</fieldset>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="top" colspan="2">
+					<fieldset id="marginFieldSet">
+						<legend>Margins</legend>
+						<table style="width:100%" cellpadding="2">
+						
+							<tr>
+								<td colspan="8">
+									<input id="marginUnitInches" type="radio" name="marginUnits" onclick="view.updateMarginUnits()" checked/>
+									<span id="marginUnitInchesLabel">Inches</span>
+									<input id="marginUnitCm" type="radio" name="marginUnits" onclick="view.updateMarginUnits()"/>
+									<span id="marginUnitCmLabel">Centimeters</span>
+								</td>
+							</tr>
+						
+							<tr>
+								<td align="right" id="marginTop">Top:</td>
+								<td align="left"><input id="marginTopInput" size="3" /></td>
+								<td align="right" id="marginBottom">Bottom:</td>
+								<td align="left"><input id="marginBottomInput" size="3"/></td>
+								<td align="right" id="marginLeft">Left:</td>
+								<td align="left"><input id="marginLeftInput" size="3" /></td>
+								<td align="right" id="marginRight">Right:</td>
+								<td align="left"><input id="marginRightInput" size="3" /></td>
+							</tr>
+						</table>
+						
+						<br/>
+					</fieldset>
+				</td>
+			</tr>
+		</table>		
+        </div>
+    </div>

@@ -1,0 +1,162 @@
+/*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2017 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */
+
+#glasspane {
+  position: absolute;
+  background-color: #144b64;
+  /* IE8 css hack for opacity */
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=80)";
+  filter: alpha(opacity = 80);
+  opacity: 0.8;
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  z-index: 300;
+  margin: 0px;
+  padding: 0px;
+  display: none;
+}
+
+.tundra .dijitMenuPassive .dijitMenuItemHover{
+  background-color: #dce7ed;
+  color: #26363d;
+}
+
+.tundra .dijitMenuItemSelected{
+  background-color: #d7e9cd;
+  color: #26363d;
+}
+
+.splashimage {
+  padding-top: 0px;
+  margin-top: 0px;
+  background: url(images/pir_getting_started.png) no-repeat;
+  height: 195px;
+  width: 191px;
+}
+
+.dijitDialog .dijitDialogPaneContent #downloadProgress .dijitProgressBarTile {
+  background: #E6EFF6;
+}
+
+#dijit_Dialog_4 {
+  padding: 0;
+}
+
+#dijit_Dialog_4 .pentaho-selection-dialog-outer {
+    border: 0 none;
+    background: #fff;
+    padding: 8px 8px 0px 8px;
+}
+
+.pentaho-dialog .feedbackscreen-content {
+  background: transparent;
+}
+
+.feedbackscreentextupper {
+  padding: 10px 0 20px 7px;
+  line-height: 2em;
+  color: #333333;
+}
+
+.feedbackscreentextmiddle {
+  padding: 0 0 0 7px;
+}
+
+.feedbackscreentextbottom {
+  padding: 10px 0 0 0;
+  line-height: 2em;
+  width: 50%;
+  text-align: center;
+}
+
+.feedbackscreentitle {
+  padding-left: 7px !important;
+}
+
+#downloadProgress {
+  width:98%;
+}
+
+.bottom-table {
+  width: 100%;
+  padding-bottom: 8px;
+}
+
+div.dijitPopup.dijitTooltipDialogPopup {
+  margin-top: 4px;
+}
+
+#queryOptions:hover {
+  border: 1px solid #3D6380;
+}
+
+#queryOptionsDialogContent {
+  margin-left: -3px;
+}
+
+.checked {
+  border: 1px solid #3D6380;
+}
+
+.dijitTooltipBelow {
+  padding-top: 0 !important;
+}
+
+.dijitTooltipFocusNode {
+  padding: 0 !important;
+}
+
+#backColorPicker .dialog-content .pentaho-tabWidget .pentaho-tabWidgetLabel,
+#foreColorPicker .dialog-content .pentaho-tabWidget .pentaho-tabWidgetLabel {
+  padding: 0;
+  line-height: 19px;
+}
+
+#backColorPicker .dojoxColorPickerOptional input,
+#foreColorPicker .dojoxColorPickerOptional input {
+  width: 33px;
+}
+
+#backColorPicker .dojoxColorPickerOptional .dojoxColorPickerHex input,
+#foreColorPicker .dojoxColorPickerOptional .dojoxColorPickerHex input {
+  width: 63px;
+}
+
+select#pageFormatOptions {
+  height: auto;
+}
+
+.pentaho-tooltip-contents {
+  margin: auto;
+  width: 186px;
+}
+
+.dropTarget.dojoDndContainerOver {
+  background-color: #99BEDB;
+}
+
+#labeloptions {
+  text-align: right;
+  padding: 10px 0 !important;
+}

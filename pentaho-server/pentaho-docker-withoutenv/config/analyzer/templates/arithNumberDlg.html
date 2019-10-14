@@ -1,0 +1,136 @@
+<!-- /*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2019 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */ -->
+<div id="standardDialog" style="width:685px;">
+  <div id="standardDialogHeader" class="Caption">
+    <div id="dialogTitleBar">
+      <div id="dialogTitleText" style="float:left;" class="ellipse-long-text arithNbrDlgTitle">@{dlgCalcNumTitle}</div>
+      <div id="dlgHelp" class="titleBarButton helpIcon" style="float:right"></div>
+    </div>
+  </div>
+
+  <div id="dialogMessageBar" class="hidden dialogMessageBar" style="clear:left"></div>
+
+  <div id="arithNumberDlg" class="dialog-content" style="clear:left">
+    <table width=100%><tbody>
+            <tr height="35px" valign="top">
+                <td colspan=3><span class="propsDlgLabel firstDlgLabel boldLabel arithNbrDlgLbl">@{dlgSharedName}:</span>
+                <input type=text id="MA_name" value="Calculated Number"></td>
+            </tr>
+
+            <tr height="35px" valign="top">
+                <td colspan=3>
+                <span class="propsDlgLabel firstDlgLabel boldLabel arithNbrDlgLbl">@{dlgSharedNumFormat}:</span>
+                <select id="MA_formatCategory" name="MA_formatCategory" size="1">
+                    <option value="Default" selected="selected">@{dlgSharedNumFormatDefault}</option>
+                    <option value="General Number">@{dlgSharedNumFormatGeneral}</option>
+                    <option value="Currency ($)">@{dlgSharedNumFormatCurrency}</option>
+                    <option value="Percentage (%)">@{dlgSharedNumFormatPct}</option>
+                    <option value="Expression">@{dlgSharedNumFormatExp}</option>
+                </select>
+                <span class="secondDlgLabel propsDlgLabel boldLabel arithNbrDlgLbl">@{dlgSharedNumDecimalPlaces}:</span>
+                <select id="MA_formatScale" name="MA_formatScale" size="1">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2" selected="selected">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+                </td>
+            </tr>
+
+            <tr height="35px" valign="top">
+              <td colspan=3>
+                <span class="propsDlgLabel firstDlgLabel boldLabel">@{dlgAttributePropertiesType}:</span>
+                <span id="MA_type" class="form-input ellipse-long-text">@{dlgCalcMeasureType}</span>
+              </td>
+            </tr>
+
+            <tr height="35px" valign="top" id="mdxTableRow">
+              <td colspan=3>
+                <span class="propsDlgLabel firstDlgLabel boldLabel">@{dlgPropertiesMDX}:</span>
+                <span id="MA_mdx" style="width:300px;float:left;" class="form-input ellipse-long-text">&nbsp;</span>
+              </td>
+            </tr>
+
+            <tr valign="top">
+              <td width="260">
+                <select id="MA_measures" size="17" class="inputTxt" track-form-change="false"></select>
+              </td>
+              <td width="25" align="center" style="vertical-align:middle;">
+                <div class="FT_picklistCmd icon-small icon-accum-add" id="MA_addField" title="Add Selected"></div>
+              </td>
+                <td witdh=*>
+                <textarea id="MA_content"></textarea>
+              </td>
+            </tr>
+        </tbody>
+      </table>            
+      <table width=100%><tbody>            
+            <tr>
+              <td id="subtotal-calc-container">
+                <div class="boldLabel">@{dlgCalcNumSubtotalCalc}</div>
+                <div>
+                  <input type="checkbox" id="MA_calculateSubtotalsUsingFormula" name="calculateSubtotalsUsingFormula" style="margin-top: 3px"/>
+                  <span style="padding-right:8px;display:block;float:left;">&nbsp;&nbsp;@{dlgCalcNumSubtotalCalcDesc}</span>
+                  <span id="helpCalculateSubtotals" style="margin-left: 4px;display:block;float:left;" class="titleBarButton helpIcon"></span>
+                </div>
+                <div id="MA_applyDataSourceWrapper">
+                  <input type="checkbox" id="MA_applyDataSource" name="applyDataSource" style="margin-top: 3px" />
+                  <span style="padding-right:8px;display:block;float:left">&nbsp;&nbsp;@{dlgCalcNumApplyDataSourceDesc}</span>
+                </div>
+              </td>
+              <td style="vertical-align:top">
+                <div id="MA_ops">
+                    <input type=button id="MA_ADD" value="+" >
+                    <input type=button id="MA_SUB" value="-" >
+                    <input type=button id="MA_MUL" value="*" >
+                    <input type=button id="MA_DIV" value="/" >
+                    <input type=button id="MA_LP" value="(" >
+                    <input type=button id="MA_RP" value=")" >
+                        <input type=button id="MA_clear" value="@{dlgCalcNumClear}" >
+                </div>
+                </td>
+            </tr>
+    </tbody></table>
+  </div>
+
+  <div>
+  <table width=100% class="button-panel">
+  <tr>
+    <td width="100%" class="standardDialogFooter">&nbsp;</td>
+    <td>
+      <button class="pentaho-button" id="dlgBtnSave">@{btnLabelOK}</button>
+    </td>
+    <td>
+      <button class="pentaho-button" id="dlgBtnCancel">@{btnLabelCancel}</button>
+    </td>
+  </tr>
+  </table>
+  </div>
+
+</div>

@@ -1,0 +1,66 @@
+<window>
+
+<vbox >
+	<hbox>
+		<button id="btn1" label="Dashboard" onclick="document.getElementById('props-deck-1').style.display='none';document.getElementById('props-deck-0').style.display='block';"/>
+		<button id="btn2" label="Widget" onclick="document.getElementById('props-deck-0').style.display='none';document.getElementById('props-deck-1').style.display='block';"/>
+	</hbox>
+
+  <deck id="props-deck" width="600" height="600">
+
+      <tabbox id="tabbox-dashboard" flex="100">
+        <tabs>
+          <tab id="tab-dashboard-settings" label="Settings"/>
+          <tab id="tab-layout" label="Layout"/>
+          <tab id="tab-theme" label="Theme"/>
+        </tabs>
+        <tabpanels>
+          <tabpanel id="tab-dashboard-settings">
+			<vbox>
+				<hbox>
+					<label value="Title" width="150"/>
+					<textbox id="dashboard-title-edit" value="..." width="300" oninput="alert(1)"/>
+				</hbox>
+				<hbox>
+					<label value="Author" width="150"/>
+					<label value="..." width="300"/>
+				</hbox>
+			</vbox>
+		  </tabpanel>
+          <tabpanel id="tab-layout">
+		  </tabpanel>
+          <tabpanel id="tab-theme">
+		  </tabpanel>
+		</tabpanels>
+	  </tabbox>
+
+      <tabbox id="tabbox-xaction-widget" width="500" height="500">
+        <tabs>
+          <tab id="tab-xaction-widget-settings" label="Settings"/>
+        </tabs>
+        <tabpanels>
+          <tabpanel id="tab-xaction-widget-settings">
+			<vbox>
+				<hbox>
+					<label value="Title" width="150"/>
+					<textbox id="xaction-widget-title-edit" value="..." width="300" oninput="alert(2)"/>
+				</hbox>
+				<hbox>
+					<label value="Type" width="150"/>
+					<label value="Action Sequence" width="300"/>
+				</hbox>
+				<hbox>
+					<label value="Action" width="150"/>
+					<textbox id="xaction-widget-title-edit" value="..." width="300" oninput="alert(3)"/>
+					<button label="Pick..." onclick="alert(4)"/>
+				</hbox>
+			</vbox>
+		  </tabpanel>
+		</tabpanels>
+	  </tabbox>
+
+  </deck>
+  
+  </vbox>
+
+</window>

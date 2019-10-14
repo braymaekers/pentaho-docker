@@ -1,0 +1,19 @@
+<window>
+
+<tabbox id="myTabList" selectedIndex="2" width="500" height="500">
+  <tabs>
+    <tab id="tab1" label="A First tab"/>
+    <tab id="tab2" label="Second tab"/>
+    <tab id="tab3" label="Another tab"/>
+    <tab id="tab4" label="Last tab"/>
+  </tabs>
+  <tabpanels>
+    <tabpanel id="tab1"><button label="Hi"/></tabpanel>
+    <tabpanel id="tab2"><button label="Click me"/></tabpanel>
+    <tabpanel id="tab3"></tabpanel>
+    <tabpanel id="tab4"><!-- tabpanel Fourth elements go here --></tabpanel>
+  </tabpanels>
+</tabbox>
+
+
+</window>

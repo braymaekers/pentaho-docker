@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!--===========================================================================
+HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+
+Copyright 2002 - 2017 Hitachi Vantara. All rights reserved.
+
+NOTICE: All information including source code contained herein is, and
+remains the sole property of Hitachi Vantara and its licensors. The intellectual
+and technical concepts contained herein are proprietary and confidential
+to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+patents, or patents in process, and are protected by trade secret and
+copyright laws. The receipt or possession of this source code and/or related
+information does not convey or imply any rights to reproduce, disclose or
+distribute its contents, or to manufacture, use, or sell anything that it
+may describe, in whole or in part. Any reproduction, modification, distribution,
+or public display of this information without the express written authorization
+from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+international treaties. Access to the source code contained herein is strictly
+prohibited to anyone except those individuals and entities who have executed
+confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+explicitly covering such access.
+============================================================================-->
+<window width="400" height="275" title="{filter.title}"
+        xmlns="http://www.pentaho.org/there.is.only.xul"
+        xmlns:pen="http://www.pentaho.com">
+  <!-- EDIT FILTER CONTAINER -->
+  <hbox id="editPovContainerPanel">
+    <vbox width="250">
+      <checkbox id="showPovToolbar" label="${showFilterToolbar}"
+                command="povContainerController.toggleShowPovToolbar()"/>
+      <hbox>
+        <spacer flex="1"/>
+        <button id="povTableMoveSelectedUp"
+                image="images/spacer.gif"
+                pen:disabledimage="images/spacer.gif"
+                tooltiptext="${upImageToolTip}"
+                onclick="povContainerController.moveUpPov()"
+                disabled="true"/>
+        <button id="povTableMoveSelectedDown"
+                image="images/spacer.gif"
+                pen:disabledimage="images/spacer.gif"
+                tooltiptext="${downImageToolTip}"
+                onclick="povContainerController.moveDownPov()"
+                disabled="true"/>
+        <button id="povTableEditSelected"
+                image="images/spacer.gif"
+                pen:disabledimage="images/spacer.gif"
+                tooltiptext="${editImageToolTip}"
+                onclick="povContainerController.editPov()"
+                disabled="true"/>
+        <button id="povTableAdd"
+                image="images/spacer.gif"
+                tooltiptext="${addImageToolTip}"
+                onclick="povContainerController.addPov()"/>
+        <button id="povTableRemoveSelected"
+                image="images/spacer.gif"
+                pen:disabledimage="images/spacer.gif"
+                tooltiptext="${removeImageToolTip}"
+                onclick="povContainerController.removePov()"
+                disabled="true"/>
+      </hbox>
+
+      <tree rows="4" width="250" id="povTable" height="134" seltype="single">
+        <treecols>
+          <treecol flex="100" label="${filters}" tooltiptext="${filtersToolTip}"/>
+        </treecols>
+        <treechildren/>
+      </tree>
+    </vbox>
+  </hbox>
+
+  <!-- begin properties panel -->
+  <vbox id="propertiesPanel" spacing="0">
+    <hbox spacing="0">
+      <vbox flex="1">
+        <vbox>
+          <label value="${propPanelTitle}" tooltiptext="${propPanelTitleTooltip}"/>
+          <hbox>
+            <textbox flex="1" id="propertiesPanelTitle"/>
+            <button id="addParametersToWidgetTitle"
+                    image="images/spacer.gif"
+                    pen:disabledimage="images/spacer.gif"
+                    tooltiptext="${propPanelAddParametersToTitleTooltip}"
+                    onclick="propertiesPanelController.addParamsToWidgetTitle()"/>
+          </hbox>
+          <label value="${propPanelRefreshPeriod}" tooltiptext="${propPanelRefreshPeriodTooltip}"/>
+          <textbox id="propertiesPanelRefreshPeriod"/>
+          <label value="${propPanelContent}" tooltiptext="${propPanelContentTooltip}"/>
+          <hbox>
+            <image id="propertiesPanelIcon" src="images/spacer.gif" tooltiptext="${propertiesPanelIconTooltip}"
+                   width="16" height="16"/>
+            <label id="propertiesPanelContent" flex="1" value=""/>
+          </hbox>
+        </vbox>
+        <spacer flex="1"/>
+      </vbox>
+      <vbox width="20"/>
+      <hbox spacing="0" flex="3">
+        <vbox width="500" spacing="0">
+          <tabbox id="tabbox">
+            <tabs id="tabs">
+              <tab label="${propPanelParametersTabLabel}" tooltiptext="${propPanelParametersTabLabel}"/>
+              <tab label="${ContentLinking.TabLabel}" tooltiptext="${ContentLinking.TabLabel}"
+                   onclick="propertiesPanelController.refreshContentTab()"/>
+            </tabs>
+            <tabpanels>
+              <tabpanel id="propertiesTabPanel">
+                <tree rows="3" id="propertiesPanelParameterAssignmentTable" height="127" seltype="single" width="500"
+                      editable="true">
+                  <treecols>
+                    <treecol flex="50" pen:binding="name" label="${propPanelParametersNameCol}"
+                             tooltiptext="${propPanelParametersNameCol}"/>
+                    <treecol flex="50" pen:binding="_value_" label="${propPanelParametersSourceCol}"
+                             tooltiptext="${propPanelParametersSourceCol}" pen:combobinding="valueOptions"
+                             type="dynamic" pen:columntypebinding="cellType" editable="true"/>
+                  </treecols>
+                  <treechildren/>
+                </tree>
+
+              </tabpanel>
+
+              <tabpanel id="contentLinkingTabPanel">
+                <tree rows="3" id="contentLinkingAssignmentTable" height="127" seltype="single" width="500"
+                      editable="true">
+                  <treecols>
+                    <treecol flex="1" pen:binding="enabled" pen:disabledbinding="!linkingCustomizationEnabled"
+                             label="${ContentLinking.EnabledCol}" tooltiptext="${ContentLinking.EnabledCol}"
+                             editable="true" type="checkbox"/>
+                    <treecol flex="3" pen:binding="name" label="${ContentLinking.FieldCol}"
+                             tooltiptext="${ContentLinking.FieldCol}"/>
+                  </treecols>
+                  <treechildren/>
+                </tree>
+
+              </tabpanel>
+            </tabpanels>
+          </tabbox>
+          <hbox>
+            <spacer flex="1"/>
+            <button label="${propPanelApply}" tooltiptext="${propPanelApply}"
+                    onclick="propertiesPanelController.apply()"/>
+          </hbox>
+        </vbox>
+      </hbox>
+    </hbox>
+  </vbox>
+  <!-- end properties panel -->
+
+  <!-- Apply Warning Dialog -->
+  <dialog id="applyWarningDialog" buttonlabelaccept="${warning.yes.label}" buttonlabelcancel="${warning.no.label}"
+          pen:buttonlabelaccepttooltiptext="${warning.yes.label}" pen:buttonlabelcanceltooltiptext="${warning.no.label}"
+          buttons="accept,cancel"
+          ondialogaccept="propertiesPanelController.closeApplyWarningSavingChanges()"
+          ondialogcancel="propertiesPanelController.closeApplyWarning()" buttonalign="middle"
+          title="${warning.title}" width="330" height="190">
+    <vbox>
+      <vbox>
+        <vbox>
+          <vbox>
+            <hbox>
+              <spacer flex="1"/>
+            </hbox>
+            <hbox>
+              <label value="${warning.msg.1}"/>
+            </hbox>
+            <hbox>
+              <spacer flex="1"/>
+            </hbox>
+            <vbox>
+              <label value="${warning.msg.2}"/>
+              <label value="${warning.msg.3}"/>
+            </vbox>
+          </vbox>
+        </vbox>
+      </vbox>
+    </vbox>
+  </dialog>
+  <!-- Apply Warning Dialog -->
+
+</window>

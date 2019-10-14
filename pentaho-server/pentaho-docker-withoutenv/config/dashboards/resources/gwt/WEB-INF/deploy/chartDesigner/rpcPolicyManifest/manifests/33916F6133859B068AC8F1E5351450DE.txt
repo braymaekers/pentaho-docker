@@ -1,0 +1,2 @@
+serviceClass: org.pentaho.commons.metadata.mqleditor.editor.gwt.util.MQLEditorGwtService
+path: F81766943817B6A1ECE5A9FD46CCDE22.gwt.rpc

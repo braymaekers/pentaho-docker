@@ -1,0 +1,205 @@
+<!-- /*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2019 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */ -->
+<div id="standardDialog" style="width: 522px;">
+<div id="standardDialogHeader" class="Caption">
+<div id="dialogTitleBar">
+<table width=100%>
+	<tr>
+		<td width="*" id="pageSetupTitle"></td>
+		<td width="19"><div id="dlgHelp" class="titleBarButton helpIcon"></div></td>
+	</tr>
+</table>
+</div>
+</div>
+
+<div id="dialogMessageBar" class="hidden dialogMessageBar"></div>
+
+<div class="dialog-content">
+<div style="padding-bottom: 10px;">
+<table>
+	<tbody>
+		<tr>
+			<td>
+			<fieldset id="pageFormatFieldSet"><legend>@{dlgPageSetupPageFormat}</legend>
+			<table>
+				<tbody>
+					<tr>
+						<td>
+						<select id="excelPageSize" size="6" style="width: 303px">
+							<option value="LETTER">@{dlgPageSetupExcelPageFormatLetter}</option>
+							<option value="LEGAL">@{dlgPageSetupExcelPageFormatLegal}</option>
+							<option value="EXECUTIVE">@{dlgPageSetupExcelPageFormatExecutive}</option>
+							<option value="A4">@{dlgPageSetupExcelPageFormatA4}</option>
+							<option value="A5">@{dlgPageSetupExcelPageFormatA5}</option>
+							<option value="ENVELOPE_10">@{dlgPageSetupExcelPageFormatEnvelope10}</option>
+							<option value="ENVELOPE_CS">@{dlgPageSetupExcelPageFormatEnvelopeCS}</option>
+							<option value="ENVELOPE_DL">@{dlgPageSetupExcelPageFormatEnvelopeDL}</option>
+							<option value="ENVELOPE_MONARCH">@{dlgPageSetupExcelPageFormatEnvelopeMonarch}</option>
+						</select>
+						<select id="pdfPageSize" size="6" style="width: 303px">
+							<option value="LETTER">@{dlgPageSetupPdfPageFormatLetter}</option>
+							<option value="LEGAL">@{dlgPageSetupPdfPageFormatLegal}</option>
+							<option value="NOTE">@{dlgPageSetupPdfPageFormatNote}</option>
+							<option value="TABLOID">@{dlgPageSetupPdfPageFormatTabloid}</option>
+							<option value="LEDGER">@{dlgPageSetupPdfPageFormatLedger}</option>
+							<option value="POSTCARD">@{dlgPageSetupPdfPageFormatPostcard}</option>
+							<option value="EXECUTIVE">@{dlgPageSetupPdfPageFormatExecutive}</option>
+							<option value="A3">@{dlgPageSetupPdfPageFormatA3}</option>
+							<option value="A4">@{dlgPageSetupPdfPageFormatA4}</option>
+							<option value="A5">@{dlgPageSetupPdfPageFormatA5}</option>
+							<option value="B4">@{dlgPageSetupPdfPageFormatB4}</option>
+							<option value="B5">@{dlgPageSetupPdfPageFormatB5}</option>
+						</select></td>
+					</tr>
+				</tbody>
+			</table>
+			</fieldset>
+			</td>
+
+			<td>
+			<fieldset id="pageOrientationFieldSet"><legend>@{dlgPageSetupOrientation}</legend>
+			<table>
+				<tbody>
+					<tr>
+						<td align="center">
+						<div id="orientationPortrait" class="pageSetupDialogPortrait pageSetupDialogPortraitSelected"><span
+							id="portraitLabel" class="pageSetupDialogOrientationLabel">@{dlgPageSetupPortrait}</span>
+						</div>
+						<div id="orientationLandscape" class="pageSetupDialogLandscape"><span
+							id="landscapeLabel" class="pageSetupDialogOrientationLabel">@{dlgPageSetupLandscape}</span>
+						</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			</fieldset>
+			</td>
+		</tr>
+<!-- Hide for now until we decide to implement this
+		<tr id="marginRow">
+			<td valign="top" colspan="2">
+			<fieldset id="marginFieldSet"><legend>Margins</legend>
+			<table style="width: 100%" cellpadding="2">
+				<tbody>
+					<tr>
+						<td colspan="8">
+						  <input type="radio" name="marginUnits" checked="" value="IN"> Inches
+						  <input type="radio" name="marginUnits" value="CM"> Centimeters
+						</td>
+					</tr>
+					<tr>
+						<td align="right">Top:</td>
+						<td align="left"><input id="marginTop" size="3"></td>
+						<td align="right">Bottom:</td>
+						<td align="left"><input id="marginBottom" size="3"></td>
+						<td align="right">Left:</td>
+						<td align="left"><input id="marginLeft" size="3"></td>
+						<td align="right">Right:</td>
+						<td align="left"><input id="marginRight" size="3"></td>
+					</tr>
+				</tbody>
+			</table>
+			<br>
+			</fieldset>
+			</td>
+		</tr>
+-->
+ 		
+		<tr id="excelScalingRow">
+      <td valign="top" colspan="2">
+      <fieldset id="marginFieldSet"><legend>Scaling</legend>
+      <table style="width: 100%" cellpadding="2">
+        <tbody>
+          <tr>
+            <td style="width: 100px">
+              <input name="excelScalingType" type="radio" checked="true" value="PERCENT"> @{dlgPageSetupAdjustTo} 
+            </td>
+            <td>
+              <input id="excelScalingPercent" value="100" size="2"> @{dlgPageSetupNormalSize}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="excelScalingType" type="radio" checked="" value="PAGE"> @{dlgPageSetupFitTo} 
+            </td>
+            <td>
+              <input id="excelScalingPageWide" size="2" value="1"> @{dlgPageSetupFitWide} <input id="excelScalingPageTall" size="2" value="1"> @{dlgPageSetupFitTall}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      </fieldset>
+      </td>
+    </tr>
+    
+    <tr id="excelOptions">
+      <td valign="top" colspan="2">
+        <fieldset id="mergeCellsFieldSet">
+          <legend>@{dlgPageSetupExcelMergeCells}</legend>
+          <table style="width: 100%" cellpadding="2">
+            <tbody>
+              <tr>
+                <td style="width: 100px"><input style="margin-left: 4px; margin-right: 2px" id="excelMergePivotCells" type="checkbox"
+                  checked="true"> @{dlgPageSetupExcelMergeCellsLabel}</td>
+              </tr>
+            </tbody>
+          </table>
+        </fieldset>
+      </td>
+    </tr>
+
+		<tr id="csvOptions">
+      <td valign="top" colspan="2">
+		<table>
+		  <tbody>
+            <tr><td class="label">@{dlgCSVDownloadDescription}:</td></tr>
+            <tr><td class="tabbedLabel"><input type="checkbox" id="csvIncludeSubtotals" checked="true" class="inputChk">&nbsp;&nbsp;@{dlgCSVDownloadSubtotals}</input></td></tr>
+            <tr><td class="tabbedLabel"><input type="checkbox" id="csvFormatNumbers" checked="true" class="inputChk">&nbsp;&nbsp;@{dlgCSVDownloadFormatting}</input></td></tr>
+		    <tr><td class="tabbedLabel">@{dlgCSVSeparator}<input id="csvSeparator" value="," size="1" maxlength="1" autocomplete="off"></td></tr>
+          </tbody>
+		</table>
+      </td>
+    </tr>
+    
+	</tbody>
+</table>
+</div>
+</div>
+<div>
+<table width=100% class="button-panel">
+	<tr>
+		<td width="100%" class="standardDialogFooter">&nbsp;</td>
+    <td>
+      <button class="pentaho-button" id="dlgBtnSave" disabled title="@{dlgPageSetupDoneTitle}">@{btnLabelDone}</button>
+    </td>
+    <td>
+      <button class="pentaho-button" id="dlgBtnDownload" title="@{dlgPageSetupExportTitle}">@{dlgCSVDownloadDownload}</button>
+    </td>		
+		<td>
+		  <button class="pentaho-button" id="dlgBtnCancel" title="@{dlgPageSetupCancelTitle}">@{btnLabelCancel}</button>
+		</td>
+	</tr>
+</table>
+</div>
+
+</div>

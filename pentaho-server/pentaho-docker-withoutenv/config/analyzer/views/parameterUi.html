@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- /*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2017 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */ -->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+  <title>Pentaho Analyzer Parameter UI</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="initial-scale=1.0, minimum-scale = 1, maximum-scale = 1, user-scalable=no"/>
+
+  <link rel="stylesheet" type="text/css" media="only screen and (max-device-width: 1024px)" href="styles/ipad.css" />
+
+  <link rel="stylesheet" type="text/css" media="all"   href="styles/common.css" />
+  <link rel="stylesheet" type="text/css" media="all"   href="styles/content.css" />
+  <link rel="stylesheet" type="text/css" media="all"   href="styles/dialog.css" />
+  <link rel="stylesheet" type="text/css" media="all"   href="styles/report.css" />
+  <link rel="stylesheet" type="text/css" href="styles/dojoThemeOverrides.css"/>
+
+  <!-- VizAPI 2.0 compatibility -->
+  <link rel="stylesheet" type="text/css" href="styles/tipsy.css"/>
+
+  <script type="text/javascript">
+
+    var cv = {};
+    var cvCatalog = @{viewerBean.JSONResources};
+    var analyzerVizPlugins = [];
+
+  </script>
+
+  <script language="javascript" type="text/javascript" src="webcontext.js?context=analyzer"></script>
+
+  <script type="text/javascript">
+
+    var initSchedulingParams = function(filePath, validParamsCallback) {
+        this.file = filePath;
+        this.parameterValidityCallback = validParamsCallback;
+
+        // Always valid for Analyzer
+        if (this.parameterValidityCallback) {
+            this.parameterValidityCallback(true);
+        }
+    };
+
+    var getParams = function() {
+        var children = document.getElementById('REPORT_FORMAT_TYPE').getElementsByTagName("INPUT");
+        var len = children.length;
+        for (var x = 0; x < len; ++x) {
+            if (children[x].checked) {
+              return {'REPORT_FORMAT_TYPE' : children[x].value};
+            }
+        }
+        return {};
+    };
+
+  </script>
+
+</head>
+
+<body style="padding: 15px">
+<form id="REPORT_FORMAT_TYPE">
+<p>@{parameterUiDesc}</p><br>
+<input type="radio" name="REPORT_FORMAT_TYPE" value="PDF" checked /> @{parameterUiPDF}
+<br><br>
+<input type="radio" name="REPORT_FORMAT_TYPE" value="EXCEL" /> @{parameterUiExcel}
+<br><br>
+<input type="radio" name="REPORT_FORMAT_TYPE" value="CSV" /> @{parameterUiCSV}
+<br><br>
+</form>
+
+</body>
+</html>

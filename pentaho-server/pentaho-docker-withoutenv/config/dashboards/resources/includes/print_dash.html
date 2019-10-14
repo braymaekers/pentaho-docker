@@ -1,0 +1,156 @@
+<!-- /*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2017 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */ -->
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>${title}</title>
+<style type="text/css">
+/* added the meta support for IE */
+@media print {
+#toolbar {
+display: none, visibility: hidden
+}
+}
+</style>
+<style media="all">
+html, body {
+  font-family: Tahoma, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+}
+
+/* prompt Panel styling from dashboard */
+#reportControlPanel {
+  max-height: 370px;
+  margin: 0px 10px 10px 10px;
+  padding: 0 4px; /**/
+  background-color: #D4D6DB;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  -webkit-border-radius: 0px 0px 7px 7px;
+  border-radius: 0px 0px 7px 7px;
+}
+.title {
+font-size: 12pt;
+font-weight: bold;
+white-space: nowrap;
+margin: 2px;
+padding: 2px;
+}
+.parameter-label {
+font-size: 10pt;
+font-weight: bold;
+white-space: nowrap;
+margin: 2px;
+padding: 2px;
+}
+/* added buttonn row class to P tag to position it correctly */
+.button_row{
+ margin: 6px 2px;
+ padding: 2px;
+}
+/* button style from global onyx theme */
+/* Standard button style. Should be applied to a <button> element to get full pseudo-styles. */
+.pentaho-button {
+    /* fallback color */
+    background: #000000;
+    /* Safari/Chrome */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #AAA), color-stop(0.10, #888), color-stop(0.50, #3f3f3f), color-stop(0.55, #000), color-stop(0.90, #121212));
+    /* Firefox */
+    background: -moz-linear-gradient(#AAAAAA, #888888 10%, #3F3F3F 50%, #000000 55%, #121212 90%) repeat scroll 0 0 transparent;
+    font-size: .75em;
+    color: #ffffff;
+    padding: 5px 14px;
+    /* Standard form */
+    border-radius: 5px;
+    /* Firefox */
+    -moz-border-radius: 5px;
+    /* Safari/Chrome */
+    -webkit-border-radius: 5px;
+    border: 1px solid #333;
+    /* Safari/Chrome */
+    -webkit-box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(255, 255, 255, 0.7), 0 0 2px rgba(0, 0, 0, 0.7) inset;
+    /* Firefox */
+    -moz-box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(255, 255, 255, 0.7), 0 0 2px rgba(0, 0, 0, 0.7) inset;
+    /* Standard form */
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(255, 255, 255, 0.7), 0 0 2px rgba(0, 0, 0, 0.7) inset;
+    white-space: nowrap;
+    text-shadow: 0px 0px 2px rgba(000, 000, 000, 1);
+    cursor: pointer;
+}
+
+/* Applies the green glow to buttons */
+.pentaho-button:hover {
+    -webkit-box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(255, 255, 255, 0.7), 0 0 2px 1px rgba(115, 255, 2, 1) inset;
+    -moz-box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(255, 255, 255, 0.7), 0 0 2px 1px rgba(115, 255, 2, 1) inset;
+    box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(255, 255, 255, 0.7), 0 0 2px 1px rgba(115, 255, 2, 1) inset;
+}
+
+/* Just lightening it up a bit */
+.pentaho-button:active {
+    background: -moz-linear-gradient(#C8C8C8, #AAA 10%, #666 50%, #353535 55%, #3F3F3F 90%) repeat scroll 0 0 transparent;
+
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #C8C8C8), color-stop(0.10, #AAA), color-stop(0.50, #666), color-stop(0.55, #353535), color-stop(0.90, #3F3F3F));
+}
+
+/* add space to align image with panel */
+#screenshot{
+  margin: 0px 10px 10px 10px;
+  padding: 0 4px;
+}
+</style>
+<script type="text/javascript">
+window.core_theme_tree = ${core_theme_tree};
+window.module_theme_tree = ${module_theme_tree};
+var active_theme = "${active_theme}";
+var CONTEXT_PATH = "${CONTEXT_PATH}";
+</script>
+<script type="text/javascript" src="../js/themeResources.js"></script>
+</head>
+<body>
+<!-- changed id from toolbar to reportControlPanel-->
+<div id="reportControlPanel">
+  <!-- changed reorderd form elements and labels -->
+  <p class="title">Print Preview Settings</p>
+  <label class="parameter-label" for="paperSize">Fit Image To:</label>
+  <select id="paperSize">
+  </select>
+   <!-- stack controls -->
+  <br />
+  <label class="parameter-label" for="orientation">Orientation: </label>
+  <input name="orientation" type="radio" id="portrait">
+  <label for="portrait">Portrait</label>
+  <input name="orientation" type="radio" id="landscape">
+  <label for="landscape">Landscape</label>
+  <p class="button_row">
+    <button class="pentaho-button" id="printButton">Print...</button>
+    <span class="note">Note: Be sure to replicate these settings on the print dialog.</span>
+  </p>
+</div>
+<img id="screenshot" src="${screenshot-url}" />
+<div id="ruler" style="position: absolute; width: 10mm; height: 10mm; "></div>
+<script type="text/javascript" src="../js/require.js"></script>
+<script type="text/javascript" src="${script}"></script>
+</body>
+</html>

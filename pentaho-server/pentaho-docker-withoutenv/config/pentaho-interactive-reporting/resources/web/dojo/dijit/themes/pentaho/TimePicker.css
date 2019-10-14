@@ -1,0 +1,74 @@
+/*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2017 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */
+
+/* Time Picker */
+.tundra .dijitTimePickerTick,
+.tundra .dijitTimePickerMarker {
+	border-color: #ccc;
+}
+
+.tundra .dijitTimePickerTick {
+	color:white;
+}
+
+.tundra .dijitTimePickerMarker {
+	background:#d3d3d3 url("images/titleBar.png") repeat-x top;
+	color:#293a4b;
+	font-weight: bold;
+}
+
+.tundra .dijitTimePickerItemSelected {
+	color: black;
+	background: #bbc4d0 none;
+}
+
+.tundra .dijitTimePickerItemHover {
+	background: #60a1ea none;
+	color:white;
+}
+
+.tundra .dijitTimePickerItemHover,
+.tundra .dijitTimePickerItemSelected {
+	position: relative;
+	z-index: 10;
+}
+
+.tundra .dijitTimePickerTick .dijitTimePickerItemInner {
+	font-size:0.4em;
+}
+
+.tundra .dijitTimePickerItemHover .dijitTimePickerItemInner,
+.tundra .dijitTimePickerItemSelected .dijitTimePickerItemInner {
+	font-size:1em;
+}
+
+.tundra .dijitTimePickerMarkerHover {
+	border-top: 1px solid #ccc;
+}
+
+.tundra .dijitTimePickerTickHover,
+.tundra .dijitTimePickerTickSelected {
+	margin-top:-0.3em;
+	margin-bottom:-0.3em;
+	border-bottom: none;
+}
+

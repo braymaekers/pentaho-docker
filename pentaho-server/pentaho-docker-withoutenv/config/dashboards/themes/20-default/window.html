@@ -1,0 +1,170 @@
+<!-- /*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2017 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */ -->
+
+<!DOCTYPE html>
+<html xmlns:pho="http:/www.pentaho.com">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Demo CSS Layout Control</title>
+  <meta name="viewport" content="initial-scale=1, minimum-scale = 1, maximum-scale = 1, user-scalable=no"/>
+
+  <!-- Theme Css -->
+  <link rel="stylesheet" type="text/css" href="../dashboards/service/themes/{theme}/editor.css" />
+  <link rel="stylesheet" type="text/css" href="../dashboards/service/themes/{theme}/common.css" />
+  <link rel="stylesheet" type="text/css"
+      href="../../../api/repos/common-ui/resources/web/dojo/dijit/themes/pentaho/pentaho.css"/>
+
+  {include: includes/extra_css.html}
+
+  {include: includes/cdf_css.html}
+
+  <script language="javascript" type="text/javascript">
+    //<![CDATA[
+    // functions to be call on load of dashboard. Used instead of window.onload listeners to ensure proper order of execution.
+    window.delayedFunctions = [];
+    //]]>
+  </script>
+
+
+  <script language="javascript" type="text/javascript" src="../dashboards/webcontext.js?context=dashboards"></script>
+
+  {include: includes/dashboard_core_scripts.html}
+
+  {edit:include: includes/dashboard_edit_scripts.html}
+
+
+  <script language="javascript">
+    //<![CDATA[
+    // maybeStartModule assigns null to dashboarddesigner; we need to save it under another name so we can call it later
+    require(["dashboards/dashboard-module"], function(){
+      var __pho__cachedDashboardDesigner = window.dashboarddesigner;
+
+      // variable that keeps track of number of times we have attempted to call __pho__maybeGwtOnLoad__()
+      var __pho__maybeGwtOnLoadCount__ = 0;
+
+      function __pho__maybeGwtOnLoad__() {
+        __pho__maybeGwtOnLoadCount__++;
+        // pho is a global JavaScript variable defined during onModuleLoad; if it is defined, then we assume onModuleLoad ran;
+        // otherwise, we need to retry it
+        if (typeof(pho) == "undefined") {
+          var iframe = document.getElementById('dashboarddesigner');
+          // iframe might be null; if it is, just set the timeout and try again
+          if (iframe != null) {
+            var frameWnd = iframe.contentWindow;
+            // trigger gwtOnLoad (indirectly)
+            if (frameWnd.gwtOnLoad) {
+              __pho__cachedDashboardDesigner.onScriptLoad();
+              __pho__cachedDashboardDesigner.onInjectionDone();
+            }
+          }
+          // quit trying after a certain amount of time
+          if (__pho__maybeGwtOnLoadCount__ < 20) {
+            setTimeout('__pho__maybeGwtOnLoad__()', 200);
+          } else {
+            // Internet Explorer 6 is falling into this block even though the application does load.
+            // alert('Application could not be loaded.');
+          }
+        }
+      }
+      __pho__maybeGwtOnLoad__();
+    });
+
+    // called by pentaho mobile so we can hide our content and be resized properly
+    window.resizing = function(flag){
+      flag ? $("#wrapper").hide() : $("#wrapper").show();
+    }
+    //]]>
+  </script>
+
+  <script language="javascript" type="text/javascript">
+    //<![CDATA[
+    var dojoConfig = {
+      parseOnLoad : false,
+      isDebug : true,
+      disableFlashStorage : true
+    };
+
+    if (SESSION_LOCALE && SESSION_LOCALE != 'en_US') {
+      dojoConfig.locale = SESSION_LOCALE;
+    }
+    //]]>
+  </script>
+
+  <script language="javascript" src="../dashboards/service/themes/{theme}/{theme}.js"></script>
+
+  <!-- {dashboard theme} -->
+
+  <!-- {plugin scripts} -->
+
+
+
+</head>
+
+<body class="pentaho-transparent tundra">
+
+<div id="wrapper" class="wrapper">
+
+  <div id="dashboard-content">{content}</div>
+
+  {edit:include: includes/edit_panel.html}
+
+</div>
+
+
+{edit:include: includes/edit_extras.html}
+
+<div id="dialog-glass" style="display:none" class="dialog-base-style dialog-glass-style">
+
+</div>
+
+<div style="display:none" class="resize-exit-control-style" id="resize-exit-control">
+  <button class="pentaho-button" onclick="pentahoDashboardEditor.enterResizeMode(false)">Close</button>    </div>
+
+<div id="resize-wrapper" style="display:none" class="dialog-base-style">
+
+
+  <div class="resize-wrapper-top"></div>
+
+  <div class="resize-wrapper-inner"></div>
+  <div class="resize-wrapper-inner"></div>
+
+  <div class="resize-wrapper-top resize-wrapper-bottom"></div>
+
+  <div id="resize-glass" style="resize-glass-style">
+
+  </div>
+
+</div>
+
+<div id="dialog-plane" style="display:none" class="dialog-base-style dialog-plane-style">
+
+</div>
+
+<form id="submitform" action="dashboards" method="POST" target="saveIframe">
+  <input id="dashboardXml" name="dashboardXml" type="hidden" value="" />
+  <input id="solution" name="solution" type="hidden" value="" />
+  <input id="path" name="path" type="hidden" value="" />
+  <input id="action_name" name="action_name" type="hidden" value="" />
+  <input id="command" name="command" type="hidden" value="save" />
+</form>
+</body>
+</html>

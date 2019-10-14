@@ -1,0 +1,413 @@
+@charset "utf-8";
+/*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2017 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */
+
+/* CSS Document */
+
+html,body{margin:0;padding:0}
+
+p{}
+a{}
+
+.wrapper {
+  height: 100%;
+}
+
+.pageTitle {
+  font-weight: normal;
+  padding-left: 10px;
+  color: #FFF;
+  line-height: 18px;
+}
+
+/* 
+  rpb: set up a simple fallback for when printing
+  Before, background was entirely dependent on support for gradients
+  If the server side browser (that generates a screenshot for printout)
+  is different from the client side browser, vendor prefixed rules
+  may not (will not) take effect. 
+*/
+.title, .widget .wgtHead {
+  background-color: #000000;
+}
+
+.title{
+  margin:0px;
+  border: 1px solid #848484;
+  width:auto;
+  background-color: #000;
+  background-image: url(header_20px.png);
+  background-image: -moz-linear-gradient(top, #1a1a1a 0%, #333333 50%, #000000 51%, #000000 100%); /* FF3.6+ */
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1a1a1a), color-stop(50%,#333333), color-stop(51%,#000000), color-stop(100%,#000000)); /* Chrome,Safari4+ */
+  background-image: -webkit-linear-gradient(top, #1a1a1a 0%,#333333 50%,#000000 51%,#000000 100%); /* Chrome10+,Safari5.1+ */
+  background-image: -o-linear-gradient(top, #1a1a1a 0%,#333333 50%,#000000 51%,#000000 100%); /* Opera11.10+ */
+  background-image: -ms-linear-gradient(top, #1a1a1a 0%,#333333 50%,#000000 51%,#000000 100%); /* IE10+ */
+  background-image: linear-gradient(top, #1a1a1a 0%,#333333 50%,#000000 51%,#000000 100%); /* W3C */
+  color: #FFF;
+}
+
+.IE .title {
+  background-repeat: repeat-x;
+}
+
+div#FilterPanel{
+	border-bottom: 1px solid #848484;
+	border-left: 1px solid #848484;
+	border-right: 1px solid #848484;
+	height: 12px;
+	background-color: #ffffff;
+}
+
+div#FilterPanel .panel-contentarea{
+  overflow: auto;
+  height: 100%;
+}
+
+div#FilterPanel .wgtHead{
+  /*display: none;*/
+}
+
+div#FilterPanel .widget .dataContainer .rightCorner .wgtData {
+  background: transparent;
+}
+
+div#FilterPanel .widget .dataContainer .rightCorner {
+ background: transparent;
+}
+
+div#FilterPanel .widget .wgtFooter .rightCorner {
+ background: transparent;
+}
+
+div#FilterPanel .widget .wgtFooter {
+ background: transparent;
+}
+
+div#FilterPanel .vbox table {
+  border: 2px solid #95b1ca
+}
+
+div#FilterPanel .povdiv {
+  border: 1px solid #95b1ca
+  padding: 5px 5px 5px 5px;
+  width: 100%;
+}
+
+div#FilterPanel .vbox .label {
+/* text-align: center;
+ background: #f2f2f2;*/
+ font-size: 14px;
+margin: 0;
+padding: 0;
+width: 100%
+}
+
+div#FilterPanel .vbox-tr {
+  /*text-align: center;*/
+  /*  background: #f2f2f2;*/
+margin: 0;
+padding: 2px 2px 0 0;
+width: 100%
+}
+
+div#FilterPanel .vbox-td {
+  /*text-align: center;*/
+  /*  background: #f2f2f2;
+   background: red;*/
+margin: 0;
+padding: 2px 14px 0 0;
+}
+
+div#FilterPanel .vbox-body > .vbox-tr:first-child .vbox-td{
+  /*text-align: center;
+  background: #f2f2f2;*/
+  padding: 2px;
+  margin: 0;
+}
+
+div#FilterPanel table table {
+  margin-right: 10px;
+}
+
+
+
+div#FilterPanel ul{
+width: 100%;
+margin: 0;
+padding: 0;
+}
+
+div#FilterPanel ul li{
+margin: 0;
+padding: 0;
+}
+
+div#FilterPanel .povdiv option:selected {
+ background: #d1edff;
+ border: 1px solid #97d5fe;
+}
+
+div#FilterPanel .povdiv option {
+ padding: 3px 3px 3px 3px;
+}
+
+.hbox {
+ border: 0px solid #eeeeee;
+ background: transparent;
+ padding: 0px;
+ margin: 0px;
+}
+
+.hboxHighlight {
+ border: 0px solid red;
+ background: red;
+ padding: 0px;
+ margin: 0px;
+}
+
+.hbox-td {
+ padding: 0px;
+ vertical-align:top;
+}
+
+.hbox-tr {
+ padding: 0px;
+ vertical-align:top;
+}
+
+.vbox {
+ height:100%;
+ padding: 0px;
+ margin: 0px;
+ background: transparent;
+}
+
+.vboxHighlight {
+ width:100%;
+ background: red;
+ padding: 0px;
+ margin: 0px;
+}
+
+.vbox-td {
+ padding: 0px;
+}
+
+.vbox-tr {
+ padding: 0px;
+}
+
+.widgetContainer{
+ width:100%;
+ height: auto;
+ margin: 0px 0px 0px 0px;
+ padding: 0px;
+ background: white;
+ border: 1px solid #848484;
+}
+
+.widgetContainerHighlight{
+ width:100%;
+ margin: 0px;
+ padding: 0px;
+ background: blue;
+ border: 0px solid blue;
+}
+
+.widget {
+ width:100%;
+ padding:0px auto;
+ xbackground: yellow;
+ min-width:2em;
+ color:#fff;
+ border: 0px solid #AEAEAE;
+}
+
+.wgtFooter .rightCorner {
+  display: none;
+}
+
+.widget .wgtHead .rightCorner,
+.widget .wgtFooter .rightCorner {
+ font-size:1px; /* ensure minimum height */
+ height:8px;
+}
+
+.widget .wgtFooter .rightCorner {
+ height:2px;
+}
+
+.widget .wgtHead {
+  background-image: url('header_20px.png');
+  background-image: -moz-linear-gradient(top, #1a1a1a 0%, #333333 50%, #000000 51%, #000000 100%); /* FF3.6+ */
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1a1a1a), color-stop(50%,#333333), color-stop(51%,#000000), color-stop(100%,#000000)); /* Chrome,Safari4+ */
+  background-image: -webkit-linear-gradient(top, #1a1a1a 0%,#333333 50%,#000000 51%,#000000 100%); /* Chrome10+,Safari5.1+ */
+  background-image: -o-linear-gradient(top, #1a1a1a 0%,#333333 50%,#000000 51%,#000000 100%); /* Opera11.10+ */
+  background-image: -ms-linear-gradient(top, #1a1a1a 0%,#333333 50%,#000000 51%,#000000 100%); /* IE10+ */
+  background-image: linear-gradient(top, #1a1a1a 0%,#333333 50%,#000000 51%,#000000 100%); /* W3C */
+  width: 100%;
+  height: 20px;
+  border-bottom:1px solid #888888;
+}
+.IE .widget .wgtHead {
+  background-repeat: repeat-x;
+}
+.widget .wgtHead .rightCorner {
+ float:right;
+}
+
+.widget .dataContainer {
+}
+
+.widget .dataContainer .rightCorner {
+}
+
+.widget .dataContainer .rightCorner .wgtData {
+ margin:0px 0px 0px 0px;
+ background:#FFF  repeat-x 0px 0px;
+ padding: 0px;
+}
+
+.widget {
+/*background:#FFF;*/
+}
+
+.wgtFooter .rightCorner {
+  display: none;
+}
+
+.widget .wgtFooter .rightCorner {
+}
+
+/* data */
+
+.widget h1 {
+ /* header */
+ font-weight: normal;
+ padding: 2px 2px 2px 4px;
+ float: left;
+ text-align: left;
+ color: #FFF;
+}
+
+.widget p {
+ margin:0.5em 0px 0px 0px;
+ padding:0px 4px 0 4px;
+ color:#000;
+}
+
+.widget-area {
+  position:absolute;
+  top:45px;
+  left:0px;
+  width:800px;
+  height:500px;
+  padding:0px;
+  margin:0px;
+  border:0px solid red;
+  /* PDB-33: need the background in the dashboard to ensure consistent printing experience */
+  background: url('../../../../common-ui/resources/themes/onyx/images/bg_pentaho_default.png') repeat-x top left #303030;
+}
+
+.widgetContainerIFrame {
+  border: 0px solid green;
+  top:0px;
+  left:0px;
+  xwidth:0px;
+  xheight:0px;
+  xposition:absolute;
+}
+.widgetContainerDiv {
+  border: 0px solid green;
+  top:16px;
+  left:2px;
+  width:100px;
+  height:100px;
+  position:absolute;
+}
+.editLabel{
+  color: black;
+  float:right;
+  padding-right: 0px;
+  padding-top:3px;
+  cursor: pointer;
+  zoom: 1;
+  position: relative;
+}
+
+/**
+ * rpb: Override some stuff from globalOnyx.css
+ * To make sure we get decent printing experience
+ */
+.pentaho-toggle-button {
+  /* fallback color */
+  background: #000000;
+}
+.pentaho-toggle-button {
+  /* fallback color */
+  background: #000000;
+  /* Safari/Chrome */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #AAA), color-stop(0.10, #888), color-stop(0.50, #3f3f3f), color-stop(0.55, #000), color-stop(0.90, #121212));
+  /* Firefox */
+  background: -moz-linear-gradient(#AAAAAA, #888888 10%, #3F3F3F 50%, #000000 55%, #121212 90%) repeat scroll 0 0 transparent;
+
+  font-size: 12px;
+  color: #ffffff;
+  padding: 5px 14px;
+
+  border: 1px solid #333;
+
+  /* Safari/Chrome */
+  -webkit-box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(255, 255, 255, 0.7), 0 0 2px rgba(0, 0, 0, 0.7) inset;
+  /* Firefox */
+  -moz-box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(255, 255, 255, 0.7), 0 0 2px rgba(0, 0, 0, 0.7) inset;
+  /* Standard form */
+  box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(255, 255, 255, 0.7), 0 0 2px rgba(0, 0, 0, 0.7) inset;
+
+  white-space: nowrap;
+  text-shadow: 0px 0px 2px rgba(000, 000, 000, 1);
+  text-align: center;
+  cursor: pointer;
+  cursor: hand;
+}
+
+/* Standard toggle-button style. Should be applied to a <button> element to get full pseudo-styles. */
+.pentaho-toggle-button-down, .pentaho-toggle-button-down-disabled, .pentaho-toggle-button-down-hovering {
+  color: black;
+  background: #669335; /* Old browsers */
+}
+.pentaho-toggle-button-down, .pentaho-toggle-button-down-disabled, .pentaho-toggle-button-down-hovering {
+  color: black;
+  text-shadow: 0px 0px 2px rgba(255, 255, 255, 1);
+
+  -webkit-box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(255, 255, 255, 0.7), 0 0 2px 1px rgba(115, 255, 2, 1) inset;
+  -moz-box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(255, 255, 255, 0.7), 0 0 2px 1px rgba(115, 255, 2, 1) inset;
+  box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(255, 255, 255, 0.7), 0 0 2px 1px rgba(115, 255, 2, 1) inset;
+
+  background: #669335; /* Old browsers */
+  background: -moz-linear-gradient(top, #669335 0%, #90d546 48%, #e3f6ce 54%, #afd390 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #669335), color-stop(48%, #90d546), color-stop(54%, #e3f6ce), color-stop(100%, #afd390)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #669335 0%, #90d546 48%, #e3f6ce 54%, #afd390 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #669335 0%, #90d546 48%, #e3f6ce 54%, #afd390 100%); /* Opera11.10+ */
+  background: -ms-linear-gradient(top, #669335 0%, #90d546 48%, #e3f6ce 54%, #afd390 100%); /* IE10+ */
+  background: linear-gradient(top, #669335 0%, #90d546 48%, #e3f6ce 54%, #afd390 100%); /* W3C */
+}

@@ -1,0 +1,309 @@
+<!-- /*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2017 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */ -->
+<div id="standardDialog" style="width:555px;">
+<div id="standardDialogHeader" class="Caption CP_dialogHeader">
+  <div id="dialogTitleBar">
+    <table width=100%>
+      <tr>
+        <td width="*">@{dlgChartPropsTitle}</td>
+
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div id="dialogMessageBar" class="hidden dialogMessageBar"></div>
+
+<div id="chartPropsDialogContent" class="dialog-content">
+<div id="mainTabContainer" data-dojo-type="analyzer/TabPanel" style="width: 100%; height: 439px" selectedTab="tab1" class="pentaho-tabBar">
+  <div id="tab1" data-dojo-type="dijit/layout/ContentPane" data-props="selected:true" title="@{ttGeneral}" class="pentaho-tabPanel">
+    <table class="CP_tabbedTable"><tbody>
+    <tr class="extraRow"><td>&nbsp;</td></tr>
+    <tr><td class="labelsTitle">@{dlgChartPropsBackgroundTitle}</td></tr>
+    <tr><td class="tabbedLabel">
+      <div class="inlineInput">@{dlgChartPropsBackgroundFillType}:
+        <select id="CP_backgroundFill" size="1" class="CP_mb14 CP_w150">
+          <option value="NONE">@{dlgChartPropsBackgroundFillTypeNone}</option>
+          <option value="SOLID">@{dlgChartPropsBackgroundFillTypeSolid}</option>
+          <option value="GRADIENT">@{dlgChartPropsBackgroundFillTypeGradient}</option>
+        </select>
+      </div>
+      <div class="inlineInput chartOptionsFillType" id="CP_backgroundColorWrapper"><div class="colorLabel">@{dlgChartPropsBackgroundColor}:</div> <input type="hidden" id="CP_backgroundColor"><div id="CP_backgroundColorDiv" class="colorPicker chartOptionsFillTypeColorPicker"></div>
+        <div id="CP_backgroundColorPalette" class="colorPalette hidden"><div id="CP_backgroundColorPaletteWidget"></div></div></div>
+      <div class="inlineInput chartOptionsFillType"  id="CP_backgroundColorEndWrapper"><div class="colorLabel">@{dlgChartPropsBackgroundColorEnd}:</div> <input type="hidden" id="CP_backgroundColorEnd"><div id="CP_backgroundColorEndDiv" class="colorPicker chartOptionsFillTypeColorPicker"></div>
+        <div id="CP_backgroundColorEndPalette" class="colorPalette hidden" style="margin-left: -20px"><div id="CP_backgroundColorEndPaletteWidget"></div></div></div>
+    </td></tr>
+    <tr class="extraRow"><td>&nbsp;</td></tr>
+    <tr><td class="labelsTitle">@{dlgChartPropsLabelsTitle}</td></tr>
+    <tr><td class="tabbedLabel">
+      <div class="inlineInput">@{dlgChartPropsLabelsFont}:
+        <select id="CP_labelFontFamily" size="1" class="CP_mb14">
+          <option value='Default'>@{dlgChartPropsLabelsFontDefault}</option>
+          @{contentGenerator.fontOptions}
+        </select>
+      </div>
+      <div class="inlineInput">@{dlgChartPropsLabelsSize}:
+        <select id="CP_labelSize" size="1" class="CP_mb14 CP_w75">
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+          <option value="14">14</option>
+          <option value="16">16</option>
+          <option value="18">18</option>
+          <option value="20">20</option>
+          <option value="24">24</option>
+          <option value="28">28</option>
+          <option value="32">32</option>
+          <option value="36">36</option>
+          <option value="40">40</option>
+        </select>
+      </div>
+      <div class="inlineInput">@{dlgChartPropsLabelsWeight}:
+        <select id="CP_labelStyle" size="1" class="CP_mb14 CP_weightSelect">
+          <option value="PLAIN">@{dlgChartPropsLabelStyleTypeNormal}</option>
+          <option value="BOLD">@{dlgChartPropsLabelStyleTypeBold}</option>
+          <option value="ITALIC">@{dlgChartPropsLabelStyleTypeItalic}</option>
+        </select>
+      </div>
+      <div class="inlineInput"><div class="colorLabel"></div> <input type="hidden" id="CP_labelColor"><div id="CP_labelColorDiv" class="colorPicker"></div>
+        <div id="CP_labelColorPalette" class="colorPalette hidden" style="margin-left: -193px"><div id="CP_labelColorPaletteWidget"></div></div></div>
+    </td></tr>
+    <tr class="extraRow"><td>&nbsp;</td></tr>
+    <tr><td class="labelsTitle">@{dlgChartPropsDomainTitle}</td></tr>
+    <tr><td class="tabbedLabel">
+      <div id="dlgChartPropsMaxPlots" style="overflow:auto" class="inlineInput">@{dlgChartPropsDomainMaxValues}:
+        <select id="CP_maxValues" size="1" class="CP_mb14 CP_w75">
+          <!--  Populated dynamically from viz definition -->
+        </select>
+      </div></td></tr>
+    <tr class="extraRow"><td>&nbsp;</td></tr>
+    </tbody></table>
+
+
+  </div>
+  <div id="tab2" data-dojo-type="dijit/layout/ContentPane" title="@{dlgChartPropsAxisTitleBar}" class="pentaho-tabPanel">
+
+    <table class="CP_tabbedTable"><tbody>
+    <tr class="extraRow"><td>&nbsp;</td></tr>
+    <tr><td class="labelsTitle">@{dlgChartPropsAxisTitle}</td></tr>
+    <tr>
+      <td class="tabbedLabel">
+        <div class="inlineInput"><input type="checkbox" id="CP_autoRange" class="inputChk">&nbsp;&nbsp;@{dlgChartPropsAxisAutoRange}</input></div>
+      </td>
+    </tr>
+    <tr class="extraRow"><td>&nbsp;</td></tr>
+    <tr>
+      <td>
+        <div class="inlineInput">@{dlgChartPropsAxisStart}: <input type="text" id="CP_valueAxisLowerLimit" class="inputTxt CP_mb6 CP_startStop"/></div>
+        <div class="inlineInput">@{dlgChartPropsAxisStop}: <input type="text" id="CP_valueAxisUpperLimit" class="inputTxt CP_mb6 CP_startStop"/></div>
+      </td>
+    </tr>
+    <tr class="extraRow"><td>&nbsp;</td></tr>
+    <tr>
+      <td class="tabbedLabel">
+        <div class="inlineInput">@{dlgChartPropsAxisUnits}:
+          <select id="CP_displayUnits" size="1" class="CP_mb14 CP_w150">
+            <option value="UNITS_0">@{dlgChartOption_UNITS_0}</option>
+            <option value="UNITS_2">@{dlgChartOption_UNITS_2}</option>
+            <option value="UNITS_3">@{dlgChartOption_UNITS_3}</option>
+            <option value="UNITS_4">@{dlgChartOption_UNITS_4}</option>
+            <option value="UNITS_5">@{dlgChartOption_UNITS_5}</option>
+            <option value="UNITS_6">@{dlgChartOption_UNITS_6}</option>
+          </select>
+        </div></td></tr>
+    <tr class="extraRow"><td>&nbsp;</td></tr>
+    <tr class="extraRow"><td>&nbsp;</td></tr>
+    <tr><td class="labelsTitle"><span>@{dlgChartPropsSecondaryAxisTitle}&nbsp;</span><span class="subtext">@{dlgChartPropsSecondaryAxisTitleSubtext}</span></td></tr>
+    <tr>
+      <td class="tabbedLabel">
+        <div class="inlineInput"><input type="checkbox" id="CP_autoRangeSecondary" class="inputChk">&nbsp;&nbsp;@{dlgChartPropsAxisAutoRange}</input></div>
+      </td>
+    </tr>
+    <tr class="extraRow"><td>&nbsp;</td></tr>
+    <tr>
+      <td>
+        <div class="inlineInput">@{dlgChartPropsAxisStart}: <input type="text" id="CP_valueAxisLowerLimitSecondary" class="inputTxt CP_mb6 CP_startStop"/></div>
+        <div class="inlineInput">@{dlgChartPropsAxisStop}: <input type="text" id="CP_valueAxisUpperLimitSecondary" class="inputTxt CP_mb6 CP_startStop"/></div>
+      </td>
+    </tr>
+    <tr class="extraRow"><td>&nbsp;</td></tr>
+    <tr>
+      <td class="tabbedLabel">
+        <div class="inlineInput">@{dlgChartPropsAxisUnits}:
+          <select id="CP_displayUnitsSecondary" size="1" class="CP_mb14 CP_w150">
+            <option value="UNITS_0">@{dlgChartOption_UNITS_0}</option>
+            <option value="UNITS_2">@{dlgChartOption_UNITS_2}</option>
+            <option value="UNITS_3">@{dlgChartOption_UNITS_3}</option>
+            <option value="UNITS_4">@{dlgChartOption_UNITS_4}</option>
+            <option value="UNITS_5">@{dlgChartOption_UNITS_5}</option>
+            <option value="UNITS_6">@{dlgChartOption_UNITS_6}</option>
+          </select>
+        </div></td></tr>
+    <tr class="extraRow"><td>&nbsp;</td></tr>
+    </tbody></table>
+
+  </div>
+  <div id="tab3" data-dojo-type="dijit/layout/ContentPane" title="@{dlgChartPropsLegendTitle}" class="pentaho-tabPanel">
+
+    <table class="CP_tabbedTable"><tbody>
+    <tr class="extraRow"><td>&nbsp;</td></tr>
+    <tr>
+      <td class="tabbedLabel" colspan="2"><input type="checkbox" id="CP_showLegend" checked="false" class="inputChk"> @{dlgChartPropsShowLegend}
+      </td></tr>
+    <tr class="extraRow"><td>&nbsp;</td></tr>
+    <tr>
+      <td class="tabbedLabel" colspan="2">
+        <div class="inlineInput">@{dlgChartPropsLegendPos}:
+          <select id="CP_legendPosition" size="1" class="CP_mb14">
+            <option value="TOP">@{dlgChartPropsLegendPosTop}</option>
+            <option value="RIGHT">@{dlgChartPropsLegendPosRight}</option>
+            <option value="BOTTOM">@{dlgChartPropsLegendPosBottom}</option>
+            <option value="LEFT">@{dlgChartPropsLegendPosLeft}</option>
+          </select>
+        </div>
+      </td>
+    </tr>
+    <tr class="extraRow"><td>&nbsp;</td></tr>
+    <tr>
+      <td class="CP_BG_color CP_Legend_BG_color" style="width: 128px;">@{dlgChartLegendBackgroundColor}:</td>
+      <td class="CP_BG_color">
+        <div class="inlineInput"><input type="hidden" id="CP_legendBackgroundColor"><div id="CP_legendBackgroundColorDiv" class="colorPicker"></div>
+          <div id="CP_legendBackgroundColorPalette" class="colorPalette hidden"><div id="CP_legendBackgroundColorPaletteWidget"></div></div></div>
+      </td></tr>
+    <tr class="extraRow"><td>&nbsp;</td></tr>
+    <tr>
+      <td colspan="3" class="tabbedLabel">
+        <div class="inlineInput">@{dlgChartPropsLabelsFont}:
+          <select id="CP_legendFontFamily" size="1" class="CP_mb14">
+            <option value='Default'>@{dlgChartPropsLabelsFontDefault}</option>
+            @{contentGenerator.fontOptions}
+          </select>
+        </div>
+        <div class="inlineInput">@{dlgChartPropsLabelsSize}:
+          <select id="CP_legendSize" size="1" class="CP_mb14 CP_w75">
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="14">14</option>
+            <option value="16">16</option>
+            <option value="18">18</option>
+            <option value="20">20</option>
+            <option value="24">24</option>
+            <option value="28">28</option>
+            <option value="32">32</option>
+            <option value="36">36</option>
+            <option value="40">40</option>
+          </select>
+        </div>
+        <div class="inlineInput">@{dlgChartPropsLabelsWeight}:
+          <select id="CP_legendStyle" size="1" class="CP_mb14 CP_weightSelect">
+            <option value="PLAIN">@{dlgChartPropsLabelStyleTypeNormal}</option>
+            <option value="BOLD">@{dlgChartPropsLabelStyleTypeBold}</option>
+            <option value="ITALIC">@{dlgChartPropsLabelStyleTypeItalic}</option>
+          </select>
+        </div>
+        <div class="inlineInput"><div class="colorLabel"></div> <input type="hidden" id="CP_legendColor"><div id="CP_legendColorDiv" class="colorPicker"></div>
+          <div id="CP_legendColorPalette" class="colorPalette hidden" style="margin-left: -193px"><div id="CP_legendColorPaletteWidget"></div></div></div>
+      </td></tr>
+      </tbody></table>
+
+    </div>
+    <div id="tab4" data-dojo-type="dijit/layout/ContentPane" title="@{dlgChartPropsOtherTitle}" class="pentaho-tabPanel">
+
+      <table class="CP_tabbedTable"><tbody>
+      <tr class="extraRow"><td>&nbsp;</td></tr>
+      <tr><td colspan="2" class="labelsTitle">@{dlgChartPropsMultiChartTitle}</td></tr>
+      <tr>
+        <td class="tabbedLabel" colspan="2">
+          <div style="overflow:auto" class="inlineInput">@{dlgChartPropsMaxChartsPerRow}:
+            <select id="CP_maxChartsPerRow" size="1" class="CP_mb6 CP_w75">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div></td></tr>
+      <tr class="extraRow"><td>&nbsp;</td></tr>
+      <tr>
+        <td class="tabbedLabel" colspan="2">
+          <div style="overflow:auto" class="inlineInput">@{dlgChartPropsAxisUnits}:
+            <select id="CP_multiChartRangeScope" size="1" class="CP_mb14 CP_OtherTabSelect">
+              <option value="GLOBAL">@{dlgChartPropsMultiChartRangeScope_GLOBAL}</option>
+              <option value="CELL">@{dlgChartPropsMultiChartRangeScope_CELL}</option>
+            </select>
+          </div>
+        </td></tr>
+      <tr class="extraRow"><td>&nbsp;</td></tr>
+      <tr><td colspan="2" class="labelsTitle">@{dlgChartPropsSizeByMeasureTitle}</td></tr>
+      <tr>
+        <td class="tabbedLabel" colspan="2">
+          <div style="overflow:auto" class="inlineInput">@{dlgChartPropsSizeByNegativesModeTitle}:
+            <select id="CP_sizeByNegativesMode" size="1" class="CP_mb6 CP_OtherTabSelect">
+              <option value="NEG_LOWEST">@{dlgChartPropsSizeByNegativesMode_NEG_LOWEST}</option>
+              <option value="USE_ABS">@{dlgChartPropsSizeByNegativesMode_USE_ABS}</option>
+            </select>
+          </div>
+        </td></tr>
+      <tr class="extraRow"><td>&nbsp;</td></tr>
+      <tr><td class="tabbedLabel">
+        <div class="inlineInput">
+          <span>@{dlgChartPropsEmptyCellModeTitle}&nbsp;</span>
+          <span class="subtext">@{dlgChartPropsEmptyCellModeTitleSubText}:</span>
+          <select id="CP_emptyCellMode" size="1" class="CP_mb6 CP_OtherTabSelect">
+            <option value="GAP">@{dlgChartPropsEmptyCellMode_GAP}</option>
+            <option value="LINEAR">@{dlgChartPropsEmptyCellMode_LINEAR}</option>
+            <option value="ZERO">@{dlgChartPropsEmptyCellMode_ZERO}</option>
+          </select>
+        </div>
+      </td></tr>
+      <tr class="extraRow"><td>&nbsp;</td></tr>
+      </tbody></table>
+
+    </div>
+    </div>
+    </div>
+
+  <div id="CP_footer">
+    <table width=100% class="button-panel">
+      <tr>
+        <td width="100%" class="standardDialogFooter">&nbsp;</td>
+        <td>
+          <button class="pentaho-button" id="dlgBtnApply">@{btnLabelApply}</button>
+        </td>
+        <td>
+          <button class="pentaho-button" id="dlgBtnSave">@{btnLabelOK}</button>
+        </td>
+        <td>
+          <button class="pentaho-button" id="dlgBtnCancel">@{btnLabelCancel}</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  </div>

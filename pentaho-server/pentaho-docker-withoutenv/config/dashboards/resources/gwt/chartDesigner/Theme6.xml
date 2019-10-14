@@ -1,0 +1,138 @@
+<!--===========================================================================
+HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+
+Copyright 2002 - 2017 Hitachi Vantara. All rights reserved.
+
+NOTICE: All information including source code contained herein is, and
+remains the sole property of Hitachi Vantara and its licensors. The intellectual
+and technical concepts contained herein are proprietary and confidential
+to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+patents, or patents in process, and are protected by trade secret and
+copyright laws. The receipt or possession of this source code and/or related
+information does not convey or imply any rights to reproduce, disclose or
+distribute its contents, or to manufacture, use, or sell anything that it
+may describe, in whole or in part. Any reproduction, modification, distribution,
+or public display of this information without the express written authorization
+from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+international treaties. Access to the source code contained herein is strictly
+prohibited to anyone except those individuals and entities who have executed
+confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+explicitly covering such access.
+============================================================================-->
+
+<chart xmlns="http://reporting.pentaho.org/namespaces/charting/1.0">
+
+  <stylesheet>
+
+.seriesA {
+  color: #992301;
+  -x-pentaho-chart-line-width: 2px;
+}
+
+.seriesB {
+	color: #cc5500;
+	-x-pentaho-chart-line-width: 2px;
+}
+
+.seriesC {
+	color: #f22e1a;
+	-x-pentaho-chart-line-width: 2px;
+}
+
+.seriesD {
+	color: #ffaf11;
+	-x-pentaho-chart-line-width: 2px;
+}
+
+.seriesE {
+	color: #cc0021;
+	-x-pentaho-chart-line-width: 2px;
+}
+
+.seriesF {
+	color: #9b9b9b;
+	-x-pentaho-chart-line-width: 2px;
+}
+
+.seriesG {
+	color: #671801;
+	-x-pentaho-chart-line-width: 2px;
+}
+
+.seriesH {
+	color: #a54601;
+	-x-pentaho-chart-line-width: 2px;
+}
+
+.seriesI {
+	color: #c02617;
+	-x-pentaho-chart-line-width: 2px;
+}
+
+.seriesJ {
+	color: #c28815;
+	-x-pentaho-chart-line-width: 2px;
+}
+
+.seriesK {
+	color: #9d011a;
+	-x-pentaho-chart-line-width: 2px;
+}
+
+.seriesL {
+	color: #636363;
+	-x-pentaho-chart-line-width: 2px;
+}
+
+.seriesM {
+	color: #bf5d41;
+	-x-pentaho-chart-line-width: 2px;
+}
+
+.seriesN {
+	color: #e49156;
+	-x-pentaho-chart-line-width: 2px;
+}
+
+.seriesO {
+	color: #fb7d70;
+	-x-pentaho-chart-line-width: 2px;
+}
+
+.seriesP {
+	color: #fcc75f;
+	-x-pentaho-chart-line-width: 2px;
+}
+
+.seriesQ {
+	color: #ee6178;
+	-x-pentaho-chart-line-width: 2px;
+}
+
+.seriesR {
+	color: #b9b9b9;
+	-x-pentaho-chart-line-width: 2px;
+}
+  </stylesheet>
+
+  <series class="seriesA"/>
+  <series class="seriesB"/>
+  <series class="seriesC"/>
+  <series class="seriesD"/>
+  <series class="seriesE"/>
+  <series class="seriesF"/>
+  <series class="seriesG"/>
+  <series class="seriesH"/>
+  <series class="seriesI"/>
+  <series class="seriesJ"/>
+  <series class="seriesK"/>
+  <series class="seriesL"/>
+  <series class="seriesM"/>
+  <series class="seriesN"/>
+  <series class="seriesO"/>
+  <series class="seriesP"/>
+  <series class="seriesQ"/>
+  <series class="seriesR"/>
+  
+  <plot style="-x-pentaho-chart-orientation: vertical; -x-pentaho-chart-drill-url-template: url(http://localhost:8080/Pentaho/JPivot); -x-pentaho-chart-scale: 1"/>
+</chart>

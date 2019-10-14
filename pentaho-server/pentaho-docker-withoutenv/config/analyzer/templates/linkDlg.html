@@ -1,0 +1,113 @@
+<!-- /*!
+ * HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+ *
+ * Copyright 2002 - 2017 Hitachi Vantara. All rights reserved.
+ *
+ * NOTICE: All information including source code contained herein is, and
+ * remains the sole property of Hitachi Vantara and its licensors. The intellectual
+ * and technical concepts contained herein are proprietary and confidential
+ * to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+ * patents, or patents in process, and are protected by trade secret and
+ * copyright laws. The receipt or possession of this source code and/or related
+ * information does not convey or imply any rights to reproduce, disclose or
+ * distribute its contents, or to manufacture, use, or sell anything that it
+ * may describe, in whole or in part. Any reproduction, modification, distribution,
+ * or public display of this information without the express written authorization
+ * from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+ * international treaties. Access to the source code contained herein is strictly
+ * prohibited to anyone except those individuals and entities who have executed
+ * confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+ * explicitly covering such access.
+ */ -->
+<div id="standardDialog" style="width:550px;">
+	<div id="standardDialogHeader" class="Caption">
+		<div id="dialogTitleBar">
+		<table width=100%>
+		<tr>
+			<td width="*">@{linkDlgTitle}</td>
+			<td width="19"><div id="dlgHelp" class="titleBarButton"></div></td>
+			
+		</tr>
+		</table>
+		</div>
+	</div>
+
+	<div id="dialogMessageBar" class="hidden dialogMessageBar"></div>				
+
+	<div class="dialog-content" style="overflow:auto;min-height: 290px">
+	             
+		<div class="filterSubtitle">@{linkDlgHelp}
+		</div>
+			             
+		<div style="clear:left"></div>
+			             
+		<div class="sectionBar">
+			<table><tr><td><input checked type=checkbox id="AL_enableCheckbox" class="sectionCheckbox"></td>
+				<td class="sectionTitle">@{linkDlgEnable}</td></tr></table>
+		</div>
+			             
+		<div id="AL_enableCheckboxDIV">			             
+	        <table width=100% style="margin-top:10px"><tbody>
+	            <tr height="30px" valign="top"><td width=*><span class="dialogLabel">@{linkDlgType}:</span>
+	                <select id="AL_linkType" size="1" style="margin-right:5px;">
+	                    <option value="FILE">@{linkDlgFile}</option>
+	                    <option value="URL">@{linkDlgURL}</option>
+	                </select></td></tr>
+	        </tbody></table>
+	
+	        <table id="AL_FILE" width=100%><tbody>
+	            <tr height="30px" valign="top"><td><span class="dialogLabel" id="AL_fileLabelSpan">@{linkDlgFileLabel}:</span>
+	            	<input type=text id="AL_fileLabel" size=45 disabled="true">
+	            	<input type=hidden id="AL_filePath" />
+	            	<input id="AL_filePicker" type="button" value="@{linkDlgBrowseButton}"></td></tr>
+	            <tr><td style="padding-bottom: 10px;">
+	            
+	            <div id="AL_linkParamsDiv">
+		            <table cellspacing=0 style="border: 1px solid rgb(132,132,132);">
+			            <tr style="background-color: rgb(210,210,210);"><td class="paramCell">@{linkDlgParmName}</td><td class="valueCell" style="padding: 3px 5px;">@{linkDlgParamValue}</td></tr>
+		            </table>
+		            <div style="background-color: white; overflow: auto; height: 80px; border-left: 1px solid rgb(132,132,132); border-right: 1px solid rgb(132,132,132); border-bottom: 1px solid rgb(132,132,132);">
+			            <table id="AL_linkParamsTable" cellspacing=0>
+			            </table>
+		            </div>
+	            </div>
+	            
+	            </td></tr>
+	            <tr height="30px" valign="top"><td><span class="dialogLabel">@{linkDlgOpenIn}</span>
+	                <select id="AL_fileTarget" class="inputTxt">
+	                    <option value="NEW_TAB" selected>@{linkDlgOpenTab}</option>
+	                    <option value="NEW_WINDOW">@{linkDlgOpenNew}</option>
+	                    <option value="CURRENT">@{linkDlgOpenCurrent}</option>
+	                </select></td></tr>
+	            <tr height="30px" valign="top"><td><span class="dialogLabel">@{linkDlgTooltip}</span><input type=text id="AL_fileToolTip" size=45 /></td></tr>
+	        </tbody></table>
+	        
+	        <table id="AL_URL" width=100%><tbody>
+	            <tr height="30px" valign="top"><td><span class="dialogLabel">@{linkDlgURL}:</span><input type=text id="AL_urlInput" size=45></td></tr>
+	            <tr height="30px" valign="top"><td><span class="dialogLabel"></span><span>@{linkDlgSampleURL}</span></td></tr>
+	            <tr height="30px" valign="top"><td><span class="dialogLabel">@{linkDlgOpenIn}</span>
+	                <select id="AL_urlTarget" class="inputTxt">
+	                    <option value="NEW_TAB" selected>@{linkDlgOpenTab}</option>
+	                    <option value="NEW_WINDOW">@{linkDlgOpenNew}</option>
+	                    <option value="CURRENT">@{linkDlgOpenCurrent}</option>
+	                </select></td></tr>
+	            <tr height="30px" valign="top"><td><span class="dialogLabel">@{linkDlgTooltip}</span><input type=text id="AL_urlToolTip" size=45></td></tr>
+	        </tbody></table>
+		</div>                
+	</div>
+
+	<div>
+	<table width=100% class="button-panel">
+            <tr>
+                <td width="100%" class="standardDialogFooter">&nbsp;</td>
+                <td>                  
+                  <button class="pentaho-button" id="dlgBtnSave">@{btnLabelOK}</button>
+                </td>
+                <td>
+                  <button class="pentaho-button" id="dlgBtnCancel">@{btnLabelCancel}</button>
+                </td>
+            </tr>
+	</table>
+	</div>
+	
+</div>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--===========================================================================
+HITACHI VANTARA PROPRIETARY AND CONFIDENTIAL
+
+Copyright 2002 - 2017 Hitachi Vantara. All rights reserved.
+
+NOTICE: All information including source code contained herein is, and
+remains the sole property of Hitachi Vantara and its licensors. The intellectual
+and technical concepts contained herein are proprietary and confidential
+to, and are trade secrets of Hitachi Vantara and may be covered by U.S. and foreign
+patents, or patents in process, and are protected by trade secret and
+copyright laws. The receipt or possession of this source code and/or related
+information does not convey or imply any rights to reproduce, disclose or
+distribute its contents, or to manufacture, use, or sell anything that it
+may describe, in whole or in part. Any reproduction, modification, distribution,
+or public display of this information without the express written authorization
+from Hitachi Vantara is strictly prohibited and in violation of applicable laws and
+international treaties. Access to the source code contained herein is strictly
+prohibited to anyone except those individuals and entities who have executed
+confidentiality and non-disclosure agreements or other agreements with Hitachi Vantara,
+explicitly covering such access.
+============================================================================-->
+<plugin title="pentaho-interactive-reporting" loader="OVERRIDING" name="pentaho-interactive-reporting">
+
+    <lifecycle-listener class="org.pentaho.reporting.platform.plugin.LifecycleListener"/>
+
+    <static-paths>
+        <static-path url="/pentaho-interactive-reporting/resources" localFolder="resources"/>
+    </static-paths>
+
+    <overlays>
+        <overlay id="launch" resourcebundle="content/pentaho-interactive-reporting/resources/messages/launchermessages" priority="2">
+          <button id="interactiveReport" label="${interactiveReportLabel}" command="Home.openFile('${tabName}', '${tabName}', 'api/repos/pentaho-interactive-reporting/prpti.new');$('#btnCreateNew').popover('hide')"/>
+        </overlay>
+        <overlay id="startup.iadhocToolbar" resourcebundle="content/pentaho-interactive-reporting/resources/messages/launchermessages.properties" priority="2">
+            <menubar id="newmenu">
+                <menuitem id="iadhoc" label="${interactiveReportLabel}" command="mantleXulHandler.openUrl('${tabName}','${tabName}','api/repos/pentaho-interactive-reporting/prpti.new')" type="MENU_ITEM" how="LAST_CHILD"/>
+            </menubar>
+            <!--menubar id="toolsmenu">
+                <menuitem id="iadhoc-coverage" label="PIR Dev Tools" command="mantleXulHandler.openUrl('${tabName}','${tabName}','api/repos/pentaho-interactive-reporting/prpti.devtools')" type="MENU_ITEM" how="LAST_CHILD"/>
+            </menubar-->
+        </overlay>
+    </overlays>
+
+    <content-types>
+        <content-type type="prpti" mime-type="application/zip">
+            <title>Pentaho Interactive Report</title>
+            <description>Pentaho Interactive Report Bundle</description>
+            <icon-url>api/repos/pentaho-interactive-reporting/resources/images/prptiFileType.png</icon-url>
+            <operations>
+                <!-- for any of these urls, you can add layout=flow to the url -->
+                <operation>
+                    <id>RUN</id>
+                    <perspective>prpti.view</perspective>
+                </operation>
+                <operation>
+                    <id>NEWWINDOW</id>
+                    <perspective>prpti.view</perspective>
+                </operation>
+                <operation>
+                    <id>EDIT</id>
+                    <perspective>prpti.edit</perspective>
+                </operation>
+                <operation>
+                    <id>SCHEDULE_NEW</id>
+                    <perspective>prpti.schedule</perspective>
+                </operation>
+                <operation>
+                    <id>SCHEDULE_EDIT</id>
+                    <perspective>prpti.schedule</perspective>
+                </operation>
+                <operation>
+                    <id>BACKGROUND</id>
+                </operation>
+                <operation>
+                    <id>PARAMETER</id>
+                </operation>
+            </operations>
+        </content-type>
+    </content-types>
+
+    <content-generator id="pentaho-interactive-reporting" type="prpti">
+        <classname>com.pentaho.iadhoc.service.AdhocReportContentGenerator</classname>
+        <title>Interactive Reporting Plugin</title>
+    </content-generator>
+
+    <!-- this content generator is needed for dashboard integration -->
+    <content-generator id="pentaho-interactive-reporting" type="prpti" title="not used at run-time" class="com.pentaho.iadhoc.service.AdhocReportContentGenerator"/>
+
+    <content-generator id="iadhoc" type="iadhoc">
+        <classname>com.pentaho.iadhoc.service.AdhocReportContentGenerator</classname>
+        <title>Adhoc Report Viewer</title>
+    </content-generator>
+
+    <content-generator id="iadhocasync" type="iadhocasync">
+        <classname>com.pentaho.iadhoc.service.BackgroundJobAdHocGenerator</classname>
+        <title>Adhoc Async Report Viewer</title>
+    </content-generator>
+
+    <content-generator id="iadhocsave" type="iadhocsave">
+        <classname>com.pentaho.iadhoc.service.AdhocSaveContentGenerator</classname>
+        <fileinfo-classname></fileinfo-classname>
+        <title>Adhoc Report Saver</title>
+    </content-generator>
+
+    <webservice
+            id="InteractiveAdhocService"
+            type="xml"
+            class="com.pentaho.iadhoc.service.InteractiveAdhocService"/>
+
+    <external-resources>
+        <!-- Example Prompting component that replaces the default prompt labels. Uncomment to use. -->
+        <!-- <file context="pentaho-interactive-reporting">content/common-ui/resources/web/prompting/pentaho-prompting-sample-component.js</file> -->
+        <file context="requirejs">content/pentaho-interactive-reporting/resources/web/pir-require-js-cfg.js</file>
+        <file context="pentaho-interactive-reporting">content/pentaho-interactive-reporting/resources/web/pir-require-js-bundles-cfg.js</file>
+    </external-resources>
+</plugin>

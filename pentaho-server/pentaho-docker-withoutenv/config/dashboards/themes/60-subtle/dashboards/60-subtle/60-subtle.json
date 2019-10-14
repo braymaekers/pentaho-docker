@@ -1,0 +1,33 @@
+{
+  "dashboardSettings" : {
+    "dashboardMarginTop": 0,
+    "dashboardMarginLeft": 0,
+    "dashboardMarginBottom": 0,
+    "dashboardMarginRight": 0,
+    "titleContainerId": "dashboard-title",
+    "filterPanelHeight": 0
+  },
+  "elementSettings" : {
+    "box-titled-panel" : {
+      "offsetRight" : 10,
+      "offsetLeft" : 10,
+      "offsetTop" : 25,
+      "offsetBottom" : 7,
+      "padding-bottom" : 5,
+      "padding-top" : 5,
+      "padding-left" : 5,
+      "padding-right" : 5
+    },
+    "vbox-scrollarea" : {
+      "padding-top": 5
+    },
+    "box-povpanel" : {
+      "offsetTop": 0
+    }
+  },
+  "povPanelSettings" : {
+    "offsetLeft" : 10,
+    "offsetRight" : 10,
+    "offsetBottom" : 10
+  }
+}

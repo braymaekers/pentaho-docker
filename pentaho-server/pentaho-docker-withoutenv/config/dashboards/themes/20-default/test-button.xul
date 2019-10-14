@@ -1,0 +1,5 @@
+<window>
+
+	<button id="button1" label="test button" oncommand="alert('clicked')"/>
+
+</window>
